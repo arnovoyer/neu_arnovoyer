@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Arno Voyer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        accent: '#00f5d4'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            cursor: none;
+        }
+
+        /* ================= CURSOR ================= */
+        .cursor {
+            position: fixed;
+            width: 14px;
+            height: 14px;
+            border: 1.5px solid #00f5d4;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform .2s ease, width .2s ease, height .2s ease, background .2s ease;
+            transform: translate(-50%, -50%);
+        }
+
+        .cursor.active {
+            width: 36px;
+            height: 36px;
+            background: rgba(0, 245, 212, .08);
+        }
+
+        /* ================= PROGRESS ================= */
+        .progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            width: 100%;
+            z-index: 100;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 100%;
+            background: #00f5d4;
+            transform-origin: left;
+            transform: scaleX(0);
+        }
+
+        /* ================= NOISE ================= */
+        .noise {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 50;
+            opacity: .035;
+            background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+        }
+
+        .invert {
+            filter: invert(1);
+        }
+
+        /* ================= UI BUILDER ================= */
+        #ui-builder {
+            position: relative;
+            height: 900px;
+        }
+
+        .ui {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 14px;
+            backdrop-filter: blur(6px);
+        }
+
+        /* Layout Blocks */
+        .ui.header {
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 56px;
+        }
+
+        .ui.sidebar {
+            top: 72px;
+            left: 0;
+            width: 120px;
+            height: 300px;
+        }
+
+        .ui.card {
+            width: 180px;
+            height: 120px;
+        }
+
+        .ui.card.c1 {
+            top: 80px;
+            left: 160px;
+        }
+
+        .ui.card.c2 {
+            top: 80px;
+            left: 360px;
+        }
+
+        .ui.card.c3 {
+            top: 220px;
+            left: 160px;
+        }
+
+        /* ================= MOBILE STATE ================= */
+        .ui-builder-mobile .header {
+            height: 48px;
+        }
+
+        .ui-builder-mobile .sidebar {
+            opacity: 0;
+        }
+
+        .ui-builder-mobile .card {
+            width: 100%;
+            left: 0 !important;
+        }
+
+        #browser-frame {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 18px;
+            overflow: hidden;
+            backdrop-filter: blur(8px);
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            height: 520px;
+        }
+
+        .browser-bar {
+            height: 34px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0 14px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .browser-bar span {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.25);
+        }
+    </style>
+</head>
+
+<body class="bg-neutral-950 text-white overflow-x-hidden">
+
+    <div class="noise"></div>
+
+    <!-- LOADER -->
+    <div id="loader" class="fixed inset-0 bg-black z-[9999] flex items-center justify-center">
+        <h1 id="logo" class="text-4xl font-bold tracking-widest split">ARNOVOYER</h1>
+    </div>
+
+    <!-- CURSOR -->
+    <div class="cursor"></div>
+
+    <!-- PROGRESS -->
+    <div class="progress">
+        <div class="progress-bar"></div>
+    </div>
+
+    <!-- HERO -->
+    <section class="relative min-h-screen flex items-center px-6 md:px-20 overflow-hidden">
+        <div id="vanta-hero" class="absolute inset-0 -z-10"></div>
+        <div class="absolute inset-0 bg-neutral-950/60 -z-0"></div>
+
+        <div class="relative z-10 max-w-3xl">
+            <h1 class="hero-title text-6xl mt-10 md:text-8xl font-bold leading-tight">
+                Hi,<br>
+                ich bin <span class="text-accent split">Arno</span>
+            </h1>
+
+            <p class="mt-10 text-xs uppercase tracking-widest text-neutral-400">
+                Developer · Triathlet
+            </p>
+
+            <p class="hero-sub mt-6 text-neutral-200 max-w-xl leading-relaxed text-lg">
+                Ich baue moderne Webseiten mit Liebe zum Detail.
+            </p>
+
+            <!--<p class="mt-20 text-xs uppercase tracking-widest text-neutral-500">
+                Scroll ↓
+            </p>-->
+        </div>
+    </section>
+
+    <!-- PHILOSOPHIE -->
+    <section class="py-40 px-6 md:px-20">
+        <p class="uppercase text-sm tracking-widest text-neutral-500 mb-6">
+            Philosophie
+        </p>
+        <p class="reveal text-lg md:text-xl text-neutral-400 max-w-2xl leading-relaxed">
+            Jeder sollte seine eigene Website haben können.<br><br>
+            Clean. Modern. Interaktiv.
+        </p>
+    </section>
+
+    <section class="min-h-screen flex items-center justify-center px-6 md:px-20">
+        <div id="browser-frame">
+            <div class="browser-bar">
+                <span></span><span></span><span></span>
+            </div>
+
+            <div id="ui-builder" class="relative w-full max-w-5xl h-[420px]">
+                <div class="ui header flex items-center px-4 text-sm">
+                    Arno Voyer
+                </div>
+
+                <div class="ui sidebar p-4 text-xs text-neutral-400">
+                    Navigation<br>
+                    Home<br>
+                    About<br>
+                    Kontakt
+                </div>
+
+                <div class="ui card c1 p-4 text-sm">
+                    <strong>Über mich</strong><br>
+                    Developer mit Fokus auf Design & Motion.
+                </div>
+
+                <div class="ui card c2 p-4 text-sm">
+                    <strong>Ansatz</strong><br>
+                    Weniger Lärm.<br>
+                    Mehr Gefühl.
+                </div>
+
+                <div class="ui card c3 p-4 text-sm">
+                    <strong>Technik</strong><br>
+                    Klassisches HTMl & CSS · Neu Technike wie GSAP
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ABOUT -->
+    <!--<section class="min-h-screen flex items-center px-6 md:px-20">
+        <p class="reveal text-2xl md:text-3xl font-light tracking-wide opacity-90 max-w-3xl">
+            Cleanes Design, subtile Animationen und Technik,
+            die man fühlt – aber nicht sieht.
+        </p>
+    </section>-->
+
+    <section class="min-h-screen flex items-center px-6 md:px-20">
+        <a href="mailto:arnovoyer@outlook.com"
+            class="magnetic text-2xl md:text-3xl font-light tracking-wide opacity-90">
+            Kontakt →
+        </a>
+    </section>
+
+    <!-- LIBS -->
+    <script src="https://unpkg.com/three@0.152.2/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis"></script>
+    <script src="https://unpkg.com/gsap/dist/gsap.min.js"></script>
+    <script src="https://unpkg.com/gsap/dist/ScrollTrigger.min.js"></script>
+
+    <script>
+        /* ================= CURSOR ================= */
+        const cursor = document.querySelector('.cursor')
+        window.addEventListener('mousemove', e => {
+            cursor.style.left = e.clientX + 'px'
+            cursor.style.top = e.clientY + 'px'
+        })
+
+        document.querySelectorAll('a, .magnetic').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('active'))
+            el.addEventListener('mouseleave', () => cursor.classList.remove('active'))
+        })
+
+        /* ================= LENIS ================= */
+        const lenis = new Lenis({ duration: 1.3, smoothWheel: true })
+        lenis.on('scroll', ScrollTrigger.update)
+        gsap.ticker.add(t => lenis.raf(t * 1000))
+        gsap.ticker.lagSmoothing(0)
+
+        /* ================= VANTA ================= */
+        VANTA.NET({
+            el: "#vanta-hero",
+            color: 0x00f5d4,
+            backgroundColor: 0x050505,
+            points: 10,
+            maxDistance: 24,
+            spacing: 20
+        })
+
+
+
+        /* ================= SPLIT ================= */
+        function splitText(el) {
+            const text = el.innerText
+            el.innerHTML = text.split("").map(c =>
+                c === " " ? "&nbsp;" : `<span class="inline-block">${c}</span>`
+            ).join("")
+        }
+
+        document.querySelectorAll(".split").forEach(splitText)
+
+        gsap.from(".split span", {
+            y: 40,
+            opacity: 0,
+            stagger: 0.05,
+            duration: 0.8,
+            ease: "power3.out"
+        })
+
+        /* ================= REVEAL ================= */
+        gsap.utils.toArray(".reveal").forEach(el => {
+            gsap.from(el, {
+                y: 40,
+                opacity: 0,
+                duration: 0.8,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: el,
+                    scroller: document.body,
+                    start: "top 80%"
+                }
+            })
+        })
+
+
+        /* ================= PROGRESS ================= */
+        gsap.to(".progress-bar", {
+            scaleX: 1,
+            ease: "none",
+            scrollTrigger: { start: 0, end: "max", scrub: true }
+        })
+
+        // ===== LENIS + SCROLLTRIGGER FIX =====
+        ScrollTrigger.scrollerProxy(document.body, {
+            scrollTop(value) {
+                if (arguments.length) {
+                    lenis.scrollTo(value, { immediate: true })
+                }
+                return lenis.scroll.instance.scroll.y
+            },
+            getBoundingClientRect() {
+                return {
+                    top: 0,
+                    left: 0,
+                    width: window.innerWidth,
+                    height: window.innerHeight
+                }
+            },
+            pinType: document.body.style.transform ? "transform" : "fixed"
+        })
+
+        lenis.on("scroll", ScrollTrigger.update)
+        ScrollTrigger.refresh()
+        /* ================= LOADER ================= */
+        window.addEventListener("load", () => {
+            gsap.to("#loader", {
+                yPercent: -100,
+                duration: 1,
+                delay: 0.7,
+                ease: "power4.inOut",
+                onComplete: () => loader.remove()
+            })
+        })
+
+        /* ================= THREE ================= */
+        const canvas = document.getElementById("three-canvas")
+        const scene = new THREE.Scene()
+        const camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 0.1, 100)
+        camera.position.z = 5
+
+        const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true })
+        renderer.setSize(innerWidth, innerHeight)
+        renderer.setPixelRatio(Math.min(devicePixelRatio, 2))
+
+        const geometry = new THREE.TorusKnotGeometry(1.3, 0.4, 160, 16)
+        const material = new THREE.MeshStandardMaterial({
+            color: 0x00f5d4,
+            wireframe: true
+        })
+
+        const mesh = new THREE.Mesh(geometry, material)
+        scene.add(mesh)
+
+        scene.add(new THREE.AmbientLight(0xffffff, 0.6))
+        const light = new THREE.PointLight(0x00f5d4, 1.5)
+        light.position.set(3, 3, 3)
+        scene.add(light)
+
+        function animate() {
+            mesh.rotation.x += 0.002
+            mesh.rotation.y += 0.003
+            renderer.render(scene, camera)
+            requestAnimationFrame(animate)
+        }
+        animate()
+
+        /* ================= EASTER EGG ================= */
+        console.log("%c👋 Hey Developer", "color:#00f5d4;font-size:16px")
+        console.log("%cNice to see you here.", "color:#999")
+
+        const secret = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown"]
+        let input = []
+        window.addEventListener("keydown", e => {
+            input.push(e.key)
+            input.splice(-secret.length - 1)
+            if (secret.every((v, i) => v === input[i])) {
+                document.body.classList.toggle("invert")
+            }
+        })
+
+
+
+
+    </script>
+    <script>
+        const browserFrame = document.getElementById("browser-frame");
+        const uiBuilder = document.getElementById("ui-builder");
+
+        // ===== STATISCHE LAYOUT-SETTINGS =====
+        gsap.set(browserFrame, { width: "100%", maxWidth: 1100, borderRadius: 18 });
+        gsap.set(uiBuilder, { width: "100%", height: 420 });
+        gsap.set(".ui.sidebar", { opacity: 1 });
+        gsap.set(".ui.card", { width: 180 });
+        gsap.set(".ui.card.c1", { top: 80, left: 160 });
+        gsap.set(".ui.card.c2", { top: 80, left: 360 });
+        gsap.set(".ui.card.c3", { top: 220, left: 160 });
+
+        // ===== RESPONSIVE MOBILE =====
+        function handleMobile() {
+            if (window.innerWidth < 768) {
+                gsap.set(browserFrame, { width: "100%", maxWidth: "100%", borderRadius: 16 });
+                gsap.set(uiBuilder, { height: 600 });
+                gsap.set(".ui.sidebar", { opacity: 0 });
+                gsap.set(".ui.card", { width: "100%", left: 0 });
+                gsap.set(".ui.card.c1", { top: 20 });
+                gsap.set(".ui.card.c2", { top: 160 });
+                gsap.set(".ui.card.c3", { top: 300 });
+            } else {
+                // Desktop bleibt statisch
+                gsap.set(browserFrame, { width: "100%", maxWidth: 1100, borderRadius: 18 });
+                gsap.set(uiBuilder, { height: 420 });
+                gsap.set(".ui.sidebar", { opacity: 1 });
+                gsap.set(".ui.card.c1", { top: 80, left: 160 });
+                gsap.set(".ui.card.c2", { top: 80, left: 360 });
+                gsap.set(".ui.card.c3", { top: 220, left: 160 });
+            }
+        }
+
+        window.addEventListener("resize", handleMobile);
+        handleMobile(); // initial
+    </script>
+
+
+</body>
+
+</html>
