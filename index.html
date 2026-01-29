@@ -5,7 +5,11 @@
     <meta charset="UTF-8" />
     <title>Arno Voyer</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta name="description" content="Arno Voyer">
+    <meta name="keywords"
+        content="Arno Voyer, Arno, Voyer, Dornbirn, Vorarlberg, Triathlon, Website, Webseite, Programmieren">
+    <meta name="author" content="Arno Voyer">
+    <link rel="icon" type="image/x-icon" href="/assets/logo.webp">
     <!-- Tailwind -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -76,55 +80,6 @@
             filter: invert(1);
         }
 
-        /* ================= UI BUILDER ================= */
-        #ui-builder {
-            position: relative;
-            height: 900px;
-        }
-
-        .ui {
-            position: absolute;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 14px;
-            backdrop-filter: blur(6px);
-        }
-
-        /* Layout Blocks */
-        .ui.header {
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 56px;
-        }
-
-        .ui.sidebar {
-            top: 72px;
-            left: 0;
-            width: 120px;
-            height: 300px;
-        }
-
-        .ui.card {
-            width: 180px;
-            height: 120px;
-        }
-
-        .ui.card.c1 {
-            top: 80px;
-            left: 160px;
-        }
-
-        .ui.card.c2 {
-            top: 80px;
-            left: 360px;
-        }
-
-        .ui.card.c3 {
-            top: 220px;
-            left: 160px;
-        }
-
         /* ================= MOBILE STATE ================= */
         .ui-builder-mobile .header {
             height: 48px;
@@ -148,23 +103,257 @@
             width: 100%;
             max-width: 1100px;
             margin: 0 auto;
-            height: 520px;
+            padding: 20px;
         }
 
+        /* Browser Bar / Tab */
         .browser-bar {
-            height: 34px;
+            height: 50px;
+            /* höher als vorher */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 12px;
+        }
+
+        .tab {
+            padding: 6px 16px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 8px 8px 0 0;
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .tab.active {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+        }
+
+        .browser-buttons span.circle {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .circle.red {
+            background: #ff5f56;
+        }
+
+        .circle.yellow {
+            background: #ffbd2e;
+        }
+
+        .circle.green {
+            background: #27c93f;
+        }
+
+        /* URL-Leiste */
+        .url-bar {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Navbar */
+        nav a {
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: #00f5d4;
+        }
+
+        /* Cards */
+        #ui-builder {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 24px;
+        }
+
+        @media (min-width: 768px) {
+            #ui-builder {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 32px;
+            }
+        }
+
+        .ui.card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            backdrop-filter: blur(6px);
+            padding: 24px;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+        }
+
+        /* remove default arrow */
+        details summary {
+            list-style: none;
+        }
+
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+
+        /* card base */
+        .ui.card {
+            padding: 28px;
+            min-height: 220px;
+            transition: all .4s ease;
+        }
+
+        /* hover hint */
+        .ui.card summary {
+            transition: transform .3s ease;
+        }
+
+        .ui.card:hover summary {
+            transform: translateY(-2px);
+        }
+
+        /* expandable content */
+        .expand {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height .5s ease, opacity .4s ease;
+            opacity: 0;
+        }
+
+        /* opened state */
+        details[open] .expand {
+            max-height: 500px;
+            opacity: 1;
+        }
+
+        /* opened card emphasis */
+        details[open] {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(0, 245, 212, .5);
+        }
+
+        .terminal {
+            width: 100%;
+            max-width: 720px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            backdrop-filter: blur(8px);
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        }
+
+        .terminal-bar {
+            height: 38px;
             display: flex;
             align-items: center;
             gap: 8px;
             padding: 0 14px;
             background: rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        .browser-bar span {
+        .terminal-bar span {
             width: 10px;
             height: 10px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.25);
+        }
+
+        .terminal-bar p {
+            margin-left: auto;
+            font-size: 12px;
+            opacity: .6;
+        }
+
+        .terminal-body {
+            padding: 20px;
+            font-size: 14px;
+        }
+
+        .line {
+            margin-bottom: 12px;
+            color: #00f5d4;
+        }
+
+        .terminal-form {
+            display: grid;
+            gap: 14px;
+        }
+
+        .terminal-form label span {
+            display: block;
+            margin-bottom: 4px;
+            opacity: .7;
+        }
+
+        .terminal-form input,
+        .terminal-form textarea {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 6px 0;
+            color: white;
+            outline: none;
+        }
+
+        .terminal-form button {
+            background: transparent;
+            border: none;
+            color: #00f5d4;
+            text-align: left;
+            padding: 0;
+            cursor: pointer;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 640px) {
+            #browser-frame {
+                padding: 14px;
+                border-radius: 14px;
+            }
+
+            .browser-bar {
+                height: 44px;
+            }
+
+            .tab {
+                font-size: 0.8rem;
+                padding: 4px 10px;
+            }
+
+            .url-bar {
+                font-size: 0.75rem;
+                padding: 4px 10px;
+            }
+
+            nav {
+                flex-wrap: wrap;
+                gap: 12px;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .terminal {
+                border-radius: 14px;
+            }
+
+            .terminal-body {
+                padding: 16px;
+                font-size: 13px;
+            }
         }
     </style>
 </head>
@@ -187,31 +376,32 @@
     </div>
 
     <!-- HERO -->
-    <section class="relative min-h-screen flex items-center px-6 md:px-20 overflow-hidden">
+    <section class="relative min-h-[85vh] md:min-h-screen
+         flex items-center px-6 md:px-20 overflow-hidden">
+
         <div id="vanta-hero" class="absolute inset-0 -z-10"></div>
         <div class="absolute inset-0 bg-neutral-950/60 -z-0"></div>
 
         <div class="relative z-10 max-w-3xl">
-            <h1 class="hero-title text-6xl mt-10 md:text-8xl font-bold leading-tight">
-                Hi,<br>
+            <h1 class="hero-title font-bold leading-tight
+         text-4xl sm:text-5xl md:text-8xl">
+                Hi,
+                <br class="hidden sm:block">
                 ich bin <span class="text-accent split">Arno</span>
             </h1>
 
-            <p class="mt-10 text-xs uppercase tracking-widest text-neutral-400">
-                Developer · Triathlet
+            <p class="hero-sub mt-6 text-neutral-300
+         max-w-sm sm:max-w-xl
+         leading-relaxed text-base sm:text-lg">
+
+                Ich entwickle moderne Webseiten mit Liebe zum Detail.<br>
+                Neben Code liebe ich Sport, vor allem Triathlon.
             </p>
 
-            <p class="hero-sub mt-6 text-neutral-200 max-w-xl leading-relaxed text-lg">
-                Ich baue moderne Webseiten mit Liebe zum Detail.
-            </p>
-
-            <p class="mt-20 text-xs uppercase tracking-widest text-neutral-500">
-                Scroll ↓
-            </p>
         </div>
     </section>
 
-    <!-- PHILOSOPHIE -->
+    <!-- PHILOSOPHIE 
     <section class="py-40 px-6 md:px-20">
         <p class="uppercase text-sm tracking-widest text-neutral-500 mb-6">
             Philosophie
@@ -220,60 +410,128 @@
             Jeder sollte seine eigene Website haben können.<br><br>
             Clean. Modern. Interaktiv.
         </p>
-    </section>
+    </section>-->
 
-    <!--<section class="min-h-screen flex items-center justify-center px-6 md:px-20">
-        <div id="browser-frame">
-            <div class="browser-bar">
-                <span></span><span></span><span></span>
+    <section class="min-h-screen flex items-center justify-center px-6 md:px-20">
+        <div id="browser-frame" class="relative">
+
+            <!-- Browser Bar / Tab -->
+            <div class="browser-bar flex items-center justify-between px-4">
+                <div class="tab active">Arno Voyer</div>
+                <div class="browser-buttons flex gap-2">
+                    <span class="circle red"></span>
+                    <span class="circle yellow"></span>
+                    <span class="circle green"></span>
+                </div>
             </div>
 
-            <div id="ui-builder" class="relative w-full max-w-5xl h-[420px]">
-                <div class="ui header flex items-center px-4 text-sm">
-                    Arno Voyer
-                </div>
+            <!-- URL-Leiste -->
+            <div class="url-bar flex items-center px-4 py-2 mb-4">
+                <span>https://arnovoyer.com</span>
+            </div>
 
-                <div class="ui sidebar p-4 text-xs text-neutral-400">
-                    Navigation<br>
-                    Home<br>
-                    About<br>
-                    Kontakt
-                </div>
+            <!-- Navbar -->
+            <nav class="flex gap-6 px-4 py-2 mb-6 text-sm text-neutral-400">
+                <a href="#about" class="hover:text-white">Home</a>
+                <a href="#skills" class="hover:text-white">Über mich</a>
+                <a href="#projects" class="hover:text-white">Projekte</a>
+                <a href="#contact" class="hover:text-white">Kontakt</a>
+            </nav>
 
-                <div class="ui card c1 p-4 text-sm">
-                    <strong>Über mich</strong><br>
-                    Developer mit Fokus auf Design & Motion.
-                </div>
+            <!-- Cards / Content -->
+            <div id="ui-builder" class="grid grid-cols-1 md:grid-cols-3 gap-8">
 
-                <div class="ui card c2 p-4 text-sm">
-                    <strong>Ansatz</strong><br>
-                    Weniger Lärm.<br>
-                    Mehr Gefühl.
-                </div>
+                <details class="ui card group">
+                    <summary class="cursor-pointer">
+                        <h3 class="text-lg font-semibold mb-2">Über mich</h3>
+                        <p class="text-neutral-400 text-sm">
+                            Developer & Triathlet
+                        </p>
+                    </summary>
 
-                <div class="ui card c3 p-4 text-sm">
-                    <strong>Technik</strong><br>
-                    Klassisches HTMl & CSS · Neu Technike wie GSAP
+                    <div class="expand mt-4 text-neutral-300 text-sm leading-relaxed">
+                        Ich entwickle moderne, schnelle Webseiten mit Fokus auf
+                        Design und Struktur.<br><br>
+                        Sportlich komme ich aus dem Triathlon – Ausdauer & Präzision
+                        spiegeln sich auch im Code wider.
+                    </div>
+                </details>
+
+                <details class="ui card group">
+                    <summary class="cursor-pointer">
+                        <h3 class="text-lg font-semibold mb-2">Technik</h3>
+                        <p class="text-neutral-400 text-sm">
+                            Was ich einsetze
+                        </p>
+                    </summary>
+
+                    <div class="expand mt-4 text-neutral-300 text-sm">
+                        HTML · CSS<br>
+                        JavaScript · Tailwind<br>
+                        Fokus: clean, wartbar, performant
+                    </div>
+                </details>
+
+                <details class="ui card group">
+                    <summary class="cursor-pointer">
+                        <h3 class="text-lg font-semibold mb-2">Projekte</h3>
+                        <p class="text-neutral-400 text-sm">
+                            Dinge, die ich baue
+                        </p>
+                    </summary>
+
+                    <div class="expand mt-4 text-neutral-300 text-sm">
+                        Vereinswebsites<br>
+                        Interaktive Microsites<br>
+                        Experimente mit neuen Technologien
+                    </div>
+                </details>
+
+            </div>
+
+        </div>
+    </section>
+
+    <section class="min-h-screen flex items-center justify-center px-6">
+        <div class="terminal">
+            <div class="terminal-bar">
+                <div class="browser-buttons flex gap-2">
+                    <span class="circle green"></span>
+                    <span class="circle yellow"></span>
+                    <span class="circle red"></span>
                 </div>
+                <p>terminal — contact</p>
+            </div>
+
+            <div class="terminal-body">
+                <p class="line">&gt; contact arno</p>
+
+                <form id="terminal-form" class="terminal-form">
+                    <label>
+                        <span>&gt; name</span>
+                        <input type="text" name="name" required />
+                    </label>
+
+                    <label>
+                        <span>&gt; email</span>
+                        <input type="email" name="email" required />
+                    </label>
+
+                    <label>
+                        <span>&gt; nachricht</span>
+                        <textarea name="message" rows="3" required></textarea>
+                    </label>
+
+                    <button type="submit">&gt; senden</button>
+                </form>
+
+                <p id="terminal-response" class="line hidden"></p>
             </div>
         </div>
-    </section>-->
-
-
-    <!-- ABOUT -->
-    <!--<section class="min-h-screen flex items-center px-6 md:px-20">
-        <p class="reveal text-2xl md:text-3xl font-light tracking-wide opacity-90 max-w-3xl">
-            Cleanes Design, subtile Animationen und Technik,
-            die man fühlt – aber nicht sieht.
-        </p>
-    </section>-->
-
-    <section class="min-h-screen flex items-center px-6 md:px-20">
-        <a href="mailto:arnovoyer@outlook.com"
-            class="magnetic text-2xl md:text-3xl font-light tracking-wide opacity-90">
-            Kontakt →
-        </a>
     </section>
+
+
+
 
     <!-- LIBS -->
     <script src="https://unpkg.com/three@0.152.2/build/three.min.js"></script>
@@ -310,8 +568,6 @@
             maxDistance: 24,
             spacing: 20
         })
-
-
 
         /* ================= SPLIT ================= */
         function splitText(el) {
@@ -417,63 +673,35 @@
             requestAnimationFrame(animate)
         }
         animate()
+    </script>
+    <script>
+        const form = document.getElementById("terminal-form")
+        const response = document.getElementById("terminal-response")
 
-        /* ================= EASTER EGG ================= */
-        console.log("%c👋 Hey Developer", "color:#00f5d4;font-size:16px")
-        console.log("%cNice to see you here.", "color:#999")
+        form.addEventListener("submit", async e => {
+            e.preventDefault()
 
-        const secret = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown"]
-        let input = []
-        window.addEventListener("keydown", e => {
-            input.push(e.key)
-            input.splice(-secret.length - 1)
-            if (secret.every((v, i) => v === input[i])) {
-                document.body.classList.toggle("invert")
+            response.classList.remove("hidden")
+            response.textContent = "> nachricht senden..."
+
+            const formData = new FormData(form)
+
+            try {
+                const res = await fetch("contact.php", {
+                    method: "POST",
+                    body: formData
+                })
+
+                response.textContent = res.ok
+                    ? "> nachricht gesendet. danke."
+                    : "> fehler. nochmal versuchen."
+            } catch {
+                response.textContent = "> verbindung gescheitert."
             }
         })
 
 
-
-
     </script>
-    <script>
-        const browserFrame = document.getElementById("browser-frame");
-        const uiBuilder = document.getElementById("ui-builder");
-
-        // ===== STATISCHE LAYOUT-SETTINGS =====
-        gsap.set(browserFrame, { width: "100%", maxWidth: 1100, borderRadius: 18 });
-        gsap.set(uiBuilder, { width: "100%", height: 420 });
-        gsap.set(".ui.sidebar", { opacity: 1 });
-        gsap.set(".ui.card", { width: 180 });
-        gsap.set(".ui.card.c1", { top: 80, left: 160 });
-        gsap.set(".ui.card.c2", { top: 80, left: 360 });
-        gsap.set(".ui.card.c3", { top: 220, left: 160 });
-
-        // ===== RESPONSIVE MOBILE =====
-        function handleMobile() {
-            if (window.innerWidth < 768) {
-                gsap.set(browserFrame, { width: "100%", maxWidth: "100%", borderRadius: 16 });
-                gsap.set(uiBuilder, { height: 600 });
-                gsap.set(".ui.sidebar", { opacity: 0 });
-                gsap.set(".ui.card", { width: "100%", left: 0 });
-                gsap.set(".ui.card.c1", { top: 20 });
-                gsap.set(".ui.card.c2", { top: 160 });
-                gsap.set(".ui.card.c3", { top: 300 });
-            } else {
-                // Desktop bleibt statisch
-                gsap.set(browserFrame, { width: "100%", maxWidth: 1100, borderRadius: 18 });
-                gsap.set(uiBuilder, { height: 420 });
-                gsap.set(".ui.sidebar", { opacity: 1 });
-                gsap.set(".ui.card.c1", { top: 80, left: 160 });
-                gsap.set(".ui.card.c2", { top: 80, left: 360 });
-                gsap.set(".ui.card.c3", { top: 220, left: 160 });
-            }
-        }
-
-        window.addEventListener("resize", handleMobile);
-        handleMobile(); // initial
-    </script>
-
 
 </body>
 

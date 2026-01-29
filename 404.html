@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>404 — Page not found</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            accent: '#00f5d4'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background: #050505;
+    }
+
+    .noise {
+      position: fixed;
+      inset: 0;
+      background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+      opacity: .04;
+      pointer-events: none;
+    }
+
+    .dialog {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 18px;
+      backdrop-filter: blur(10px);
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .dialog-bar {
+      height: 42px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 14px;
+      background: rgba(255,255,255,0.06);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .dot.red { background: #ff5f56; }
+    .dot.yellow { background: #ffbd2e; }
+    .dot.green { background: #27c93f; }
+
+    .log {
+      font-family: monospace;
+      font-size: 13px;
+      color: #00f5d4;
+      margin-top: 14px;
+      white-space: pre-line;
+    }
+  </style>
+</head>
+
+<body class="text-white min-h-screen flex items-center justify-center px-6">
+
+  <div class="noise"></div>
+
+  <div class="dialog relative z-10">
+    <!-- BAR -->
+    <div class="dialog-bar">
+      <span class="dot red"></span>
+      <span class="dot yellow"></span>
+      <span class="dot green"></span>
+
+      <span class="ml-3 text-xs tracking-widest uppercase text-neutral-400">
+        System Dialog
+      </span>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="p-6">
+      <h1 class="text-lg font-medium mb-2">
+        Seite nicht gefunden
+      </h1>
+
+      <p class="text-sm text-neutral-400 leading-relaxed">
+        Die gesuchte Seite existiert nicht.<br>
+        Sie wurde möglicherweise entfernt oder nie erstellt.
+      </p>
+
+      <div class="flex justify-end gap-3 mt-6">
+        <button onclick="goHome()"
+          class="px-4 py-2 text-sm rounded-md bg-white/5 hover:bg-white/10 transition">
+          Abbrechen
+        </button>
+
+        <button onclick="deletePage()"
+          class="px-4 py-2 text-sm rounded-md
+                 bg-accent/10 text-accent
+                 hover:bg-accent/20 transition">
+          Seite löschen
+        </button>
+      </div>
+
+      <div id="log" class="log hidden"></div>
+    </div>
+  </div>
+
+  <script>
+    const log = document.getElementById("log")
+
+    function deletePage() {
+      log.classList.remove("hidden")
+      log.textContent = "> seite löschen..."
+
+      setTimeout(() => {
+        log.textContent += "\n> fehler: seite nicht gefunden"
+      }, 900)
+
+      setTimeout(() => {
+        log.textContent += "\n> weiterleitung zur startseite"
+      }, 1600)
+
+      setTimeout(() => {
+        window.location.href = "/"
+      }, 2600)
+    }
+
+    function goHome() {
+      window.location.href = "/"
+    }
+  </script>
+
+</body>
+</html>
