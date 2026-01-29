@@ -693,8 +693,9 @@
                 })
 
                 response.textContent = res.ok
-                    ? "> nachricht gesendet. danke."
-                    : "> fehler. nochmal versuchen."
+                    //? "> nachricht gesendet. danke."
+                    ? "> fehler. später versuchen."
+                    : "> fehler. nochmal versuchen"
             } catch {
                 response.textContent = "> verbindung gescheitert."
             }
