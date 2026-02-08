@@ -331,6 +331,7 @@
             display: none;
             padding: 6px 0;
             animation: menuFade 0.2s ease;
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
         }
 
         .context-menu.visible {
@@ -342,6 +343,7 @@
                 opacity: 0;
                 transform: scale(0.95);
             }
+
             to {
                 opacity: 1;
                 transform: scale(1);
@@ -596,36 +598,37 @@
         </div>
     </section>
 
-
-
-
     <!-- CONTEXT MENU -->
     <div id="context-menu" class="context-menu">
         <div class="context-menu-item" data-action="home">
-            <span class="context-menu-icon">🏠</span>
-            <span>Home</span>
+            <span class="context-menu-icon">⚡</span>
+            <span>~/root</span>
         </div>
         <div class="context-menu-item" data-action="about">
             <span class="context-menu-icon">👤</span>
-            <span>Stammordner öffnen</span>
+            <span>whoami</span>
         </div>
         <div class="context-menu-item" data-action="projects" id="projects">
-            <span class="context-menu-icon">💻</span>
-            <span>Projekte</span>
+            <span class="context-menu-icon">📂</span>
+            <span>./repositories</span>
         </div>
+
         <div class="context-menu-item divider"></div>
+
         <div class="context-menu-item" data-action="contact">
-            <span class="context-menu-icon">📧</span>
-            <span>Dateipfad öffnen</span>
+            <span class="context-menu-icon">📡</span>
+            <span>ping --remote</span>
         </div>
-        <div class="context-menu-item divider"></div>
         <div class="context-menu-item" data-action="tech">
-            <span class="context-menu-icon">⚙️</span>
-            <span>Technologie</span>
+            <span class="context-menu-icon">🛠️</span>
+            <span>view --stack</span>
         </div>
+
+        <div class="context-menu-item divider"></div>
+
         <div class="context-menu-item" data-action="refresh">
-            <span class="context-menu-icon">🔄</span>
-            <span>Reboot</span>
+            <span class="context-menu-icon">⚠️</span>
+            <span>systemctl reboot</span>
         </div>
     </div>
 
