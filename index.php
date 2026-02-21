@@ -279,8 +279,8 @@ $username = $_SESSION['username'] ?? 'admin';
                     <article class="card">
                         <h2>Links</h2>
                         <p>Direktzugriffe auf deine wichtigsten Seiten.</p>
-                        <a class="link" href="login.php">> zur login seite</a>
-                        <a class="link" href="404.html">> zur 404 seite</a>
+                        <a class="link" href="https://schule.arnovoyer.com" target="_blank">schule.arnovoyer.com</a>
+                        <a class="link" href="https://github.com/arnovoyer" target="_blank">github</a>
                     </article>
                 </div>
 
