@@ -1,5 +1,6 @@
 <?php
 session_start();
+header('X-Robots-Tag: noindex, nofollow, noarchive', true);
 
 if (isset($_GET['logout']) && $_GET['logout'] === '1') {
     $_SESSION = [];
@@ -26,6 +27,7 @@ $username = $_SESSION['username'] ?? 'admin';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Dashboard · Arno Voyer">
+    <meta name="robots" content="noindex, nofollow, noarchive">
     <title>Dashboard | Arno Voyer</title>
     <link rel="icon" type="image/x-icon" href="/assets/logo.webp">
     <style>

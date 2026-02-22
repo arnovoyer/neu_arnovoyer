@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /login.php
+Disallow: /index.php
+Disallow: /auth.local.php
+Disallow: /404.html
+
+Sitemap: https://arnovoyer.com/sitemap.xml

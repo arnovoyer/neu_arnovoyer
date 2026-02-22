@@ -1,0 +1,19 @@
+RewriteEngine On
+RewriteBase /
+
+# Canonical root: /index und /index.html auf /
+RewriteRule ^index(?:\.html)?/?$ / [R=301,L,NC]
+
+# 1) Externe Umleitung: /seite.html -> /seite (SEO-freundlich)
+RewriteCond %{THE_REQUEST} \s/+(.+?)\.html[\s?] [NC]
+RewriteCond %1 !^404$ [NC]
+RewriteRule ^ %1 [R=301,L]
+
+# 2) Interne Umschreibung: /seite -> /seite.html (wenn Datei existiert)
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.+?)/?$ $1.html [L]
+
+# 3) Eigene 404-Seite
+ErrorDocument 404 /404.html
