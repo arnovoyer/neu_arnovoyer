@@ -483,10 +483,75 @@
                 font-size: 13px;
             }
         }
+
+        .entry-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 10001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(5, 5, 5, 0.88);
+            backdrop-filter: blur(8px);
+            padding: 24px;
+        }
+
+        .entry-modal.hidden {
+            display: none;
+        }
+
+        .entry-card {
+            width: 100%;
+            max-width: 520px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(0, 245, 212, 0.35);
+            border-radius: 16px;
+            padding: 24px;
+            backdrop-filter: blur(10px);
+        }
+
+        .entry-card h2 {
+            font-size: 1.25rem;
+            line-height: 1.4;
+            margin-bottom: 18px;
+        }
+
+        .entry-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .entry-actions button {
+            border: 1px solid rgba(0, 245, 212, 0.45);
+            background: rgba(0, 245, 212, 0.08);
+            color: #ffffff;
+            border-radius: 10px;
+            padding: 10px 14px;
+            font-size: 0.95rem;
+            transition: all .2s ease;
+            cursor: pointer;
+        }
+
+        .entry-actions button:hover {
+            background: rgba(0, 245, 212, 0.18);
+            border-color: rgba(0, 245, 212, 0.85);
+            color: #00f5d4;
+        }
     </style>
 </head>
 
 <body class="bg-neutral-950 text-white overflow-x-hidden">
+
+    <div id="entry-modal" class="entry-modal" role="dialog" aria-modal="true" aria-labelledby="entry-modal-title">
+        <div class="entry-card">
+            <h2 id="entry-modal-title">Wollen Sie zur BRG Schoren Website?</h2>
+            <div class="entry-actions">
+                <button type="button" id="entry-yes">Ja, zur BRG Schoren Website</button>
+                <button type="button" id="entry-no">Nein, zu dieser Seite fortfahren</button>
+            </div>
+        </div>
+    </div>
 
     <noscript>
         <div class="px-6 py-3 text-sm bg-black text-white">Diese Website nutzt JavaScript für Animationen und Interaktionen.</div>
@@ -569,6 +634,7 @@
                 <a href="/" class="hover:text-white">Home</a>
                 <a href="#skills" class="hover:text-white">Über mich</a>
                 <a href="#projects" class="hover:text-white">Projekte</a>
+                <a href="rezensionen.html" class="hover:text-white">Rezensionen</a>
                 <a href="#contact" class="hover:text-white">Kontakt</a>
             </nav>
 
@@ -701,12 +767,31 @@
     </div>
 
     <!-- LIBS -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.134.0/build/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.net.min.js"></script>
     <script src="https://unpkg.com/@studio-freight/lenis"></script>
     <script src="https://unpkg.com/gsap/dist/gsap.min.js"></script>
     <script src="https://unpkg.com/gsap/dist/ScrollTrigger.min.js"></script>
 
     <script>
+        const entryModal = document.getElementById('entry-modal')
+        const entryYes = document.getElementById('entry-yes')
+        const entryNo = document.getElementById('entry-no')
+
+        if (entryModal) {
+            document.body.style.overflow = 'hidden'
+        }
+
+        entryYes?.addEventListener('click', () => {
+            window.location.href = 'https://www.brg-schoren.at/'
+        })
+
+        entryNo?.addEventListener('click', () => {
+            entryModal.classList.add('hidden')
+            document.body.style.overflow = ''
+            initVanta()
+        })
+
         /* ================= CURSOR ================= */
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
         const cursor = document.querySelector('.cursor')
@@ -822,9 +907,19 @@
         /* ================= VANTA (lazy) ================= */
         const heroBg = document.getElementById('vanta-hero')
         let vantaInitialized = false
+        let vantaRetryCount = 0
 
         function initVanta() {
-            if (vantaInitialized || prefersReducedMotion || !heroBg || typeof VANTA === 'undefined') return
+            if (vantaInitialized || prefersReducedMotion || !heroBg) return
+
+            if (typeof VANTA === 'undefined' || typeof THREE === 'undefined') {
+                if (vantaRetryCount < 20) {
+                    vantaRetryCount += 1
+                    setTimeout(initVanta, 150)
+                }
+                return
+            }
+
             vantaInitialized = true
             VANTA.NET({
                 el: "#vanta-hero",
@@ -848,6 +943,8 @@
         } else {
             window.addEventListener('load', initVanta, { once: true })
         }
+
+        window.addEventListener('load', initVanta, { once: true })
 
         /* ================= SPLIT ================= */
         function splitText(el) {

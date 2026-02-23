@@ -1,5 +1,6 @@
 # Local auth config (contains secrets)
 auth.local.php
+rezensionen_api.php
 
 # Environment files
 .env
