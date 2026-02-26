@@ -1,53 +1,52 @@
 <?php
-// Fehleranzeige aktivieren (nur zum Testen!)
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+header('Content-Type: application/json; charset=UTF-8');
 
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-
-// Prüfe, ob die Dateien im 'src' Ordner liegen (Standard bei PHPMailer)
-// Falls dein Ordner anders strukturiert ist, pass das hier an!
-require 'PHPMailer/src/Exception.php';
-require 'PHPMailer/src/PHPMailer.php';
-require 'PHPMailer/src/SMTP.php';
-
-if ($_SERVER["REQUEST_METHOD"] !== "POST") {
-  http_response_code(403);
-  exit("Direkter Zugriff verboten.");
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+  http_response_code(405);
+  echo json_encode(['ok' => false, 'error' => 'Method not allowed']);
+  exit;
 }
 
-$name = strip_tags($_POST["name"] ?? "");
-$email = filter_var($_POST["email"] ?? "", FILTER_SANITIZE_EMAIL);
-$message = strip_tags($_POST["message"] ?? "");
+$name = trim(strip_tags($_POST['name'] ?? ''));
+$email = trim($_POST['email'] ?? '');
+$message = trim(strip_tags($_POST['message'] ?? ''));
 
-$mail = new PHPMailer(true);
+if ($name === '' || $message === '' || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+  http_response_code(422);
+  echo json_encode(['ok' => false, 'error' => 'Ungültige Eingaben']);
+  exit;
+}
 
-try {
-  // Server Einstellungen
-  $mail->isSMTP();
-  $mail->Host = 'smtp-relay.brevo.com';
-  $mail->SMTPAuth = true;
-  $mail->Username = 'a1190a001@smtp-brevo.com'; // Meist die Email, mit der du dich bei Brevo einloggst
-  $mail->Password = 'xsmtpsib-abdd01eb0a6b73d72f7466779272061d86c98c75bf4fe8884b3e194347bdfc4c-WGywylSBIH3bsLAB';     // Dein Master-Passwort oder API Key
-  $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-  $mail->Port = 587;
-  $mail->CharSet = 'UTF-8';
+$toEmail = getenv('CONTACT_TO') ?: 'contact@arnovoyer.com';
+$fromEmail = getenv('CONTACT_FROM') ?: 'noreply@arnovoyer.com';
+$fromName = getenv('CONTACT_FROM_NAME') ?: 'Portfolio Kontakt';
 
-  // Absender & Empfänger
-  $mail->setFrom('contact@arnovoyer.com', 'Portfolio Kontakt');
-  $mail->addAddress('contact@arnovoyer.com');
-  $mail->addReplyTo($email, $name);
-
-  // Inhalt
-  $mail->isHTML(false);
-  $mail->Subject = 'Neue Nachricht von ' . $name;
-  $mail->Body = "Name: $name\nEmail: $email\n\nNachricht:\n$message";
-
-  $mail->send();
-  echo "Success"; // Wichtig für die JS-Antwort
-} catch (Exception $e) {
+if (!function_exists('mail')) {
   http_response_code(500);
-  echo "Mail-Fehler: {$mail->ErrorInfo}";
+  echo json_encode(['ok' => false, 'error' => 'Mail-Funktion nicht verfügbar']);
+  exit;
 }
+
+$safeName = str_replace(["\r", "\n"], '', $name);
+$safeEmail = str_replace(["\r", "\n"], '', $email);
+$safeFromName = str_replace(["\r", "\n"], '', $fromName);
+
+$subject = 'Neue Nachricht von ' . $safeName;
+$body = "Name: {$safeName}\nE-Mail: {$safeEmail}\n\nNachricht:\n{$message}";
+
+$headers = [];
+$headers[] = 'MIME-Version: 1.0';
+$headers[] = 'Content-Type: text/plain; charset=UTF-8';
+$headers[] = 'From: ' . $safeFromName . ' <' . $fromEmail . '>';
+$headers[] = 'Reply-To: ' . $safeName . ' <' . $safeEmail . '>';
+
+$sent = @mail($toEmail, $subject, $body, implode("\r\n", $headers));
+
+if (!$sent) {
+  error_log('PHP mail() failed for contact form');
+  http_response_code(500);
+  echo json_encode(['ok' => false, 'error' => 'Mailversand fehlgeschlagen']);
+  exit;
+}
+
+echo json_encode(['ok' => true]);

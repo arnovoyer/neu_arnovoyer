@@ -1,6 +1,12 @@
 RewriteEngine On
 RewriteBase /
 
+# Optional: Kontaktformular-Umgebungsvariablen (wenn vom Hosting unterstützt)
+# SetEnv BREVO_API_KEY "DEIN_BREVO_API_KEY"
+# SetEnv CONTACT_TO "arno.voyer@aon.at"
+# SetEnv CONTACT_FROM "noreply@arnovoyer.com"
+# SetEnv CONTACT_FROM_NAME "Portfolio Kontakt"
+
 # Canonical root: /index und /index.html auf /
 RewriteRule ^index(?:\.html)?/?$ / [R=301,L,NC]
 
