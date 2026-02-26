@@ -707,7 +707,11 @@
             <div class="terminal-body">
                 <p class="line">&gt; contact arno</p>
 
-                <form id="terminal-form" class="terminal-form">
+                <form id="terminal-form" class="terminal-form" action="https://formsubmit.co/960b84b77c6a19818c6173d5ef6ff2a6" method="POST">
+                    <input type="hidden" name="_subject" value="Neue Nachricht über arnovoyer.com" />
+                    <input type="hidden" name="_captcha" value="false" />
+                    <input type="text" name="_honey" class="hidden" tabindex="-1" autocomplete="off" />
+
                     <label>
                         <span>&gt; name</span>
                         <input type="text" name="name" required />
@@ -1048,15 +1052,27 @@
             const formData = new FormData(form)
 
             try {
-                const res = await fetch("contact.php", {
+                const res = await fetch("https://formsubmit.co/ajax/960b84b77c6a19818c6173d5ef6ff2a6", {
                     method: "POST",
+                    headers: {
+                        "Accept": "application/json"
+                    },
                     body: formData
                 })
 
-                response.textContent = res.ok
-                    //? "> nachricht gesendet. danke."
-                    ? "> fehler. später versuchen."
-                    : "> fehler. nochmal versuchen"
+                let payload = null
+                try {
+                    payload = await res.json()
+                } catch { }
+
+                if (res.ok && (payload?.success === "true" || payload?.success === true || payload?.message)) {
+                    response.textContent = "> nachricht gesendet. danke."
+                    form.reset()
+                } else {
+                    response.textContent = payload?.error
+                        ? `> fehler: ${payload.error}`
+                        : "> fehler. nochmal versuchen"
+                }
             } catch {
                 response.textContent = "> verbindung gescheitert."
             }
