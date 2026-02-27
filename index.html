@@ -458,6 +458,12 @@
         }
 
         @media (max-width: 640px) {
+            #about {
+                min-height: 120vh;
+                align-items: flex-start;
+                padding-top: 22vh;
+            }
+
             #browser-frame {
                 padding: 14px;
                 border-radius: 14px;
@@ -554,7 +560,7 @@
 
 <body class="bg-neutral-950 text-white overflow-x-hidden">
 
-    <div id="entry-modal" class="entry-modal" role="dialog" aria-modal="true" aria-labelledby="entry-modal-title">
+    <!--<div id="entry-modal" class="entry-modal" role="dialog" aria-modal="true" aria-labelledby="entry-modal-title">
         <div class="entry-card">
             <h2 id="entry-modal-title">Wollen Sie zur BRG Schoren Website?</h2>
             <div class="entry-actions">
@@ -562,7 +568,7 @@
                 <button type="button" id="entry-no">Nein, zu dieser Seite fortfahren</button>
             </div>
         </div>
-    </div>
+    </div>-->
 
     <noscript>
         <div class="px-6 py-3 text-sm bg-black text-white">Diese Website nutzt JavaScript für Animationen und Interaktionen.</div>
@@ -585,13 +591,13 @@
 
     <main id="main-content">
     <!-- HERO -->
-    <section class="relative min-h-[85vh] md:min-h-screen
+    <section class="relative min-h-screen
          flex items-center px-6 md:px-20 overflow-hidden">
 
         <div id="vanta-hero" class="absolute inset-0 -z-10"></div>
         <div class="absolute inset-0 bg-neutral-950/60 -z-0"></div>
 
-        <div class="relative z-10 max-w-3xl">
+        <div class="relative z-10 max-w-3xl -mt-10 sm:mt-0">
                 <h1 data-nosnippet class="hero-title font-bold leading-tight
          text-4xl sm:text-5xl md:text-8xl">
                 Hi,
@@ -940,9 +946,9 @@
                 el: "#vanta-hero",
                 color: 0x00f5d4,
                 backgroundColor: 0x050505,
-                points: 8,
-                maxDistance: 20,
-                spacing: 22
+                points: 11,
+                maxDistance: 16,
+                spacing: 16
             })
         }
 
