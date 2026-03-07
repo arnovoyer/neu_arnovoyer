@@ -650,7 +650,7 @@
             <nav class="flex gap-6 px-4 py-2 mb-6 text-sm text-neutral-400" aria-label="Hauptnavigation">
                 <a href="/" class="hover:text-white">Home</a>
                 <a href="#skills" class="hover:text-white">Über mich</a>
-                <a href="#projects" class="hover:text-white">Projekte</a>
+                <a href="projekte.html" class="hover:text-white">Projekte</a>
                 <a href="rezensionen.html" class="hover:text-white">Rezensionen</a>
                 <a href="#contact" class="hover:text-white">Kontakt</a>
             </nav>
@@ -874,13 +874,15 @@
                 const scrollTargets = {
                     'home': 0,
                     'about': document.getElementById('about'),
-                    'projects': document.getElementById('about'),
+                    'projects': null,
                     'contact': document.getElementById('contact'),
                     'tech': document.getElementById('about'),
                     'refresh': null
                 }
 
-                if (action === 'refresh') {
+                if (action === 'projects') {
+                    window.location.href = 'projekte.html'
+                } else if (action === 'refresh') {
                     location.reload()
                 } else {
                     const target = scrollTargets[action]
