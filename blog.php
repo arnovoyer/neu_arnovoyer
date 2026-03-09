@@ -425,7 +425,7 @@ foreach ($publishedBlogs as $entry) {
 
             <nav class="nav" aria-label="Seitennavigation">
                 <a href="/index.html">/ home</a>
-                <a href="/projects">/ projects</a>
+                <a href="/projects.html">/ projects</a>
             </nav>
 
             <section class="grid">
