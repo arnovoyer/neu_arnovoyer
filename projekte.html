@@ -47,6 +47,12 @@
             --line: rgba(255, 255, 255, 0.12);
         }
 
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
         body {
             cursor: auto;
             background: #050505;
@@ -432,6 +438,48 @@
             }
         }
 
+        @media (max-width: 640px) {
+            .browser-frame,
+            .gallery-frame {
+                border-radius: 14px;
+            }
+
+            .workspace,
+            .gallery-workspace {
+                padding: 10px;
+            }
+
+            .panel {
+                padding: 12px;
+            }
+
+            .photo-topbar {
+                flex-wrap: wrap;
+                align-items: stretch;
+            }
+
+            .photo-switch {
+                width: 100%;
+            }
+
+            .photo-btn {
+                flex: 1 1 0;
+                text-align: center;
+            }
+
+            .photo-nav {
+                margin-left: auto;
+            }
+
+            .photo-stage {
+                min-height: clamp(220px, 58vw, 360px);
+            }
+
+            .photo-caption {
+                flex-wrap: wrap;
+            }
+        }
+
         .stat {
             border: 1px solid rgba(255, 255, 255, 0.14);
             background: rgba(255, 255, 255, 0.03);
@@ -482,9 +530,9 @@
 
             <nav class="browser-nav" aria-label="Projektnavigation">
                 <a class="magnetic" href="/">Home</a>
-                <a class="magnetic active" href="projekte.html" aria-current="page">Projekte</a>
+                <a class="magnetic active" href="/projekte.html" aria-current="page">Projekte</a>
                 <a class="magnetic" href="/#contact">Kontakt</a>
-                <a class="magnetic" href="rezensionen.html">Rezensionen</a>
+                <a class="magnetic" href="/blog.php">Blog</a>
             </nav>
 
             <div class="workspace">
@@ -632,17 +680,17 @@
             stack: {
                 title: 'tech-stack.json',
                 type: 'json',
-                body: '{\n  "Website": ["HTML", "CSS", "JavaScript"],\n  "Animation": ["GSAP", "Lenis"],\n  "Kontaktformular": ["FormSubmit"]\n}'
+                body: '{\n  "Website": ["HTML", "CSS", "JavaScript"],\n  "Animation": ["Animate On Scroll Library"],\n  "Kontaktformular": ["FormSubmit"]\n}'
             },
             improvements: {
                 title: 'improvements.log',
                 type: 'log',
-                body: '> menue vereinfacht\n> texte und abstaende klarer gemacht\n> mobilansicht verbessert\n> ladeverhalten optimiert'
+                body: '> navigation vereinfacht\n> texte und abstaende klarer gemacht\n> mobilansicht verbessert\n> ladeverhalten optimiert'
             },
             facts: {
                 title: 'quick-facts.txt',
                 type: 'txt',
-                body: '1 bestehende website modernisiert\nvorher/neu galerie integriert\nwartung und erweiterung vereinfacht'
+                body: '1 bestehende website neu gestaltet & organisiert\ntermine & trainings hinzugefuegt\nwartung und erweiterung vereinfacht'
             },
             gallery: {
                 title: 'gallery.photos',
