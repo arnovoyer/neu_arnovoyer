@@ -37,11 +37,12 @@ function isAllowedBlogUrl(string $url): bool
 
 function renderBlogContent(string $content): string
 {
-    $escaped = htmlspecialchars($content, ENT_QUOTES, 'UTF-8');
+    $replacements = [];
 
-    $withLinks = preg_replace_callback(
-        '/\[([^\]]+)\]\(([^\)]+)\)/',
-        static function (array $matches): string {
+    // Parse markdown links first, then escape the rest of the text.
+    $withPlaceholders = preg_replace_callback(
+        '/\[([^\]]+)\]\(\s*([^\)]+?)\s*\)/',
+        static function (array $matches) use (&$replacements): string {
             $label = trim($matches[1]);
             $url = trim($matches[2]);
 
@@ -49,12 +50,18 @@ function renderBlogContent(string $content): string
                 return $matches[0];
             }
 
-            return '<a href="' . htmlspecialchars($url, ENT_QUOTES, 'UTF-8') . '" target="_blank" rel="noopener noreferrer">' .
+            $placeholder = '__BLOG_LINK_' . count($replacements) . '__';
+            $replacements[$placeholder] = '<a href="' . htmlspecialchars($url, ENT_QUOTES, 'UTF-8') . '" target="_blank" rel="noopener noreferrer">' .
                 htmlspecialchars($label, ENT_QUOTES, 'UTF-8') .
                 '</a>';
+
+            return $placeholder;
         },
-        $escaped
+        $content
     );
+
+    $escaped = htmlspecialchars($withPlaceholders ?? $content, ENT_QUOTES, 'UTF-8');
+    $withLinks = strtr($escaped, $replacements);
 
     return nl2br($withLinks, false);
 }
@@ -94,6 +101,7 @@ foreach ($publishedBlogs as $entry) {
     <meta name="description" content="Blog von Arno Voyer über Webentwicklung, Projekte und Workflow.">
     <title>Blog | Arno Voyer</title>
     <link rel="icon" type="image/svg+xml" href="/assets/logo.svg">
+    <link rel="stylesheet" href="/assets/context-menu.css">
     <style>
         :root {
             --accent: #00f5d4;
@@ -463,6 +471,40 @@ foreach ($publishedBlogs as $entry) {
         </div>
     </main>
 
+        <!-- CONTEXT MENU -->
+    <div id="context-menu" class="context-menu">
+        <div class="context-menu-item" data-action="home">
+            <span class="context-menu-icon">⚡</span>
+            <span>~/root</span>
+        </div>
+        <div class="context-menu-item" data-action="about">
+            <span class="context-menu-icon">👤</span>
+            <span>whoami</span>
+        </div>
+        <div class="context-menu-item" data-action="projects" id="context-projects">
+            <span class="context-menu-icon">📂</span>
+            <span>./repositories</span>
+        </div>
+
+        <div class="context-menu-item divider"></div>
+
+        <div class="context-menu-item" data-action="contact">
+            <span class="context-menu-icon">📡</span>
+            <span>ping --remote</span>
+        </div>
+        <div class="context-menu-item" data-action="tech">
+            <span class="context-menu-icon">🛠️</span>
+            <span>view --stack</span>
+        </div>
+
+        <div class="context-menu-item divider"></div>
+
+        <div class="context-menu-item" data-action="refresh">
+            <span class="context-menu-icon">⚠️</span>
+            <span>systemctl reboot</span>
+        </div>
+    </div>
+    
     <div class="post-modal <?php echo $activePost ? 'is-open' : ''; ?>" id="post-modal" aria-hidden="<?php echo $activePost ? 'false' : 'true'; ?>">
         <a class="post-modal-backdrop-close" href="/blog.php" aria-label="Detailansicht schliessen"></a>
         <article class="post-modal-window" role="dialog" aria-modal="true" aria-labelledby="post-modal-heading">
@@ -593,6 +635,7 @@ foreach ($publishedBlogs as $entry) {
             document.body.classList.add('modal-open')
         }
     </script>
+    <script src="/assets/context-menu.js"></script>
 </body>
 
 </html>

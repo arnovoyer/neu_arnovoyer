@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="404-Fehlerseite von arnovoyer.com.">
   <meta name="robots" content="noindex, follow, noarchive">
+  <link rel="stylesheet" href="/assets/context-menu.css">
 
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -117,6 +118,39 @@
     </div>
   </div>
 
+      <!-- CONTEXT MENU -->
+    <div id="context-menu" class="context-menu">
+        <div class="context-menu-item" data-action="home">
+            <span class="context-menu-icon">⚡</span>
+            <span>~/root</span>
+        </div>
+        <div class="context-menu-item" data-action="about">
+            <span class="context-menu-icon">👤</span>
+            <span>whoami</span>
+        </div>
+        <div class="context-menu-item" data-action="projects" id="context-projects">
+            <span class="context-menu-icon">📂</span>
+            <span>./repositories</span>
+        </div>
+
+        <div class="context-menu-item divider"></div>
+
+        <div class="context-menu-item" data-action="contact">
+            <span class="context-menu-icon">📡</span>
+            <span>ping --remote</span>
+        </div>
+        <div class="context-menu-item" data-action="tech">
+            <span class="context-menu-icon">🛠️</span>
+            <span>view --stack</span>
+        </div>
+
+        <div class="context-menu-item divider"></div>
+
+        <div class="context-menu-item" data-action="refresh">
+            <span class="context-menu-icon">⚠️</span>
+            <span>systemctl reboot</span>
+        </div>
+    </div>
   <script>
     const log = document.getElementById("log")
 
@@ -141,6 +175,7 @@
       window.location.href = "/"
     }
   </script>
+  <script src="/assets/context-menu.js"></script>
 
 </body>
 </html>

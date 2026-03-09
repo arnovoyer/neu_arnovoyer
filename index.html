@@ -35,6 +35,7 @@
     <link rel="dns-prefetch" href="//unpkg.com">
     <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
     <link rel="dns-prefetch" href="//grainy-gradients.vercel.app">
+    <link rel="stylesheet" href="/assets/context-menu.css">
     <script type="application/ld+json">
         {
             "@context": "https://schema.org",
@@ -382,74 +383,6 @@
 
         .hidden {
             display: none;
-        }
-
-        /* ================= CONTEXT MENU ================= */
-        .context-menu {
-            position: fixed;
-            background: rgba(15, 15, 15, 0.95);
-            border: 1px solid rgba(0, 245, 212, 0.3);
-            border-radius: 8px;
-            backdrop-filter: blur(12px);
-            min-width: 220px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            z-index: 10000;
-            display: none;
-            padding: 6px 0;
-            animation: menuFade 0.2s ease;
-            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-        }
-
-        .context-menu.visible {
-            display: block;
-        }
-
-        @keyframes menuFade {
-            from {
-                opacity: 0;
-                transform: scale(0.95);
-            }
-
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        .context-menu-item {
-            padding: 10px 16px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            color: rgba(255, 255, 255, 0.8);
-            transition: all 0.2s ease;
-            border-left: 3px solid transparent;
-            user-select: none;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .context-menu-item:hover {
-            background: rgba(0, 245, 212, 0.1);
-            color: #00f5d4;
-            border-left-color: #00f5d4;
-        }
-
-        .context-menu-item.divider {
-            padding: 0;
-            height: 1px;
-            background: rgba(0, 245, 212, 0.2);
-            margin: 4px 0;
-            cursor: default;
-        }
-
-        .context-menu-item.divider:hover {
-            background: rgba(0, 245, 212, 0.2);
-        }
-
-        .context-menu-icon {
-            font-size: 0.85rem;
-            opacity: 0.6;
         }
 
         main section {
@@ -882,7 +815,7 @@
                 }
 
                 if (action === 'projects') {
-                    window.location.href = 'projekte.html'
+                    window.location.href = 'projects.html'
                 } else if (action === 'refresh') {
                     location.reload()
                 } else {

@@ -15,18 +15,21 @@
     <meta property="og:locale" content="de_AT">
     <meta property="og:site_name" content="Arno Voyer">
     <meta property="og:title" content="Projekte | Arno Voyer">
-    <meta property="og:description" content="Modernisierung und Neugestaltung der RVHard Website mit klarer UX, Performance-Fokus und modernem Frontend.">
+    <meta property="og:description"
+        content="Modernisierung und Neugestaltung der RVHard Website mit klarer UX, Performance-Fokus und modernem Frontend.">
     <meta property="og:url" content="https://arnovoyer.com/projekte.html">
     <meta property="og:image" content="https://arnovoyer.com/assets/logo.svg">
     <meta property="og:image:alt" content="Logo von Arno Voyer">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Projekte | Arno Voyer">
-    <meta name="twitter:description" content="Modernisierung und Neugestaltung der RVHard Website inklusive minimalistischer Fotovergleich-Ansicht.">
+    <meta name="twitter:description"
+        content="Modernisierung und Neugestaltung der RVHard Website inklusive minimalistischer Fotovergleich-Ansicht.">
     <meta name="twitter:image" content="https://arnovoyer.com/assets/logo.svg">
     <link rel="icon" type="image/svg+xml" href="/assets/logo.svg">
     <link rel="shortcut icon" href="/assets/logo.svg">
     <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
     <link rel="preconnect" href="https://grainy-gradients.vercel.app" crossorigin>
+    <link rel="stylesheet" href="/assets/context-menu.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -439,6 +442,7 @@
         }
 
         @media (max-width: 640px) {
+
             .browser-frame,
             .gallery-frame {
                 border-radius: 14px;
@@ -492,7 +496,6 @@
             display: block;
             font-size: 1.1rem;
         }
-
     </style>
 </head>
 
@@ -576,18 +579,23 @@
                     <div class="photo-app" aria-label="Fotovergleich RVHard">
                         <div class="photo-topbar">
                             <div class="photo-switch" role="group" aria-label="Version waehlen">
-                                <button type="button" class="photo-btn" data-photo="old" aria-pressed="true">ALT</button>
-                                <button type="button" class="photo-btn" data-photo="new" aria-pressed="false">NEU</button>
+                                <button type="button" class="photo-btn" data-photo="old"
+                                    aria-pressed="true">ALT</button>
+                                <button type="button" class="photo-btn" data-photo="new"
+                                    aria-pressed="false">NEU</button>
                             </div>
                             <div class="photo-nav">
-                                <button type="button" id="photo-prev" class="photo-arrow" aria-label="Vorheriges Bild">&lt;</button>
-                                <button type="button" id="photo-next" class="photo-arrow" aria-label="Naechstes Bild">&gt;</button>
+                                <button type="button" id="photo-prev" class="photo-arrow"
+                                    aria-label="Vorheriges Bild">&lt;</button>
+                                <button type="button" id="photo-next" class="photo-arrow"
+                                    aria-label="Naechstes Bild">&gt;</button>
                             </div>
                         </div>
                     </div>
 
                     <div class="photo-stage" id="photo-stage">
-                        <img src="assets/rvhard-before.jpeg" alt="Alte RVHard Website" loading="lazy" data-photo="old" class="active">
+                        <img src="assets/rvhard-before.jpeg" alt="Alte RVHard Website" loading="lazy" data-photo="old"
+                            class="active">
                         <img src="assets/rvhard-after.jpeg" alt="Neue RVHard Website" loading="lazy" data-photo="new">
                     </div>
 
@@ -600,6 +608,40 @@
         </section>
     </main>
 
+    <!-- CONTEXT MENU -->
+    <div id="context-menu" class="context-menu">
+        <div class="context-menu-item" data-action="home">
+            <span class="context-menu-icon">⚡</span>
+            <span>~/root</span>
+        </div>
+        <div class="context-menu-item" data-action="about">
+            <span class="context-menu-icon">👤</span>
+            <span>whoami</span>
+        </div>
+        <div class="context-menu-item" data-action="projects" id="context-projects">
+            <span class="context-menu-icon">📂</span>
+            <span>./repositories</span>
+        </div>
+
+        <div class="context-menu-item divider"></div>
+
+        <div class="context-menu-item" data-action="contact">
+            <span class="context-menu-icon">📡</span>
+            <span>ping --remote</span>
+        </div>
+        <div class="context-menu-item" data-action="tech">
+            <span class="context-menu-icon">🛠️</span>
+            <span>view --stack</span>
+        </div>
+
+        <div class="context-menu-item divider"></div>
+
+        <div class="context-menu-item" data-action="refresh">
+            <span class="context-menu-icon">⚠️</span>
+            <span>systemctl reboot</span>
+        </div>
+    </div>
+    
     <script src="https://unpkg.com/gsap/dist/gsap.min.js"></script>
     <script src="https://unpkg.com/gsap/dist/ScrollTrigger.min.js"></script>
 
@@ -727,6 +769,7 @@
 
         openExplorerFile('overview')
     </script>
+    <script src="/assets/context-menu.js"></script>
 </body>
 
 </html>
