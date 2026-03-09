@@ -626,6 +626,7 @@ $publishedCount = count(array_filter($blogs, static function (array $entry): boo
                             <div>
                                 <label class="label" for="content">Inhalt</label>
                                 <textarea class="textarea" id="content" name="content" required><?php echo htmlspecialchars($editEntry['content'] ?? '', ENT_QUOTES, 'UTF-8'); ?></textarea>
+                                <div class="meta">Links: <code>[Linktext](https://example.com)</code> oder <code>[Kontakt](mailto:mail@beispiel.at)</code></div>
                             </div>
 
                             <label class="toggle" for="published">
