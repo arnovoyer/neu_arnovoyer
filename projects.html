@@ -6,7 +6,7 @@
     <title>Projekte | Arno Voyer</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
-        content="Projektseite von Arno Voyer mit der Modernisierung der RVHard Website inklusive minimalistischer Fotovergleich-Ansicht und eingesetztem Tech-Stack.">
+        content="Projektseite von Arno Voyer mit der Modernisierung der RVHard Website inklusive Vorher/Nachher-Vergleich.">
     <meta name="robots" content="index, follow, max-snippet:155, max-image-preview:large, max-video-preview:-1">
     <meta name="theme-color" content="#050505">
     <meta name="author" content="Arno Voyer">
@@ -22,8 +22,7 @@
     <meta property="og:image:alt" content="Logo von Arno Voyer">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Projekte | Arno Voyer">
-    <meta name="twitter:description"
-        content="Modernisierung und Neugestaltung der RVHard Website inklusive minimalistischer Fotovergleich-Ansicht.">
+    <meta name="twitter:description" content="Modernisierung und Neugestaltung der RVHard Website.">
     <meta name="twitter:image" content="https://arnovoyer.com/assets/logo.svg">
     <link rel="icon" type="image/svg+xml" href="/assets/logo.svg">
     <link rel="shortcut icon" href="/assets/logo.svg">
@@ -46,8 +45,6 @@
     <style>
         :root {
             --accent: #00f5d4;
-            --surface: rgba(255, 255, 255, 0.05);
-            --line: rgba(255, 255, 255, 0.12);
         }
 
         *,
@@ -117,46 +114,33 @@
             transform: scaleX(0);
         }
 
-        .glass {
-            background: var(--surface);
-            border: 1px solid var(--line);
-            border-radius: 18px;
-            backdrop-filter: blur(8px);
-        }
-
-        .browser-frame {
+        .project-shell {
             width: 100%;
-            max-width: 1180px;
+            max-width: 980px;
             margin: 0 auto;
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.14);
             border-radius: 20px;
             overflow: hidden;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(8px);
         }
 
-        .browser-bar {
+        .project-bar {
             height: 52px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 0 14px;
-            background: rgba(255, 255, 255, 0.05);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.04);
         }
 
-        .tab {
+        .project-tab {
             padding: 6px 14px;
             background: rgba(255, 255, 255, 0.08);
             border-radius: 10px 10px 0 0;
             font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.76);
-        }
-
-        .tab-group {
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            color: rgba(255, 255, 255, 0.78);
         }
 
         .browser-buttons span {
@@ -166,36 +150,387 @@
             display: inline-block;
         }
 
-        .dot-red {
-            background: #ff5f56;
-        }
+        .dot-red { background: #ff5f56; }
+        .dot-yellow { background: #ffbd2e; }
+        .dot-green { background: #27c93f; }
 
-        .dot-yellow {
-            background: #ffbd2e;
-        }
-
-        .dot-green {
-            background: #27c93f;
-        }
-
-        .browser-nav {
-            display: flex;
+        .project-content {
+            padding: 18px;
+            display: grid;
             gap: 16px;
+        }
+
+        .project-title {
+            margin: 0;
+            font-size: clamp(1.9rem, 5vw, 3.2rem);
+            line-height: 1.1;
+            font-weight: 700;
+        }
+
+        .project-copy {
+            margin: 0;
+            max-width: 680px;
+            color: rgba(255, 255, 255, 0.78);
+            line-height: 1.6;
+        }
+
+        .meta-row {
+            display: flex;
             flex-wrap: wrap;
-            padding: 0 14px 12px;
+            gap: 10px;
+        }
+
+        details summary {
+            list-style: none;
+        }
+
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .chip {
+            border: 1px solid rgba(0, 245, 212, 0.35);
+            background: rgba(0, 245, 212, 0.08);
+            color: #ccfff7;
+            border-radius: 999px;
+            padding: 6px 12px;
+            font-size: 0.82rem;
+            line-height: 1.2;
+        }
+
+        .compare {
+            width: 100%;
+            min-width: 0;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.02);
+            overflow: hidden;
+            max-width: 760px;
+            margin: 0 auto;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .detail-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 18px;
+            transition: all .35s ease;
+        }
+
+        .detail-card summary {
+            cursor: pointer;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .detail-copy {
+            min-width: 0;
+        }
+
+        .detail-toggle {
+            width: 11px;
+            height: 11px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-right: 1.5px solid rgba(255, 255, 255, 0.58);
+            border-bottom: 1.5px solid rgba(255, 255, 255, 0.58);
+            transform: rotate(45deg) translateY(-1px);
+            transition: transform .25s ease, border-color .25s ease;
+            margin-right: 4px;
+        }
+
+        .detail-card h2 {
+            margin: 0 0 6px;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .detail-card p {
+            margin: 0;
+            color: rgba(255, 255, 255, 0.68);
+            font-size: 0.88rem;
+            line-height: 1.55;
+        }
+
+        .detail-card:hover summary {
+            transform: translateY(-2px);
+        }
+
+        .detail-card summary {
+            transition: transform .25s ease;
+        }
+
+        .detail-expand {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height .45s ease, opacity .3s ease, margin-top .3s ease;
+            margin-top: 0;
+        }
+
+        .detail-expand p + p {
+            margin-top: 10px;
+        }
+
+        details[open] .detail-expand {
+            max-height: 280px;
+            opacity: 1;
+            margin-top: 14px;
+        }
+
+        details[open].detail-card {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(0, 245, 212, 0.32);
+        }
+
+        details[open] .detail-toggle {
+            transform: rotate(225deg) translateY(-1px);
+            border-color: rgba(0, 245, 212, 0.8);
+        }
+
+        .compare-head {
+            display: grid;
+            gap: 12px;
+            padding: 12px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 0.84rem;
+            min-width: 0;
+        }
+
+        .compare-head-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            min-width: 0;
+        }
+
+        .compare-label {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.76);
+        }
+
+        .theme-switch {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            min-width: 0;
+        }
+
+        .theme-btn {
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.04);
+            color: rgba(255, 255, 255, 0.74);
+            border-radius: 999px;
+            padding: 7px 12px;
+            font-size: 0.78rem;
+            cursor: pointer;
+            transition: all .2s ease;
+            min-width: 0;
+        }
+
+        .theme-btn[aria-pressed="true"] {
+            border-color: rgba(0, 245, 212, 0.35);
+            background: rgba(0, 245, 212, 0.1);
+            color: #d8fff8;
+        }
+
+        .theme-btn:hover,
+        .theme-btn:focus-visible {
+            border-color: rgba(0, 245, 212, 0.3);
+            outline: none;
+        }
+
+        .photo-switch {
+            display: inline-flex;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 999px;
+            padding: 3px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            flex-shrink: 0;
+        }
+
+        .photo-btn {
+            border: none;
+            padding: 6px 12px;
+            border-radius: 999px;
             color: rgba(255, 255, 255, 0.72);
+            background: transparent;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all .2s ease;
         }
 
-        .browser-nav a {
-            text-decoration: none;
-            transition: color .2s ease;
+        .photo-btn[aria-pressed="true"] {
+            background: rgba(0, 245, 212, 0.16);
+            color: #d8fff8;
         }
 
-        .browser-nav a:hover,
-        .browser-nav a.active {
+        .photo-stage {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            min-width: 0;
+            aspect-ratio: 16 / 10;
+            min-height: clamp(220px, 42vw, 440px);
+            background: #090909;
+            padding: 14px;
+            cursor: zoom-in;
+            overflow: hidden;
+        }
+
+        .photo-stage img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity .22s ease;
+            display: none;
+            pointer-events: none;
+            flex: 0 1 auto;
+        }
+
+        .photo-stage img.active {
+            display: block;
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .photo-empty {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: min(420px, 100%);
+            padding: 20px;
+            text-align: center;
+            border: 1px dashed rgba(255, 255, 255, 0.14);
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.03);
+            color: rgba(255, 255, 255, 0.66);
+            line-height: 1.55;
+            opacity: 0;
+            transform: translate(-50%, -50%);
+            transition: opacity .22s ease;
+        }
+
+        .photo-empty.active {
+            opacity: 1;
+        }
+
+        .photo-caption {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 10px 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.82rem;
+            color: rgba(255, 255, 255, 0.82);
+            min-width: 0;
+        }
+
+        .photo-caption span {
+            color: rgba(255, 255, 255, 0.62);
+        }
+
+        .photo-caption strong {
+            min-width: 0;
+        }
+
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            z-index: 10020;
+            display: grid;
+            place-items: center;
+            background: rgba(3, 3, 3, 0.88);
+            backdrop-filter: blur(8px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .22s ease;
+            padding: 18px;
+        }
+
+        .lightbox.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .lightbox-dialog {
+            width: min(1080px, 100%);
+            max-height: min(92vh, 920px);
+            display: grid;
+            gap: 12px;
+        }
+
+        .lightbox-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            color: rgba(255, 255, 255, 0.78);
+            font-size: 0.82rem;
+        }
+
+        .lightbox-close {
+            width: 40px;
+            height: 40px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(255, 255, 255, 0.06);
+            color: #fff;
+            font-size: 1.1rem;
+            cursor: pointer;
+        }
+
+        .lightbox-frame {
+            display: grid;
+            place-items: center;
+            min-height: 0;
+            padding: 14px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .lightbox-image {
+            display: block;
+            width: auto;
+            height: auto;
+            max-width: 100%;
+            max-height: calc(92vh - 120px);
+            object-fit: contain;
+            object-position: center center;
+            margin: auto;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 245, 212, 0.4);
+            background: rgba(0, 245, 212, 0.1);
             color: var(--accent);
+            text-decoration: none;
+            padding: 9px 14px;
+            font-size: 0.85rem;
+            transition: background-color .2s ease;
+        }
+
+        .back-link:hover {
+            background: rgba(0, 245, 212, 0.18);
         }
 
         .task-dock {
@@ -306,289 +641,82 @@
             margin: 0 2px;
         }
 
-        .workspace {
-            padding: 14px;
-            display: grid;
-            gap: 14px;
-            grid-template-columns: 1fr;
-        }
-
-        @media (min-width: 992px) {
-            .workspace {
-                grid-template-columns: 320px 1fr;
-            }
-        }
-
-        .panel {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 14px;
-            padding: 16px;
-        }
-
-        @media (min-width: 768px) {
-            .panel {
-                padding: 22px;
-            }
-        }
-
-        .panel-head {
-            font-size: 0.76rem;
-            text-transform: uppercase;
-            letter-spacing: .12em;
-            color: rgba(255, 255, 255, 0.62);
-            margin-bottom: 10px;
-        }
-
-        .explorer-tree {
-            border: 1px solid rgba(255, 255, 255, 0.09);
-            border-radius: 12px;
-            padding: 10px;
-            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-            background: rgba(0, 0, 0, 0.14);
-        }
-
-        .explorer-folder {
-            color: #c7fff7;
-            font-size: 0.82rem;
-            margin: 6px 0;
-        }
-
-        .explorer-file {
-            display: block;
-            width: 100%;
-            text-align: left;
-            margin: 2px 0;
-            padding: 6px 8px 6px 18px;
-            border-radius: 8px;
-            background: transparent;
-            border: none;
-            color: rgba(255, 255, 255, 0.78);
-            font-size: 0.8rem;
-            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-            cursor: pointer;
-            transition: background .18s ease, color .18s ease;
-        }
-
-        .explorer-file:hover {
-            background: rgba(255, 255, 255, 0.06);
-        }
-
-        .explorer-file.active {
-            background: rgba(0, 245, 212, 0.14);
-            color: #defffa;
-        }
-
-        .preview-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 8px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding-bottom: 10px;
-            margin-bottom: 12px;
-        }
-
-        .preview-header h2 {
-            margin: 0;
-            font-size: 1rem;
-            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-            color: #dffef9;
-        }
-
-        .preview-type {
-            font-size: 0.74rem;
-            color: rgba(255, 255, 255, 0.6);
-            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-        }
-
-        .preview-body {
-            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-            font-size: 0.84rem;
-            line-height: 1.65;
-            color: rgba(255, 255, 255, 0.84);
-            white-space: pre-line;
-            min-height: 240px;
-        }
-
-        .photo-app {
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 14px;
-            background: rgba(255, 255, 255, 0.02);
-            overflow: hidden;
-        }
-
-        .gallery-frame {
-            width: 100%;
-            max-width: 980px;
-            margin: 14px auto 0;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.14);
-            border-radius: 20px;
-            overflow: hidden;
-            backdrop-filter: blur(10px);
-        }
-
-        .gallery-workspace {
-            padding: 16px;
-            display: block;
-        }
-
-        .photo-topbar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            padding: 14px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .photo-switch {
-            display: inline-flex;
-            background: rgba(255, 255, 255, 0.04);
-            border-radius: 999px;
-            padding: 3px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .photo-btn {
-            border: none;
-            padding: 6px 12px;
-            border-radius: 999px;
-            color: rgba(255, 255, 255, 0.72);
-            background: transparent;
-            font-size: 0.8rem;
-            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-            cursor: pointer;
-            transition: all .2s ease;
-        }
-
-        .photo-btn[aria-pressed="true"] {
-            background: rgba(0, 245, 212, 0.16);
-            color: #d8fff8;
-        }
-
-        .photo-nav {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .photo-arrow {
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(255, 255, 255, 0.04);
-            color: rgba(255, 255, 255, 0.86);
-            border-radius: 10px;
-            width: 34px;
-            height: 34px;
-            cursor: pointer;
-            transition: all .2s ease;
-        }
-
-        .photo-arrow:hover {
-            border-color: rgba(0, 245, 212, 0.45);
-            color: var(--accent);
-        }
-
-        .photo-stage {
-            position: relative;
-            aspect-ratio: 4 / 3;
-            min-height: clamp(360px, 54vh, 760px);
-            background: #090909;
-        }
-
-        .photo-stage img {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            opacity: 0;
-            transition: opacity .22s ease;
-        }
-
-        .photo-stage img.active {
-            opacity: 1;
-        }
-
-        .photo-caption {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 8px;
-            padding: 10px 14px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.82);
-        }
-
-        .photo-caption span {
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .chip {
-            border: 1px solid rgba(0, 245, 212, 0.35);
-            background: rgba(0, 245, 212, 0.08);
-            color: #ccfff7;
-            border-radius: 999px;
-            padding: 6px 12px;
-            font-size: 0.85rem;
-            line-height: 1.2;
-        }
-
-        .stat-grid {
-            display: grid;
-            grid-template-columns: repeat(1, minmax(0, 1fr));
-            gap: 12px;
-        }
-
-        @media (min-width: 768px) {
-            .stat-grid {
-                grid-template-columns: repeat(3, minmax(0, 1fr));
-            }
-        }
-
         @media (max-width: 640px) {
-
-            .browser-frame,
-            .gallery-frame {
+            .project-shell {
                 border-radius: 14px;
             }
 
-            .workspace,
-            .gallery-workspace {
-                padding: 10px;
-            }
-
-            .panel {
+            .project-content {
                 padding: 12px;
             }
 
-            .photo-topbar {
-                flex-wrap: wrap;
-                align-items: stretch;
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .compare-head-top {
+                display: grid;
+                gap: 10px;
+                justify-content: stretch;
+            }
+
+            .compare {
+                max-width: 100%;
+            }
+
+            .compare-label {
+                display: block;
+            }
+
+            .theme-switch {
+                display: grid;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+
+            .theme-btn {
+                width: 100%;
+                text-align: center;
+                padding: 8px 10px;
             }
 
             .photo-switch {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
                 width: 100%;
             }
 
             .photo-btn {
-                flex: 1 1 0;
+                width: 100%;
+                min-width: 0;
                 text-align: center;
             }
 
-            .photo-nav {
-                margin-left: auto;
+            .photo-stage {
+                min-height: clamp(180px, 62vw, 320px);
+                padding: 10px;
             }
 
-            .photo-stage {
-                min-height: clamp(220px, 58vw, 360px);
+            .photo-stage img {
+                width: 100%;
+                height: 100%;
+                object-position: center center;
             }
 
             .photo-caption {
                 flex-wrap: wrap;
+            }
+
+            .lightbox {
+                padding: 10px;
+            }
+
+            .lightbox-frame {
+                padding: 10px;
+                border-radius: 14px;
+            }
+
+            .lightbox-image {
+                max-height: calc(100vh - 120px);
             }
 
             .task-dock {
@@ -625,27 +753,12 @@
         }
 
         @media (prefers-reduced-motion: reduce) {
-            .task-dock {
-                transition: none;
-            }
-
+            .task-dock,
             .dock-start,
-            .dock-item {
+            .dock-item,
+            .photo-stage img {
                 transition: none;
             }
-        }
-
-        .stat {
-            border: 1px solid rgba(255, 255, 255, 0.14);
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 12px;
-            padding: 14px;
-        }
-
-        .stat strong {
-            color: var(--accent);
-            display: block;
-            font-size: 1.1rem;
         }
     </style>
 </head>
@@ -659,22 +772,9 @@
     </div>
 
     <main class="px-6 md:px-14 py-10 md:py-14">
-        <section class="mx-auto max-w-[1180px] mb-6 md:mb-8">
-            <p class="text-xs uppercase tracking-[0.24em] text-neutral-500">Case Study 01</p>
-            <h1 class="mt-3 text-3xl sm:text-4xl md:text-5xl font-semibold leading-tight">
-                RVHard <span class="text-accent">Modernisierung & Redesign</span>
-            </h1>
-            <p class="mt-4 max-w-3xl text-neutral-300 leading-relaxed text-sm sm:text-base">
-                Neugestaltung mit Fokus auf Klarheit, mobile Nutzung und eine saubere, wartbare Frontend-Basis.
-            </p>
-        </section>
-
-        <section class="browser-frame">
-            <div class="browser-bar">
-                <div class="tab-group">
-                    <div class="tab">Explorer</div>
-                    <div class="tab">Preview</div>
-                </div>
+        <section class="project-shell">
+            <div class="project-bar">
+                <div class="project-tab">Projekt</div>
                 <div class="browser-buttons flex gap-2" aria-hidden="true">
                     <span class="dot-red"></span>
                     <span class="dot-yellow"></span>
@@ -682,75 +782,110 @@
                 </div>
             </div>
 
-            <div class="workspace">
-                <aside class="panel" aria-label="Datei Explorer">
-                    <div class="panel-head">Project Tree</div>
-                    <div class="explorer-tree">
-                        <div class="explorer-folder">RVHard/</div>
-                        <button type="button" class="explorer-file active" data-file="overview">overview.md</button>
-                        <button type="button" class="explorer-file" data-file="stack">tech-stack.json</button>
-                        <button type="button" class="explorer-file" data-file="improvements">improvements.log</button>
-                        <button type="button" class="explorer-file" data-file="facts">quick-facts.txt</button>
-                        <button type="button" class="explorer-file" data-file="gallery">gallery.photos</button>
-                    </div>
-                </aside>
+            <div class="project-content">
+                <h1 class="project-title">RVHard <span class="text-accent">Redesign</span></h1>
+                <p class="project-copy">
+                    Klare Struktur, bessere mobile Nutzung und weniger visuelle Unruhe.
+                    Ziel war eine modernere Seite, die sich ruhiger und schneller anfuehlt.
+                </p>
 
-                <section class="panel" aria-label="Datei Vorschau">
-                    <div class="preview-header">
-                        <h2 id="preview-title">overview.md</h2>
-                        <span id="preview-type" class="preview-type">markdown</span>
-                    </div>
-                    <div id="preview-body" class="preview-body"></div>
-                    <a href="/"
-                        class="magnetic mt-6 inline-flex items-center rounded-xl border border-accent/40 bg-accent/10 px-4 py-2 text-sm font-medium text-accent hover:bg-accent/20 transition-colors">
-                        Zurueck zur Startseite
-                    </a>
+                <div class="meta-row" aria-label="Projektfakten">
+                    <span class="chip">HTML/CSS/JS</span>
+                    <span class="chip">Mobile First</span>
+                    <span class="chip">Performance Fokus</span>
+                </div>
+
+                <section class="detail-grid" aria-label="Projekt Details">
+                    <details class="detail-card">
+                        <summary>
+                            <div class="detail-copy">
+                                <h2>Ausgangslage</h2>
+                                <p>Die alte Seite wirkte dichter, unruhiger und auf kleineren Displays weniger klar.</p>
+                            </div>
+                            <span class="detail-toggle" aria-hidden="true"></span>
+                        </summary>
+                        <div class="detail-expand">
+                            <p>Der Fokus lag darauf, Inhalte schneller erfassbar zu machen und die Struktur insgesamt zu beruhigen.</p>
+                        </div>
+                    </details>
+
+                    <details class="detail-card">
+                        <summary>
+                            <div class="detail-copy">
+                                <h2>Was sich geaendert hat</h2>
+                                <p>Weniger visuelle Reize, klarere Abstaende und eine deutlich bessere mobile Nutzung.</p>
+                            </div>
+                            <span class="detail-toggle" aria-hidden="true"></span>
+                        </summary>
+                        <div class="detail-expand">
+                            <p>Navigation, Textabstaende und die gesamte Seitenfuehrung wurden vereinfacht.</p>
+                            <p>Das Ergebnis wirkt moderner, ruhiger und direkter.</p>
+                        </div>
+                    </details>
+
+                    <details class="detail-card">
+                        <summary>
+                            <div class="detail-copy">
+                                <h2>Technik</h2>
+                                <p>Sauberes Frontend ohne unnötige Komplexitaet.</p>
+                            </div>
+                            <span class="detail-toggle" aria-hidden="true"></span>
+                        </summary>
+                        <div class="detail-expand">
+                            <p>HTML, CSS und JavaScript mit Fokus auf Wartbarkeit, Performance und ein klares Verhalten auf Mobile.</p>
+                        </div>
+                    </details>
                 </section>
-            </div>
-        </section>
 
-        <section id="gallery" class="gallery-frame" aria-label="Projekt Galerie">
-            <div class="browser-bar">
-                <div class="tab">Photos</div>
-                <div class="browser-buttons flex gap-2" aria-hidden="true">
-                    <span class="dot-red"></span>
-                    <span class="dot-yellow"></span>
-                    <span class="dot-green"></span>
-                </div>
-            </div>
-            <div class="gallery-workspace">
-                <div class="panel">
-                    <div class="photo-app" aria-label="Fotovergleich RVHard">
-                        <div class="photo-topbar">
+                <section class="compare" aria-label="Vorher Nachher Vergleich">
+                    <div class="compare-head">
+                        <div class="compare-head-top">
+                            <p class="compare-label">Vorher/Nachher</p>
                             <div class="photo-switch" role="group" aria-label="Version waehlen">
-                                <button type="button" class="photo-btn" data-photo="old"
-                                    aria-pressed="true">ALT</button>
-                                <button type="button" class="photo-btn" data-photo="new"
-                                    aria-pressed="false">NEU</button>
+                                <button type="button" class="photo-btn" data-photo="old" aria-pressed="true">ALT</button>
+                                <button type="button" class="photo-btn" data-photo="new" aria-pressed="false">NEU</button>
                             </div>
-                            <div class="photo-nav">
-                                <button type="button" id="photo-prev" class="photo-arrow"
-                                    aria-label="Vorheriges Bild">&lt;</button>
-                                <button type="button" id="photo-next" class="photo-arrow"
-                                    aria-label="Naechstes Bild">&gt;</button>
-                            </div>
+                        </div>
+
+                        <div class="theme-switch" role="group" aria-label="Themengebiet waehlen">
+                            <button type="button" class="theme-btn" data-theme="index" aria-pressed="true">Startseite</button>
+                            <button type="button" class="theme-btn" data-theme="news" aria-pressed="false">News</button>
+                            <button type="button" class="theme-btn" data-theme="events" aria-pressed="false">Events</button>
                         </div>
                     </div>
 
                     <div class="photo-stage" id="photo-stage">
-                        <img src="assets/rvhard-before.jpeg" alt="Alte RVHard Website" loading="lazy" data-photo="old"
-                            class="active">
-                        <img src="assets/rvhard-after.jpeg" alt="Neue RVHard Website" loading="lazy" data-photo="new">
+                        <img src="assets/rvhard-before.jpeg" alt="Alte RVHard Startseite" loading="lazy" data-theme="index" data-photo="old" class="active">
+                        <img src="assets/rvhard-after.jpeg" alt="Neue RVHard Startseite" loading="lazy" data-theme="index" data-photo="new">
+                        <img src="assets/rvhard-news-before.jpeg" alt="Alte RVHard News Seite" loading="lazy" data-theme="news" data-photo="old">
+                        <img src="assets/rvhard-news-after.jpeg" alt="Neue RVHard News Seite" loading="lazy" data-theme="news" data-photo="new">
+                        <img src="assets/rvhard-events-before.jpeg" alt="Alte RVHard Events Seite" loading="lazy" data-theme="events" data-photo="old">
+                        <img src="assets/rvhard-events-after.jpeg" alt="Neue RVHard Events Seite" loading="lazy" data-theme="events" data-photo="new">
+                        <div class="photo-empty" id="photo-empty">
+                            Fuer dieses Themengebiet sind aktuell noch keine Vergleichsscreenshots hinterlegt.
+                        </div>
                     </div>
 
                     <div class="photo-caption">
                         <strong id="photo-title">RVHard - Alte Version</strong>
                         <span id="photo-index">1 / 2</span>
                     </div>
-                </div>
+                </section>
             </div>
         </section>
     </main>
+
+    <div class="lightbox" id="lightbox" aria-hidden="true">
+        <div class="lightbox-dialog" role="dialog" aria-modal="true" aria-labelledby="lightbox-title">
+            <div class="lightbox-bar">
+                <strong id="lightbox-title">Vergleich</strong>
+                <button type="button" class="lightbox-close" id="lightbox-close" aria-label="Lightbox schliessen">×</button>
+            </div>
+            <div class="lightbox-frame">
+                <img class="lightbox-image" id="lightbox-image" alt="">
+            </div>
+        </div>
+    </div>
 
     <nav class="task-dock" id="task-dock" aria-label="Schnellnavigation">
         <div class="task-dock-shell">
@@ -812,7 +947,7 @@
             <span>systemctl reboot</span>
         </div>
     </div>
-    
+
     <script src="https://unpkg.com/gsap/dist/gsap.min.js"></script>
     <script src="https://unpkg.com/gsap/dist/ScrollTrigger.min.js"></script>
 
@@ -826,7 +961,7 @@
                 cursor.style.top = e.clientY + 'px'
             }, { passive: true })
 
-            document.querySelectorAll('a, .magnetic, .photo-btn, .photo-arrow, .explorer-file').forEach((el) => {
+            document.querySelectorAll('a, .photo-btn, .theme-btn, .photo-stage, .lightbox-close').forEach((el) => {
                 el.addEventListener('mouseenter', () => cursor.classList.add('active'))
                 el.addEventListener('mouseleave', () => cursor.classList.remove('active'))
             })
@@ -843,102 +978,143 @@
         }
 
         const photoButtons = Array.from(document.querySelectorAll('.photo-btn'))
+        const themeButtons = Array.from(document.querySelectorAll('.theme-btn'))
         const photoImages = Array.from(document.querySelectorAll('#photo-stage img[data-photo]'))
-        const photoPrev = document.getElementById('photo-prev')
-        const photoNext = document.getElementById('photo-next')
+        const photoStage = document.getElementById('photo-stage')
         const photoTitle = document.getElementById('photo-title')
         const photoIndex = document.getElementById('photo-index')
+        const photoEmpty = document.getElementById('photo-empty')
+        const lightbox = document.getElementById('lightbox')
+        const lightboxImage = document.getElementById('lightbox-image')
+        const lightboxTitle = document.getElementById('lightbox-title')
+        const lightboxClose = document.getElementById('lightbox-close')
 
-        const photos = [
-            { key: 'old', title: 'RVHard - Alte Version' },
-            { key: 'new', title: 'RVHard - Neue Version' }
-        ]
+        const galleryThemes = {
+            index: {
+                label: 'Startseite',
+                photos: [
+                    { key: 'old', title: 'Startseite - alte Version' },
+                    { key: 'new', title: 'Startseite - neue Version' }
+                ]
+            },
+            news: {
+                label: 'News',
+                photos: [
+                    { key: 'old', title: 'News - alte Version' },
+                    { key: 'new', title: 'News - neue Version' }
+                ]
+            },
+            events: {
+                label: 'Events',
+                photos: [
+                    { key: 'old', title: 'Events - alte Version' },
+                    { key: 'new', title: 'Events - neue Version' }
+                ]
+            }
+        }
 
-        let currentPhoto = 0
+        let activeTheme = 'index'
+        let activePhoto = 'old'
 
-        function renderPhoto(index) {
-            currentPhoto = (index + photos.length) % photos.length
-            const currentKey = photos[currentPhoto].key
+        function getCurrentImage() {
+            return photoImages.find((img) => img.classList.contains('active')) || null
+        }
+
+        function openLightbox() {
+            const currentImage = getCurrentImage()
+            if (!currentImage || !lightbox || !lightboxImage) return
+
+            lightboxImage.src = currentImage.currentSrc || currentImage.src
+            lightboxImage.alt = currentImage.alt
+            if (lightboxTitle) {
+                lightboxTitle.textContent = currentImage.alt || 'Vergleich'
+            }
+
+            lightbox.classList.add('visible')
+            lightbox.setAttribute('aria-hidden', 'false')
+            document.body.style.overflow = 'hidden'
+        }
+
+        function closeLightbox() {
+            if (!lightbox || !lightboxImage) return
+
+            lightbox.classList.remove('visible')
+            lightbox.setAttribute('aria-hidden', 'true')
+            lightboxImage.removeAttribute('src')
+            document.body.style.overflow = ''
+        }
+
+        function renderPhoto() {
+            const theme = galleryThemes[activeTheme]
+            const current = theme.photos.find((photo) => photo.key === activePhoto) || theme.photos[0] || null
+            const hasImages = Boolean(current)
 
             photoImages.forEach((img) => {
-                img.classList.toggle('active', img.dataset.photo === currentKey)
+                const isActive = hasImages && img.dataset.theme === activeTheme && img.dataset.photo === current.key
+                img.classList.toggle('active', isActive)
             })
 
             photoButtons.forEach((btn) => {
-                btn.setAttribute('aria-pressed', String(btn.dataset.photo === currentKey))
+                const isCurrent = hasImages && btn.dataset.photo === current.key
+                btn.setAttribute('aria-pressed', String(isCurrent))
+                btn.disabled = !hasImages
             })
 
-            if (photoTitle) photoTitle.textContent = photos[currentPhoto].title
-            if (photoIndex) photoIndex.textContent = `${currentPhoto + 1} / ${photos.length}`
+            themeButtons.forEach((btn) => {
+                btn.setAttribute('aria-pressed', String(btn.dataset.theme === activeTheme))
+            })
+
+            if (photoEmpty) {
+                photoEmpty.classList.toggle('active', !hasImages)
+            }
+
+            if (photoTitle) {
+                photoTitle.textContent = hasImages ? current.title : `${theme.label} - keine Screenshots`
+            }
+
+            if (photoIndex) {
+                photoIndex.textContent = hasImages
+                    ? `${theme.photos.findIndex((photo) => photo.key === current.key) + 1} / ${theme.photos.length}`
+                    : '0 / 0'
+            }
         }
 
         photoButtons.forEach((btn) => {
             btn.addEventListener('click', () => {
-                const idx = photos.findIndex((item) => item.key === btn.dataset.photo)
-                if (idx >= 0) renderPhoto(idx)
+                activePhoto = btn.dataset.photo
+                renderPhoto()
             })
         })
 
-        photoPrev?.addEventListener('click', () => renderPhoto(currentPhoto - 1))
-        photoNext?.addEventListener('click', () => renderPhoto(currentPhoto + 1))
-
-        renderPhoto(0)
-
-        const previewData = {
-            overview: {
-                title: 'overview.md',
-                type: 'markdown',
-                body: 'Projektziel:\nDie RVHard Seite wurde moderner, klarer und einfacher benutzbar gemacht.\n\nWas du sofort merkst:\n- bessere Uebersicht\n- ruhigeres Design\n- bessere Darstellung am Handy'
-            },
-            stack: {
-                title: 'tech-stack.json',
-                type: 'json',
-                body: '{\n  "Website": ["HTML", "CSS", "JavaScript"],\n  "Animation": ["Animate On Scroll Library"],\n  "Kontaktformular": ["FormSubmit"]\n}'
-            },
-            improvements: {
-                title: 'improvements.log',
-                type: 'log',
-                body: '> navigation vereinfacht\n> texte und abstaende klarer gemacht\n> mobilansicht verbessert\n> ladeverhalten optimiert'
-            },
-            facts: {
-                title: 'quick-facts.txt',
-                type: 'txt',
-                body: '1 bestehende website neu gestaltet & organisiert\ntermine & trainings hinzugefuegt\nwartung und erweiterung vereinfacht'
-            },
-            gallery: {
-                title: 'gallery.photos',
-                type: 'photos',
-                body: 'Separate Galerie ist aktiv.\nNutze den Photos-Bereich unterhalb dieses Explorers,\num zwischen ALT und NEU zu wechseln.'
-            }
-        }
-
-        const previewTitle = document.getElementById('preview-title')
-        const previewType = document.getElementById('preview-type')
-        const previewBody = document.getElementById('preview-body')
-        const explorerFiles = Array.from(document.querySelectorAll('.explorer-file'))
-
-        function openExplorerFile(key) {
-            const item = previewData[key]
-            if (!item) return
-
-            if (previewTitle) previewTitle.textContent = item.title
-            if (previewType) previewType.textContent = item.type
-            if (previewBody) previewBody.textContent = item.body
-
-            explorerFiles.forEach((btn) => {
-                btn.classList.toggle('active', btn.dataset.file === key)
+        themeButtons.forEach((btn) => {
+            btn.addEventListener('click', () => {
+                activeTheme = btn.dataset.theme
+                activePhoto = 'old'
+                renderPhoto()
             })
-
-            if (key === 'gallery') {
-                document.getElementById('gallery')?.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'start' })
-            }
-        }
-
-        explorerFiles.forEach((btn) => {
-            btn.addEventListener('click', () => openExplorerFile(btn.dataset.file))
         })
 
-        openExplorerFile('overview')
+        photoStage?.addEventListener('click', () => {
+            if (!photoEmpty?.classList.contains('active')) {
+                openLightbox()
+            }
+        })
+
+        lightboxClose?.addEventListener('click', closeLightbox)
+
+        lightbox?.addEventListener('click', (event) => {
+            if (event.target === lightbox) {
+                closeLightbox()
+            }
+        })
+
+        window.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && lightbox?.classList.contains('visible')) {
+                closeLightbox()
+            }
+        })
+
+        renderPhoto()
 
         const taskDock = document.getElementById('task-dock')
 
