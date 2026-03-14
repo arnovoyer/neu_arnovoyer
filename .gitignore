@@ -2,7 +2,6 @@
 auth.local.php
 rezensionen_api.php
 .htaccess
-/admin/auth.local.php
 admin/
 
 # Environment files

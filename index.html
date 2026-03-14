@@ -806,6 +806,7 @@
                     <input type="hidden" name="_subject" value="Neue Nachricht über arnovoyer.com" />
                     <input type="hidden" name="_captcha" value="false" />
                     <input type="text" name="_honey" class="hidden" tabindex="-1" autocomplete="off" />
+                    <input type="text" name="website" class="hidden" tabindex="-1" autocomplete="off" />
 
                     <label>
                         <span>&gt; name</span>
@@ -1279,40 +1280,115 @@
         const form = document.getElementById("terminal-form")
         const response = document.getElementById("terminal-response")
 
-        form.addEventListener("submit", async e => {
-            e.preventDefault()
+        if (form && response) {
+            const ENDPOINT = "https://formsubmit.co/ajax/960b84b77c6a19818c6173d5ef6ff2a6"
+            const RATE_KEY = "contact-rate-v1"
+            const MIN_FILL_TIME_MS = 3500
+            const COOLDOWN_MS = 60 * 1000
+            const WINDOW_MS = 10 * 60 * 1000
+            const MAX_SUBMITS_PER_WINDOW = 3
+            let formStartedAt = Date.now()
 
-            response.classList.remove("hidden")
-            response.textContent = "> nachricht senden..."
-
-            const formData = new FormData(form)
-
-            try {
-                const res = await fetch("https://formsubmit.co/ajax/960b84b77c6a19818c6173d5ef6ff2a6", {
-                    method: "POST",
-                    headers: {
-                        "Accept": "application/json"
-                    },
-                    body: formData
-                })
-
-                let payload = null
+            const parseRateState = () => {
                 try {
-                    payload = await res.json()
-                } catch { }
+                    const raw = localStorage.getItem(RATE_KEY)
+                    const parsed = raw ? JSON.parse(raw) : []
+                    return Array.isArray(parsed) ? parsed.filter(ts => Number.isFinite(ts)) : []
+                } catch {
+                    return []
+                }
+            }
 
-                if (res.ok && (payload?.success === "true" || payload?.success === true || payload?.message)) {
+            const saveRateState = (timestamps) => {
+                localStorage.setItem(RATE_KEY, JSON.stringify(timestamps))
+            }
+
+            const getRateLimitMessage = () => {
+                const now = Date.now()
+                const recent = parseRateState().filter(ts => now - ts < WINDOW_MS)
+
+                if (recent.length >= MAX_SUBMITS_PER_WINDOW) {
+                    const waitMs = Math.max(WINDOW_MS - (now - recent[0]), 0)
+                    const waitMin = Math.max(1, Math.ceil(waitMs / 60000))
+                    return `> rate-limit aktiv. bitte ${waitMin} min warten.`
+                }
+
+                const last = recent[recent.length - 1]
+                if (last && now - last < COOLDOWN_MS) {
+                    const waitSec = Math.max(1, Math.ceil((COOLDOWN_MS - (now - last)) / 1000))
+                    return `> bitte ${waitSec}s warten.`
+                }
+
+                return null
+            }
+
+            form.addEventListener("submit", async e => {
+                e.preventDefault()
+
+                response.classList.remove("hidden")
+                const honey = form.querySelector('input[name="_honey"]')
+                const website = form.querySelector('input[name="website"]')
+                const submitBtn = form.querySelector('button[type="submit"]')
+
+                if ((honey && honey.value.trim() !== "") || (website && website.value.trim() !== "")) {
                     response.textContent = "> nachricht gesendet. danke."
                     form.reset()
-                } else {
-                    response.textContent = payload?.error
-                        ? `> fehler: ${payload.error}`
-                        : "> fehler. nochmal versuchen"
+                    formStartedAt = Date.now()
+                    return
                 }
-            } catch {
-                response.textContent = "> verbindung gescheitert."
-            }
-        })
+
+                if (Date.now() - formStartedAt < MIN_FILL_TIME_MS) {
+                    response.textContent = "> bitte kurz warten und erneut senden."
+                    return
+                }
+
+                const rateLimitMessage = getRateLimitMessage()
+                if (rateLimitMessage) {
+                    response.textContent = rateLimitMessage
+                    return
+                }
+
+                response.textContent = "> nachricht senden..."
+
+                const formData = new FormData(form)
+
+                if (submitBtn) submitBtn.disabled = true
+
+                try {
+                    const res = await fetch(ENDPOINT, {
+                        method: "POST",
+                        headers: {
+                            "Accept": "application/json"
+                        },
+                        body: formData
+                    })
+
+                    let payload = null
+                    try {
+                        payload = await res.json()
+                    } catch { }
+
+                    if (res.ok && (payload?.success === "true" || payload?.success === true || payload?.message)) {
+                        const now = Date.now()
+                        const updated = parseRateState().filter(ts => now - ts < WINDOW_MS)
+                        updated.push(now)
+                        saveRateState(updated)
+
+                        response.textContent = "> nachricht gesendet. danke."
+                        form.reset()
+                        formStartedAt = Date.now()
+                    } else {
+                        response.textContent = payload?.error
+                            ? `> fehler: ${payload.error}`
+                            : "> fehler. nochmal versuchen"
+                    }
+                } catch {
+                    response.textContent = "> verbindung gescheitert."
+                } finally {
+                    if (submitBtn) submitBtn.disabled = false
+                }
+            })
+        }
 
 
     </script>
