@@ -214,6 +214,114 @@ foreach ($publishedBlogs as $entry) {
             background: rgba(0, 245, 212, 0.08);
         }
 
+        .task-dock {
+            position: fixed;
+            left: 50%;
+            bottom: 20px;
+            transform: translate(-50%, 120%);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 10000;
+            transition: transform .35s ease, opacity .25s ease;
+        }
+
+        .task-dock.visible {
+            transform: translate(-50%, 0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .task-dock-shell {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px;
+            border-radius: 18px;
+            background: linear-gradient(150deg, rgba(26, 26, 26, 0.86), rgba(10, 10, 10, 0.92));
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+            backdrop-filter: blur(10px) saturate(130%);
+        }
+
+        .dock-start,
+        .dock-item {
+            height: 48px;
+            min-width: 48px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            background: rgba(255, 255, 255, 0.06);
+            color: #fff;
+            border-radius: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 0 12px;
+            cursor: pointer;
+            transition: transform .2s ease, background .2s ease, border-color .2s ease;
+            text-decoration: none;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .dock-start {
+            width: 48px;
+            min-width: 48px;
+            padding: 0;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(0, 245, 212, 0.95), rgba(0, 245, 212, 0.65));
+            border-color: rgba(0, 245, 212, 0.7);
+        }
+
+        .dock-start img {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+            display: block;
+            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.35));
+            pointer-events: none;
+        }
+
+        .dock-item:hover,
+        .dock-item:focus-visible,
+        .dock-start:hover,
+        .dock-start:focus-visible {
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(0, 245, 212, 0.5);
+            outline: none;
+        }
+
+        .dock-item.active::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 4px;
+            width: 6px;
+            height: 6px;
+            border-radius: 999px;
+            transform: translateX(-50%);
+            background: var(--accent);
+            box-shadow: 0 0 12px rgba(0, 245, 212, 0.8);
+        }
+
+        .dock-icon {
+            font-size: 1.1rem;
+            line-height: 1;
+        }
+
+        .dock-label {
+            font-size: 0.82rem;
+            letter-spacing: .01em;
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        .dock-sep {
+            width: 1px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.18);
+            margin: 0 2px;
+        }
+
         .grid {
             display: grid;
             grid-template-columns: 1fr 0.9fr;
@@ -408,6 +516,49 @@ foreach ($publishedBlogs as $entry) {
             .post-modal-window {
                 max-height: 92vh;
             }
+
+            .task-dock {
+                left: 50%;
+                right: auto;
+                width: min(560px, calc(100% - 24px));
+                transform: translate(-50%, 120%);
+            }
+
+            .task-dock.visible {
+                transform: translate(-50%, 0);
+            }
+
+            .task-dock-shell {
+                justify-content: space-between;
+                width: 100%;
+                padding: 8px;
+                border-radius: 14px;
+            }
+
+            .dock-item {
+                flex: 1;
+                min-width: 0;
+                padding: 0 8px;
+            }
+
+            .dock-label {
+                display: none;
+            }
+
+            .dock-sep {
+                display: none;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .task-dock {
+                transition: none;
+            }
+
+            .dock-start,
+            .dock-item {
+                transition: none;
+            }
         }
     </style>
 </head>
@@ -430,11 +581,6 @@ foreach ($publishedBlogs as $entry) {
                 <h1>Mein persoenlicher Blog</h1>
                 <p>Notizen ueber Code, Projekte und was gerade gebaut wird.</p>
             </header>
-
-            <nav class="nav" aria-label="Seitennavigation">
-                <a href="/index.html">/ home</a>
-                <a href="/projects.html">/ projects</a>
-            </nav>
 
             <section class="grid">
                 <article class="panel">
@@ -470,6 +616,33 @@ foreach ($publishedBlogs as $entry) {
             </section>
         </div>
     </main>
+
+    <nav class="task-dock" id="task-dock" aria-label="Schnellnavigation">
+        <div class="task-dock-shell">
+            <a href="/index.html" class="dock-start" aria-label="Zur Startseite"><img src="/assets/logo.svg" alt="Logo"></a>
+            <span class="dock-sep" aria-hidden="true"></span>
+
+            <a href="/index.html" class="dock-item" data-target="home" aria-label="Home">
+                <span class="dock-icon" aria-hidden="true">◎</span>
+                <span class="dock-label">Home</span>
+            </a>
+
+            <a href="/blog.php" class="dock-item active" data-target="blog" aria-label="Blog" aria-current="page">
+                <span class="dock-icon" aria-hidden="true">✎</span>
+                <span class="dock-label">Blog</span>
+            </a>
+
+            <a href="/projects.html" class="dock-item" data-target="projects" aria-label="Projekte">
+                <span class="dock-icon" aria-hidden="true">⌘</span>
+                <span class="dock-label">Projekte</span>
+            </a>
+
+            <a href="/index.html#contact" class="dock-item" data-target="contact" aria-label="Kontakt">
+                <span class="dock-icon" aria-hidden="true">⌁</span>
+                <span class="dock-label">Kontakt</span>
+            </a>
+        </div>
+    </nav>
 
         <!-- CONTEXT MENU -->
     <div id="context-menu" class="context-menu">
@@ -634,6 +807,18 @@ foreach ($publishedBlogs as $entry) {
         if (modal.classList.contains('is-open')) {
             document.body.classList.add('modal-open')
         }
+
+        const taskDock = document.getElementById('task-dock')
+
+        function updateTaskDockVisibility() {
+            if (!taskDock) return
+            const maxScroll = Math.max(document.documentElement.scrollHeight - window.innerHeight, 0)
+            const threshold = window.matchMedia('(max-width: 860px)').matches ? 40 : 140
+            taskDock.classList.toggle('visible', maxScroll <= 24 || window.scrollY > threshold)
+        }
+
+        window.addEventListener('scroll', updateTaskDockVisibility, { passive: true })
+        updateTaskDockVisibility()
     </script>
     <script src="/assets/context-menu.js"></script>
 </body>

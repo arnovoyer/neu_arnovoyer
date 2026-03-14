@@ -385,6 +385,117 @@
             display: none;
         }
 
+        .task-dock {
+            position: fixed;
+            left: 50%;
+            bottom: 20px;
+            transform: translate(-50%, 120%);
+            opacity: 0;
+            pointer-events: none;
+            z-index: 10000;
+            transition: transform .35s ease, opacity .25s ease;
+        }
+
+        .task-dock.visible {
+            transform: translate(-50%, 0);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .task-dock-shell {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px;
+            border-radius: 18px;
+            background: linear-gradient(150deg, rgba(26, 26, 26, 0.86), rgba(10, 10, 10, 0.92));
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.14);
+            backdrop-filter: blur(10px) saturate(130%);
+        }
+
+        .dock-start,
+        .dock-item {
+            height: 48px;
+            min-width: 48px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            background: rgba(255, 255, 255, 0.06);
+            color: #fff;
+            border-radius: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 0 12px;
+            cursor: pointer;
+            transition: transform .2s ease, background .2s ease, border-color .2s ease;
+            text-decoration: none;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .dock-start {
+            width: 48px;
+            min-width: 48px;
+            padding: 0;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(0, 245, 212, 0.95), rgba(0, 245, 212, 0.65));
+            color: #02130f;
+            border-color: rgba(0, 245, 212, 0.7);
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .dock-start img {
+            width: 24px;
+            height: 24px;
+            object-fit: contain;
+            display: block;
+            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.35));
+            pointer-events: none;
+        }
+
+        .dock-item:hover,
+        .dock-item:focus-visible,
+        .dock-start:hover,
+        .dock-start:focus-visible {
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(0, 245, 212, 0.5);
+            outline: none;
+        }
+
+        .dock-item.active::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 4px;
+            width: 6px;
+            height: 6px;
+            border-radius: 999px;
+            transform: translateX(-50%);
+            background: #00f5d4;
+            box-shadow: 0 0 12px rgba(0, 245, 212, 0.8);
+        }
+
+        .dock-icon {
+            font-size: 1.1rem;
+            line-height: 1;
+        }
+
+        .dock-label {
+            font-size: 0.82rem;
+            letter-spacing: .01em;
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        .dock-sep {
+            width: 1px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.18);
+            margin: 0 2px;
+        }
+
         main section {
             content-visibility: auto;
             contain-intrinsic-size: 900px;
@@ -420,6 +531,38 @@
                 flex-wrap: wrap;
                 gap: 12px;
                 font-size: 0.8rem;
+            }
+
+            .task-dock {
+                left: 50%;
+                right: auto;
+                width: min(560px, calc(100% - 24px));
+                transform: translate(-50%, 120%);
+            }
+
+            .task-dock.visible {
+                transform: translate(-50%, 0);
+            }
+
+            .task-dock-shell {
+                justify-content: space-between;
+                width: 100%;
+                padding: 8px;
+                border-radius: 14px;
+            }
+
+            .dock-item {
+                flex: 1;
+                min-width: 0;
+                padding: 0 8px;
+            }
+
+            .dock-label {
+                display: none;
+            }
+
+            .dock-sep {
+                display: none;
             }
         }
 
@@ -487,6 +630,17 @@
             background: rgba(0, 245, 212, 0.18);
             border-color: rgba(0, 245, 212, 0.85);
             color: #00f5d4;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .task-dock {
+                transition: none;
+            }
+
+            .dock-start,
+            .dock-item {
+                transition: none;
+            }
         }
     </style>
 </head>
@@ -578,16 +732,6 @@
             <div class="url-bar flex items-center px-4 py-2 mb-4">
                 <span>https://arnovoyer.com</span>
             </div>
-
-            <!-- Navbar -->
-            <nav class="flex gap-6 px-4 py-2 mb-6 text-sm text-neutral-400" aria-label="Hauptnavigation">
-                <a href="/" class="hover:text-white">Home</a>
-                <a href="#skills" class="hover:text-white">Über mich</a>
-                <a href="blog.php" class="hover:text-white">Blog</a>
-                <a href="projects.html" class="hover:text-white">Projekte</a>
-                <a href="rezensionen.html" class="hover:text-white">Rezensionen</a>
-                <a href="#contact" class="hover:text-white">Kontakt</a>
-            </nav>
 
             <!-- Cards / Content -->
             <div id="ui-builder" class="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -686,6 +830,33 @@
         </div>
     </section>
     </main>
+
+    <nav class="task-dock" id="task-dock" aria-label="Schnellnavigation">
+        <div class="task-dock-shell">
+            <button type="button" class="dock-start" data-target="home" aria-label="Zur Startsektion"><img src="/assets/logo.svg" alt="Logo"></button>
+            <span class="dock-sep" aria-hidden="true"></span>
+
+            <button type="button" class="dock-item" data-target="about" aria-label="Über mich">
+                <span class="dock-icon" aria-hidden="true">◎</span>
+                <span class="dock-label">Über</span>
+            </button>
+
+            <a href="blog.php" class="dock-item" data-target="blog" aria-label="Zum Blog">
+                <span class="dock-icon" aria-hidden="true">✎</span>
+                <span class="dock-label">Blog</span>
+            </a>
+
+            <a href="projects.html" class="dock-item" data-target="projects" aria-label="Zu den Projekten">
+                <span class="dock-icon" aria-hidden="true">⌘</span>
+                <span class="dock-label">Projekte</span>
+            </a>
+
+            <button type="button" class="dock-item" data-target="contact" aria-label="Kontaktbereich">
+                <span class="dock-icon" aria-hidden="true">⌁</span>
+                <span class="dock-label">Kontakt</span>
+            </button>
+        </div>
+    </nav>
 
     <!-- CONTEXT MENU -->
     <div id="context-menu" class="context-menu">
@@ -1010,6 +1181,64 @@
             lenis.on("scroll", ScrollTrigger.update)
             ScrollTrigger.refresh()
         }
+
+        /* ================= TASK DOCK ================= */
+        const taskDock = document.getElementById('task-dock')
+        const dockItems = document.querySelectorAll('.dock-item, .dock-start')
+        const sectionTargets = {
+            home: 0,
+            about: document.getElementById('about'),
+            contact: document.getElementById('contact')
+        }
+
+        function setDockVisibility(scrollPosition) {
+            if (!taskDock) return
+            const maxScroll = Math.max(document.documentElement.scrollHeight - window.innerHeight, 0)
+            const threshold = window.matchMedia('(max-width: 860px)').matches ? 40 : 180
+            const showDock = maxScroll <= 24 || scrollPosition > threshold
+            taskDock.classList.toggle('visible', showDock)
+        }
+
+        function setActiveDockItem() {
+            const y = window.scrollY + (window.innerHeight * 0.4)
+            let active = 'home'
+
+            if (sectionTargets.contact && y >= sectionTargets.contact.offsetTop) {
+                active = 'contact'
+            } else if (sectionTargets.about && y >= sectionTargets.about.offsetTop) {
+                active = 'about'
+            }
+
+            dockItems.forEach(item => {
+                const target = item.getAttribute('data-target')
+                item.classList.toggle('active', target === active)
+            })
+        }
+
+        dockItems.forEach(item => {
+            const targetKey = item.getAttribute('data-target')
+            if (!targetKey || !sectionTargets[targetKey]) return
+
+            item.addEventListener('click', (e) => {
+                e.preventDefault()
+                lenis.scrollTo(sectionTargets[targetKey], { duration: 1.1 })
+            })
+        })
+
+        const nativeScrollUpdate = () => {
+            setDockVisibility(window.scrollY)
+            setActiveDockItem()
+        }
+
+        window.addEventListener('scroll', nativeScrollUpdate, { passive: true })
+        lenis.on('scroll', (event) => {
+            const current = typeof event?.scroll === 'number' ? event.scroll : window.scrollY
+            setDockVisibility(current)
+            setActiveDockItem()
+        })
+
+        nativeScrollUpdate()
+
         /* ================= LOADER ================= */
         window.addEventListener("load", () => {
             const loader = document.getElementById("loader")
