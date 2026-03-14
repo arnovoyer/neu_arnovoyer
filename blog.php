@@ -142,7 +142,7 @@ foreach ($publishedBlogs as $entry) {
             backdrop-filter: blur(8px);
             position: relative;
             z-index: 1;
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.35);
+            box-shadow: 0 14px 32px rgba(0, 0, 0, 0.28);
         }
 
         .topbar {
@@ -172,18 +172,15 @@ foreach ($publishedBlogs as $entry) {
 
         .url {
             margin: 12px 14px 0;
-            border: 1px solid rgba(255, 255, 255, 0.13);
-            background: rgba(0, 0, 0, 0.18);
-            border-radius: 9px;
-            padding: 8px 12px;
-            font-size: 13px;
-            color: var(--text-soft);
+            padding: 0;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
         }
 
         .content {
-            padding: 18px 14px 20px;
+            padding: 20px 14px 22px;
             display: grid;
-            gap: 14px;
+            gap: 18px;
         }
 
         .head h1 {
@@ -196,6 +193,7 @@ foreach ($publishedBlogs as $entry) {
             margin: 10px 0 0;
             color: var(--text-soft);
             font-size: 14px;
+            max-width: 520px;
         }
 
         .nav {
@@ -229,6 +227,14 @@ foreach ($publishedBlogs as $entry) {
             transform: translate(-50%, 0);
             opacity: 1;
             pointer-events: auto;
+        }
+
+        @media (min-width: 861px) {
+            .task-dock {
+                transform: translate(-50%, 0);
+                opacity: 1;
+                pointer-events: auto;
+            }
         }
 
         .task-dock-shell {
@@ -324,21 +330,23 @@ foreach ($publishedBlogs as $entry) {
 
         .grid {
             display: grid;
-            grid-template-columns: 1fr 0.9fr;
-            gap: 12px;
+            grid-template-columns: minmax(0, 1.15fr) minmax(260px, 0.7fr);
+            gap: 14px;
         }
 
         .panel {
             border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 12px;
-            background: rgba(255, 255, 255, 0.02);
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.015);
         }
 
         .panel h2 {
             margin: 0 0 10px;
-            font-size: 14px;
-            color: var(--accent);
+            font-size: 11px;
+            letter-spacing: .12em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.52);
             font-weight: 600;
         }
 
@@ -353,8 +361,8 @@ foreach ($publishedBlogs as $entry) {
             display: block;
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 10px;
-            padding: 10px;
-            background: rgba(0, 0, 0, 0.18);
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.015);
             cursor: pointer;
             transition: border-color 140ms ease, background-color 140ms ease;
             text-decoration: none;
@@ -363,8 +371,8 @@ foreach ($publishedBlogs as $entry) {
 
         .post-item:hover,
         .post-item:focus-visible {
-            border-color: rgba(0, 245, 212, 0.45);
-            background: rgba(0, 245, 212, 0.07);
+            border-color: rgba(0, 245, 212, 0.3);
+            background: rgba(255, 255, 255, 0.035);
             outline: none;
         }
 
@@ -382,8 +390,15 @@ foreach ($publishedBlogs as $entry) {
 
         .meta {
             margin-top: 8px;
-            font-size: 12px;
+            font-size: 11px;
             color: var(--text-soft);
+        }
+
+        .note-copy {
+            color: rgba(255, 255, 255, 0.64);
+            font-size: 13px;
+            line-height: 1.6;
+            margin: 0;
         }
 
         .article {
@@ -607,10 +622,10 @@ foreach ($publishedBlogs as $entry) {
                 </article>
 
                 <article class="panel">
-                    <h2>Hinweis</h2>
-                    <p class="empty">Klicke links auf einen Post. Er oeffnet sich als Fenster direkt auf dieser Seite und kann wieder geschlossen werden.</p>
+                    <h2>Lesen</h2>
+                    <p class="note-copy">Ein Klick auf einen Eintrag oeffnet den Beitrag direkt als ruhige Overlay-Ansicht auf dieser Seite.</p>
                     <?php if ($activePost): ?>
-                        <p class="meta">Direktlink: <a class="open-post" href="?post=<?php echo urlencode($activePost['slug'] ?? ''); ?>" data-open-post="<?php echo htmlspecialchars($activePost['slug'] ?? '', ENT_QUOTES, 'UTF-8'); ?>"><?php echo htmlspecialchars($activePost['title'] ?? 'Ohne Titel', ENT_QUOTES, 'UTF-8'); ?></a></p>
+                        <p class="meta">Aktiv: <a class="open-post" href="?post=<?php echo urlencode($activePost['slug'] ?? ''); ?>" data-open-post="<?php echo htmlspecialchars($activePost['slug'] ?? '', ENT_QUOTES, 'UTF-8'); ?>"><?php echo htmlspecialchars($activePost['title'] ?? 'Ohne Titel', ENT_QUOTES, 'UTF-8'); ?></a></p>
                     <?php endif; ?>
                 </article>
             </section>
@@ -812,9 +827,13 @@ foreach ($publishedBlogs as $entry) {
 
         function updateTaskDockVisibility() {
             if (!taskDock) return
+            const isMobile = window.matchMedia('(max-width: 860px)').matches
+            if (!isMobile) {
+                return
+            }
+
             const maxScroll = Math.max(document.documentElement.scrollHeight - window.innerHeight, 0)
-            const threshold = window.matchMedia('(max-width: 860px)').matches ? 40 : 140
-            taskDock.classList.toggle('visible', maxScroll <= 24 || window.scrollY > threshold)
+            taskDock.classList.toggle('visible', maxScroll <= 24 || window.scrollY > 40)
         }
 
         window.addEventListener('scroll', updateTaskDockVisibility, { passive: true })
