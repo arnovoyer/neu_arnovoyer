@@ -832,15 +832,24 @@
     </section>
     </main>
 
+    <footer class="px-6 pb-24 text-xs text-neutral-400">
+        <div class="mx-auto flex max-w-5xl flex-wrap items-center gap-x-5 gap-y-2">
+            <a href="ueber-mich.html" class="hover:text-accent transition-colors">Ueber mich</a>
+            <a href="kontakt.html" class="hover:text-accent transition-colors">Kontakt</a>
+            <a href="impressum.html" class="hover:text-accent transition-colors">Impressum</a>
+            <a href="datenschutz.html" class="hover:text-accent transition-colors">Datenschutz</a>
+        </div>
+    </footer>
+
     <nav class="task-dock" id="task-dock" aria-label="Schnellnavigation">
         <div class="task-dock-shell">
             <button type="button" class="dock-start" data-target="home" aria-label="Zur Startsektion"><img src="/assets/logo.svg" alt="Logo"></button>
             <span class="dock-sep" aria-hidden="true"></span>
 
-            <button type="button" class="dock-item" data-target="about" aria-label="Über mich">
+            <a href="ueber-mich.html" class="dock-item" aria-label="Zur Ueber-mich-Seite">
                 <span class="dock-icon" aria-hidden="true">◎</span>
-                <span class="dock-label">Über</span>
-            </button>
+                <span class="dock-label">Ueber</span>
+            </a>
 
             <a href="blog.php" class="dock-item" data-target="blog" aria-label="Zum Blog">
                 <span class="dock-icon" aria-hidden="true">✎</span>
@@ -852,10 +861,10 @@
                 <span class="dock-label">Projekte</span>
             </a>
 
-            <button type="button" class="dock-item" data-target="contact" aria-label="Kontaktbereich">
+            <a href="kontakt.html" class="dock-item" aria-label="Zur Kontaktseite">
                 <span class="dock-icon" aria-hidden="true">⌁</span>
                 <span class="dock-label">Kontakt</span>
-            </button>
+            </a>
         </div>
     </nav>
 

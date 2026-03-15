@@ -632,6 +632,13 @@ foreach ($publishedBlogs as $entry) {
         </div>
     </main>
 
+    <footer style="width:min(1040px,100%);margin:14px auto 96px;padding:0 6px;color:rgba(255,255,255,.55);font-size:12px;line-height:1.5;position:relative;z-index:1;display:flex;flex-wrap:wrap;gap:14px;">
+        <a href="/ueber-mich.html" style="color:inherit;text-decoration:none;">Ueber mich</a>
+        <a href="/kontakt.html" style="color:inherit;text-decoration:none;">Kontakt</a>
+        <a href="/impressum.html" style="color:inherit;text-decoration:none;">Impressum</a>
+        <a href="/datenschutz.html" style="color:inherit;text-decoration:none;">Datenschutz</a>
+    </footer>
+
     <nav class="task-dock" id="task-dock" aria-label="Schnellnavigation">
         <div class="task-dock-shell">
             <a href="/index.html" class="dock-start" aria-label="Zur Startseite"><img src="/assets/logo.svg" alt="Logo"></a>
@@ -652,7 +659,12 @@ foreach ($publishedBlogs as $entry) {
                 <span class="dock-label">Projekte</span>
             </a>
 
-            <a href="/index.html#contact" class="dock-item" data-target="contact" aria-label="Kontakt">
+            <a href="/ueber-mich.html" class="dock-item" data-target="about" aria-label="Ueber mich">
+                <span class="dock-icon" aria-hidden="true">◉</span>
+                <span class="dock-label">Ueber</span>
+            </a>
+
+            <a href="/kontakt.html" class="dock-item" data-target="contact" aria-label="Kontakt">
                 <span class="dock-icon" aria-hidden="true">⌁</span>
                 <span class="dock-label">Kontakt</span>
             </a>
