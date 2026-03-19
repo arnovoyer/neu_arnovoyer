@@ -802,11 +802,10 @@
             <div class="terminal-body">
                 <p class="line">&gt; contact arno</p>
 
-                <form id="terminal-form" class="terminal-form" action="https://formsubmit.co/960b84b77c6a19818c6173d5ef6ff2a6" method="POST">
+                <form id="terminal-form" class="terminal-form" action="https://formsubmit.co/arno.voyer@aon.at" data-ajax-endpoint="https://formsubmit.co/ajax/arno.voyer@aon.at" method="POST" autocomplete="off">
                     <input type="hidden" name="_subject" value="Neue Nachricht über arnovoyer.com" />
                     <input type="hidden" name="_captcha" value="false" />
                     <input type="text" name="_honey" class="hidden" tabindex="-1" autocomplete="off" />
-                    <input type="text" name="website" class="hidden" tabindex="-1" autocomplete="off" />
 
                     <label>
                         <span>&gt; name</span>
@@ -832,14 +831,14 @@
     </section>
     </main>
 
-    <footer class="px-6 pb-24 text-xs text-neutral-400">
+    <!--<footer class="px-6 pb-24 text-xs text-neutral-400">
         <div class="mx-auto flex max-w-5xl flex-wrap items-center gap-x-5 gap-y-2">
             <a href="ueber-mich.html" class="hover:text-accent transition-colors">Ueber mich</a>
             <a href="kontakt.html" class="hover:text-accent transition-colors">Kontakt</a>
             <a href="impressum.html" class="hover:text-accent transition-colors">Impressum</a>
             <a href="datenschutz.html" class="hover:text-accent transition-colors">Datenschutz</a>
         </div>
-    </footer>
+    </footer>-->
 
     <nav class="task-dock" id="task-dock" aria-label="Schnellnavigation">
         <div class="task-dock-shell">
@@ -1290,7 +1289,7 @@
         const response = document.getElementById("terminal-response")
 
         if (form && response) {
-            const ENDPOINT = "https://formsubmit.co/ajax/960b84b77c6a19818c6173d5ef6ff2a6"
+            const ENDPOINT = form.dataset.ajaxEndpoint || "https://formsubmit.co/ajax/arno.voyer@aon.at"
             const RATE_KEY = "contact-rate-v1"
             const MIN_FILL_TIME_MS = 3500
             const COOLDOWN_MS = 60 * 1000
@@ -1336,10 +1335,9 @@
 
                 response.classList.remove("hidden")
                 const honey = form.querySelector('input[name="_honey"]')
-                const website = form.querySelector('input[name="website"]')
                 const submitBtn = form.querySelector('button[type="submit"]')
 
-                if ((honey && honey.value.trim() !== "") || (website && website.value.trim() !== "")) {
+                if (honey && honey.value.trim() !== "") {
                     response.textContent = "> nachricht gesendet. danke."
                     form.reset()
                     formStartedAt = Date.now()
@@ -1392,7 +1390,9 @@
                             : "> fehler. nochmal versuchen"
                     }
                 } catch {
-                    response.textContent = "> verbindung gescheitert."
+                    // Fallback keeps delivery possible even if AJAX endpoint is blocked.
+                    response.textContent = "> ajax fehlgeschlagen. sende mit fallback..."
+                    HTMLFormElement.prototype.submit.call(form)
                 } finally {
                     if (submitBtn) submitBtn.disabled = false
                 }
