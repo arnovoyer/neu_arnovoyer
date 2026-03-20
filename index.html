@@ -29,6 +29,7 @@
     <meta name="twitter:image" content="https://arnovoyer.com/assets/logo.svg">
     <link rel="icon" type="image/svg+xml" href="/assets/logo.svg">
     <link rel="shortcut icon" href="/assets/logo.svg">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/logo.svg">
     <link rel="preconnect" href="https://unpkg.com" crossorigin>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link rel="preconnect" href="https://grainy-gradients.vercel.app" crossorigin>
@@ -632,6 +633,71 @@
             color: #00f5d4;
         }
 
+        /* ================= EASTER EGG ================= */
+        .easter-egg-hidden {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            opacity: 0;
+            width: 200px;
+            height: 200px;
+            pointer-events: none;
+            z-index: 10002;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .easter-egg-hidden.revealed {
+            opacity: 1;
+            animation: easterEggRotate 3s ease-out;
+            animation-fill-mode: forwards;
+        }
+
+        @keyframes easterEggRotate {
+            0% {
+                transform: translate(-50%, -50%) scale(0) rotate(0deg);
+                opacity: 0;
+            }
+            30% {
+                transform: translate(-50%, -50%) scale(1.1) rotate(180deg);
+                opacity: 1;
+                color: #00f5d4;
+            }
+            50% {
+                color: #ff00ff;
+            }
+            70% {
+                color: #ffff00;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1) rotate(360deg);
+                opacity: 1;
+                color: #00ff00;
+            }
+        }
+
+        .easter-egg-hidden svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 0 20px rgba(0, 245, 212, 0.6));
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .easter-egg-hidden.revealed {
+                animation: none;
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+                color: #00f5d4;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .easter-egg-hidden {
+                width: 140px;
+                height: 140px;
+            }
+        }
+
         @media (prefers-reduced-motion: reduce) {
             .task-dock {
                 transition: none;
@@ -802,8 +868,11 @@
             <div class="terminal-body">
                 <p class="line">&gt; contact arno</p>
 
-                <form id="terminal-form" class="terminal-form" action="https://formsubmit.co/arno.voyer@aon.at" data-ajax-endpoint="https://formsubmit.co/ajax/arno.voyer@aon.at" method="POST" autocomplete="off">
+                <form id="terminal-form" class="terminal-form" action="https://formsubmit.co/960b84b77c6a19818c6173d5ef6ff2a6" data-ajax-endpoint="https://formsubmit.co/ajax/960b84b77c6a19818c6173d5ef6ff2a6" method="POST" autocomplete="off">
                     <input type="hidden" name="_subject" value="Neue Nachricht über arnovoyer.com" />
+                    <input type="hidden" name="_next" value="https://arnovoyer.com/index.html?sent=1" />
+                    <input type="hidden" name="_autoresponse" value="Danke! Deine Nachricht wurde an Arno uebermittelt. Falls du innerhalb von 48h keine Antwort bekommst, bitte erneut schreiben." />
+                    <input type="hidden" name="source" value="index" />
                     <input type="hidden" name="_captcha" value="false" />
                     <input type="text" name="_honey" class="hidden" tabindex="-1" autocomplete="off" />
 
@@ -866,6 +935,44 @@
             </a>
         </div>
     </nav>
+
+    <!-- EASTER EGG: Hidden Logo Animation -->
+    <div id="easter-egg-logo" class="easter-egg-hidden">
+        <svg id="Ebene_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 320 320">
+            <defs>
+                <style>
+                    .ee-st0 {
+                        fill: none;
+                        stroke: currentColor;
+                        stroke-width: 13px;
+                    }
+
+                    .ee-st0, .ee-st1 {
+                        stroke-miterlimit: 10;
+                    }
+
+                    .ee-st1 {
+                        fill: #1d1d1b;
+                        stroke: #1d1d1b;
+                        stroke-width: 11px;
+                    }
+
+                    .ee-st2 {
+                        fill: currentColor;
+                    }
+                </style>
+            </defs>
+            <rect class="ee-st1" x="4.4" y="5.94" width="310.98" height="310.98" rx="75" ry="75"/>
+            <g>
+                <path class="ee-st2" d="M135.55,131.58v139.11c0,3.12,1.88,3.95,4.18,1.84,0,0,153.66-140.84,153.57-140.94-.09-.1-52.67,47.8-157.75,143.69"/>
+                <path class="ee-st0" d="M135.55,131.58v139.11c0,3.12,1.88,3.95,4.18,1.84,0,0,153.66-140.84,153.57-140.94-.09-.1-52.67,47.8-157.75,143.69"/>
+            </g>
+            <g>
+                <path class="ee-st2" d="M187.53,174.29V35.17c0-3.12-1.88-3.95-4.18-1.84,0,0-153.66,140.84-153.57,140.94.09.1,52.67-47.8,157.75-143.69"/>
+                <path class="ee-st0" d="M187.53,174.29V35.17c0-3.12-1.88-3.95-4.18-1.84,0,0-153.66,140.84-153.57,140.94.09.1,52.67-47.8,157.75-143.69"/>
+            </g>
+        </svg>
+    </div>
 
     <!-- CONTEXT MENU -->
     <div id="context-menu" class="context-menu">
@@ -1248,6 +1355,76 @@
 
         nativeScrollUpdate()
 
+        /* ================= EASTER EGG: HIDDEN LOGO ================= */
+        const easterEggLogo = document.getElementById('easter-egg-logo')
+        const logoDock = document.querySelector('.dock-start')
+        let easterEggActive = false
+
+        // Konami Code: ↑↑↓↓←→←→BA
+        const konamiSequence = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a']
+        let konamiIndex = 0
+
+        function activateEasterEgg() {
+            if (easterEggActive || !easterEggLogo) return
+
+            easterEggActive = true
+            easterEggLogo.classList.add('revealed')
+
+            // Auto-hide nach 4 Sekunden
+            setTimeout(() => {
+                easterEggLogo.classList.remove('revealed')
+                easterEggActive = false
+                konamiIndex = 0
+            }, 4000)
+        }
+
+        // Konami Code Listener
+        document.addEventListener('keydown', (e) => {
+            const key = e.key
+            const lowerKey = key.toLowerCase()
+
+            // Check gegen String-Werte und ArrowUp/Down/Left/Right
+            if (
+                key === konamiSequence[konamiIndex] ||
+                (typeof konamiSequence[konamiIndex] === 'string' && konamiSequence[konamiIndex].toLowerCase() === lowerKey)
+            ) {
+                konamiIndex++
+                if (konamiIndex === konamiSequence.length) {
+                    activateEasterEgg()
+                    konamiIndex = 0
+                }
+            } else {
+                konamiIndex = 0
+            }
+
+            // Alternative: Shift + Alt + E
+            if (e.shiftKey && e.altKey && lowerKey === 'e') {
+                e.preventDefault()
+                activateEasterEgg()
+            }
+        })
+
+        // Triple-Click auf das Logo im Dock
+        if (logoDock) {
+            let logoClickCount = 0
+            let logoClickTimeout
+
+            logoDock.addEventListener('click', (e) => {
+                logoClickCount++
+
+                if (logoClickCount === 3) {
+                    activateEasterEgg()
+                    logoClickCount = 0
+                    return
+                }
+
+                clearTimeout(logoClickTimeout)
+                logoClickTimeout = setTimeout(() => {
+                    logoClickCount = 0
+                }, 500)
+            })
+        }
+
         /* ================= LOADER ================= */
         window.addEventListener("load", () => {
             const loader = document.getElementById("loader")
@@ -1289,12 +1466,12 @@
         const response = document.getElementById("terminal-response")
 
         if (form && response) {
-            const ENDPOINT = form.dataset.ajaxEndpoint || "https://formsubmit.co/ajax/arno.voyer@aon.at"
+            const ENDPOINT = form.dataset.ajaxEndpoint || "https://formsubmit.co/ajax/960b84b77c6a19818c6173d5ef6ff2a6"
             const RATE_KEY = "contact-rate-v1"
             const MIN_FILL_TIME_MS = 3500
-            const COOLDOWN_MS = 60 * 1000
+            const COOLDOWN_MS = 15 * 1000
             const WINDOW_MS = 10 * 60 * 1000
-            const MAX_SUBMITS_PER_WINDOW = 3
+            const MAX_SUBMITS_PER_WINDOW = 6
             let formStartedAt = Date.now()
 
             const parseRateState = () => {
@@ -1338,7 +1515,7 @@
                 const submitBtn = form.querySelector('button[type="submit"]')
 
                 if (honey && honey.value.trim() !== "") {
-                    response.textContent = "> nachricht gesendet. danke."
+                    response.textContent = "> an formsubmit uebergeben. bitte inbox/spam pruefen."
                     form.reset()
                     formStartedAt = Date.now()
                     return
@@ -1357,8 +1534,6 @@
 
                 response.textContent = "> nachricht senden..."
 
-                const formData = new FormData(form)
-
                 if (submitBtn) submitBtn.disabled = true
 
                 try {
@@ -1367,32 +1542,39 @@
                         headers: {
                             "Accept": "application/json"
                         },
-                        body: formData
+                        body: new FormData(form)
                     })
 
                     let payload = null
+                    let responseText = ""
                     try {
                         payload = await res.json()
-                    } catch { }
-
-                    if (res.ok && (payload?.success === "true" || payload?.success === true || payload?.message)) {
-                        const now = Date.now()
-                        const updated = parseRateState().filter(ts => now - ts < WINDOW_MS)
-                        updated.push(now)
-                        saveRateState(updated)
-
-                        response.textContent = "> nachricht gesendet. danke."
-                        form.reset()
-                        formStartedAt = Date.now()
-                    } else {
-                        response.textContent = payload?.error
-                            ? `> fehler: ${payload.error}`
-                            : "> fehler. nochmal versuchen"
+                    } catch {
+                        try {
+                            responseText = await res.text()
+                        } catch { }
                     }
-                } catch {
-                    // Fallback keeps delivery possible even if AJAX endpoint is blocked.
-                    response.textContent = "> ajax fehlgeschlagen. sende mit fallback..."
-                    HTMLFormElement.prototype.submit.call(form)
+
+                    if (!res.ok) {
+                        throw new Error(payload?.error || payload?.message || responseText || `HTTP ${res.status}`)
+                    }
+
+                    const success = payload?.success === true || payload?.success === "true" || Boolean(payload?.message)
+                    if (!success) {
+                        throw new Error(payload?.error || "Unbekannte Antwort")
+                    }
+
+                    const now = Date.now()
+                    const updated = parseRateState().filter(ts => now - ts < WINDOW_MS)
+                    updated.push(now)
+                    saveRateState(updated)
+
+                    response.textContent = "> nachricht gesendet. danke."
+                    form.reset()
+                    formStartedAt = Date.now()
+                } catch (error) {
+                    response.textContent = `> senden fehlgeschlagen: ${error.message || "unbekannter fehler"}`
+                    console.error("[FormSubmit] AJAX Fehler:", error)
                 } finally {
                     if (submitBtn) submitBtn.disabled = false
                 }

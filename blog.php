@@ -99,8 +99,23 @@ foreach ($publishedBlogs as $entry) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Blog von Arno Voyer über Webentwicklung, Projekte und Workflow.">
+    <meta name="theme-color" content="#050505">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="de_AT">
+    <meta property="og:site_name" content="Arno Voyer">
+    <meta property="og:title" content="Blog | Arno Voyer">
+    <meta property="og:description" content="Blog von Arno Voyer über Webentwicklung, Projekte und Workflow.">
+    <meta property="og:url" content="https://arnovoyer.com/blog.php">
+    <meta property="og:image" content="https://arnovoyer.com/assets/logo.svg">
+    <meta property="og:image:alt" content="Logo von Arno Voyer">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Blog | Arno Voyer">
+    <meta name="twitter:description" content="Blog von Arno Voyer über Webentwicklung, Projekte und Workflow.">
+    <meta name="twitter:image" content="https://arnovoyer.com/assets/logo.svg">
     <title>Blog | Arno Voyer</title>
+    <link rel="canonical" href="https://arnovoyer.com/blog.php">
     <link rel="icon" type="image/svg+xml" href="/assets/logo.svg">
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/logo.svg">
     <link rel="stylesheet" href="/assets/context-menu.css">
     <style>
         :root {
