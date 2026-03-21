@@ -163,39 +163,85 @@
         }
 
         #browser-frame {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 18px;
+            position: relative;
             overflow: hidden;
-            backdrop-filter: blur(8px);
             width: 100%;
-            max-width: 1100px;
+            max-width: 900px;
             margin: 0 auto;
-            padding: 20px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            background: linear-gradient(170deg, rgba(16, 16, 16, 0.92), rgba(7, 7, 7, 0.94));
+            backdrop-filter: blur(12px) saturate(125%);
+            box-shadow: 0 24px 55px rgba(0, 0, 0, 0.35);
         }
 
-        /* Browser Bar / Tab */
-        .browser-bar {
-            height: 50px;
-            /* höher als vorher */
-            display: flex;
+        #browser-frame::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(130deg, rgba(0, 245, 212, 0.45), rgba(255, 255, 255, 0.18), rgba(0, 245, 212, 0.15));
+            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        .frame-head {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
             align-items: center;
-            justify-content: space-between;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            margin-bottom: 12px;
+            gap: 14px;
+            padding: 14px 18px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
         }
 
-        .tab {
-            padding: 6px 16px;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 8px 8px 0 0;
-            font-size: 0.95rem;
-            color: rgba(255, 255, 255, 0.7);
+        .frame-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.82rem;
+            color: rgba(255, 255, 255, 0.78);
+            letter-spacing: .03em;
         }
 
-        .tab.active {
-            background: rgba(255, 255, 255, 0.15);
-            color: white;
+        .frame-label::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: #00f5d4;
+            box-shadow: 0 0 10px rgba(0, 245, 212, 0.7);
+        }
+
+        .frame-url-chip {
+            justify-self: center;
+            width: 100%;
+            max-width: 420px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 999px;
+            padding: 8px 14px;
+            font-size: 0.82rem;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.68);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .frame-status {
+            font-size: 0.78rem;
+            color: rgba(255, 255, 255, 0.84);
+            border: 1px solid rgba(0, 245, 212, 0.42);
+            background: rgba(0, 245, 212, 0.08);
+            border-radius: 999px;
+            padding: 5px 12px;
+            white-space: nowrap;
+        }
+
+        .frame-content {
+            padding: 16px;
         }
 
         .browser-buttons span.circle {
@@ -239,73 +285,172 @@
         /* Cards */
         #ui-builder {
             display: grid;
-            grid-template-columns: repeat(1, 1fr);
-            gap: 24px;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 14px;
         }
 
         @media (min-width: 768px) {
             #ui-builder {
-                grid-template-columns: repeat(3, 1fr);
-                gap: 32px;
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+                gap: 14px;
             }
         }
 
         .ui.card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 16px;
-            backdrop-filter: blur(6px);
-            padding: 24px;
-            min-height: 200px;
+            background: linear-gradient(165deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 18px;
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            min-height: 190px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            text-align: center;
+            justify-content: space-between;
+            text-align: left;
+            transition: transform .25s ease, border-color .25s ease, background .25s ease;
         }
 
-        /* remove default arrow */
-        details summary {
-            list-style: none;
+        .workflow {
+            max-width: 980px;
+            margin: 46px auto 0;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 20px;
+            background: linear-gradient(160deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+            padding: 16px;
         }
 
-        details summary::-webkit-details-marker {
-            display: none;
+        .workflow-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
         }
 
-        /* card base */
-        .ui.card {
-            padding: 28px;
-            min-height: 220px;
-            transition: all .4s ease;
+        .step {
+            border: 1px solid rgba(255, 255, 255, 0.13);
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 14px;
+            min-height: 118px;
+            display: grid;
+            align-content: space-between;
+            gap: 10px;
         }
 
-        /* hover hint */
-        .ui.card summary {
-            transition: transform .3s ease;
+        .step-index {
+            font-size: 0.72rem;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.62);
         }
 
-        .ui.card:hover summary {
-            transform: translateY(-2px);
+        .step-title {
+            margin: 0;
+            font-size: 1rem;
+            line-height: 1.2;
+            color: #fff;
+            text-wrap: balance;
         }
 
-        /* expandable content */
-        .expand {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height .5s ease, opacity .4s ease;
-            opacity: 0;
+        .step-meta {
+            font-size: 0.8rem;
+            color: rgba(0, 245, 212, 0.9);
+            letter-spacing: .02em;
         }
 
-        /* opened state */
-        details[open] .expand {
-            max-height: 500px;
-            opacity: 1;
+        .about-note {
+            max-width: 980px;
+            margin: 18px auto 0;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            background: linear-gradient(155deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+            padding: 14px 16px;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            align-items: start;
+            gap: 10px;
         }
 
-        /* opened card emphasis */
-        details[open] {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(0, 245, 212, .5);
+        .about-note-label {
+            font-size: 0.74rem;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.62);
+        }
+
+        .about-note p {
+            margin: 0;
+            color: rgba(255, 255, 255, 0.88);
+            font-size: 0.93rem;
+            line-height: 1.55;
+            text-wrap: pretty;
+        }
+
+        .about-note-meta {
+            grid-column: 2;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 2px;
+        }
+
+        .about-chip {
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 999px;
+            padding: 4px 9px;
+            font-size: 0.74rem;
+            color: rgba(255, 255, 255, 0.82);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .ui.card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(0, 245, 212, 0.45);
+            background: linear-gradient(165deg, rgba(0, 245, 212, 0.13), rgba(255, 255, 255, 0.04));
+        }
+
+        .ui-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .ui-title {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .ui-kicker {
+            display: inline-flex;
+            align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 999px;
+            font-size: 0.7rem;
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.72);
+            padding: 4px 8px;
+        }
+
+        .ui-body {
+            margin: 0;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.82);
+        }
+
+        .ui.card.highlight {
+            border-color: rgba(0, 245, 212, 0.65);
+            box-shadow: 0 0 0 1px rgba(0, 245, 212, 0.28), 0 0 20px rgba(0, 245, 212, 0.22);
+            animation: pulseHighlight 0.9s ease;
+        }
+
+        @keyframes pulseHighlight {
+            0% { transform: translateY(-2px) scale(1); }
+            40% { transform: translateY(-4px) scale(1.01); }
+            100% { transform: translateY(0) scale(1); }
         }
 
         .terminal {
@@ -504,28 +649,50 @@
 
         @media (max-width: 640px) {
             #about {
-                min-height: 120vh;
-                align-items: flex-start;
-                padding-top: 22vh;
+                padding-top: 4rem;
             }
 
             #browser-frame {
-                padding: 14px;
-                border-radius: 14px;
+                border-radius: 18px;
             }
 
-            .browser-bar {
-                height: 44px;
+            .frame-head {
+                grid-template-columns: 1fr;
+                gap: 10px;
+                padding: 12px;
             }
 
-            .tab {
-                font-size: 0.8rem;
-                padding: 4px 10px;
+            .frame-url-chip {
+                justify-self: stretch;
+                max-width: none;
             }
 
-            .url-bar {
-                font-size: 0.75rem;
-                padding: 4px 10px;
+            .frame-status {
+                justify-self: flex-start;
+            }
+
+            .workflow {
+                margin-top: 22px;
+                border-radius: 16px;
+                padding: 12px;
+            }
+
+            .workflow-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .step {
+                min-height: 96px;
+            }
+
+            .about-note {
+                margin-top: 14px;
+                padding: 12px;
+                grid-template-columns: 1fr;
+            }
+
+            .about-note-meta {
+                grid-column: 1;
             }
 
             nav {
@@ -744,7 +911,7 @@
 
     <main id="main-content">
     <!-- HERO -->
-    <section class="relative min-h-screen
+    <section id="home" class="relative min-h-screen
          flex items-center px-6 md:px-20 overflow-hidden">
 
         <div id="vanta-hero" class="absolute inset-0 -z-10"></div>
@@ -761,9 +928,7 @@
                 <p data-nosnippet class="hero-sub mt-6 text-neutral-300
          max-w-sm sm:max-w-xl
          leading-relaxed text-base sm:text-lg">
-
-                Ich entwickle moderne Webseiten mit Liebe zum Detail.<br>
-                Neben Code liebe ich Sport, vor allem Triathlon.
+                  Moderne Webseiten. Klar im Design, schnell im Alltag.
             </p>
 
         </div>
@@ -780,80 +945,54 @@
         </p>
     </section>-->
 
-    <section id="about" class="min-h-screen flex items-center justify-center px-6 md:px-20">
+    <section id="about" class="py-24 md:py-32 px-6 md:px-20">
         <div id="browser-frame" class="relative">
             <h2 class="sr-only">Über Arno Voyer</h2>
 
-            <!-- Browser Bar / Tab -->
-            <div class="browser-bar flex items-center justify-between px-4">
-                <div class="tab active">Arno Voyer</div>
-                <div class="browser-buttons flex gap-2">
-                    <span class="circle red"></span>
-                    <span class="circle yellow"></span>
-                    <span class="circle green"></span>
+            <div class="frame-head">
+                <span class="frame-label">Profile Workspace</span>
+                <span class="frame-url-chip">arnovoyer.com/#about</span>
+                <span class="frame-status">Live</span>
+            </div>
+
+            <div class="frame-content">
+                <div id="ui-builder" class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <article class="ui card" id="about-card">
+                        <div class="ui-top">
+                            <h3 class="ui-title">Über mich</h3>
+                            <span class="ui-kicker">Identity</span>
+                        </div>
+                        <p class="ui-body">
+                            Webentwickler aus Dornbirn mit Fokus auf Klarheit, Performance und Wartbarkeit.
+                        </p>
+                    </article>
+
+                    <article class="ui card" id="skills">
+                        <div class="ui-top">
+                            <h3 class="ui-title">Technik</h3>
+                            <span class="ui-kicker">Stack</span>
+                        </div>
+                        <p class="ui-body">
+                            HTML, CSS, JavaScript, Tailwind. Moderne Effekte, ohne die Seite schwer zu machen.
+                        </p>
+                    </article>
+
+                    <article class="ui card" id="projects-card">
+                        <div class="ui-top">
+                            <h3 class="ui-title">Projekte</h3>
+                            <span class="ui-kicker">Output</span>
+                        </div>
+                        <p class="ui-body">
+                            Vereinsseiten, Microsites und Business-Auftritte mit klarem Fokus auf Ergebnis.
+                        </p>
+                    </article>
                 </div>
-            </div>
-
-            <!-- URL-Leiste -->
-            <div class="url-bar flex items-center px-4 py-2 mb-4">
-                <span>https://arnovoyer.com</span>
-            </div>
-
-            <!-- Cards / Content -->
-            <div id="ui-builder" class="grid grid-cols-1 md:grid-cols-3 gap-8">
-
-                <details class="ui card group">
-                    <summary class="cursor-pointer">
-                        <h3 class="text-lg font-semibold mb-2">Über mich</h3>
-                        <p class="text-neutral-400 text-sm">
-                            Developer & Triathlet
-                        </p>
-                    </summary>
-
-                    <div class="expand mt-4 text-neutral-300 text-sm leading-relaxed">
-                        Ich entwickle moderne, schnelle Webseiten mit Fokus auf
-                        Design und Struktur.<br><br>
-                        Sportlich komme ich aus dem Triathlon – Ausdauer & Präzision
-                        spiegeln sich auch im Code wider.
-                    </div>
-                </details>
-
-                <details class="ui card group" id="skills">
-                    <summary class="cursor-pointer">
-                        <h3 class="text-lg font-semibold mb-2">Technik</h3>
-                        <p class="text-neutral-400 text-sm">
-                            Was ich einsetze
-                        </p>
-                    </summary>
-
-                    <div class="expand mt-4 text-neutral-300 text-sm">
-                        HTML · CSS<br>
-                        JavaScript · Tailwind<br>
-                        Fokus: clean, wartbar, performant
-                    </div>
-                </details>
-
-                <details class="ui card group" id="projects">
-                    <summary class="cursor-pointer">
-                        <h3 class="text-lg font-semibold mb-2">Projekte</h3>
-                        <p class="text-neutral-400 text-sm">
-                            Dinge, die ich baue
-                        </p>
-                    </summary>
-
-                    <div class="expand mt-4 text-neutral-300 text-sm">
-                        Vereinswebsites<br>
-                        Interaktive Microsites<br>
-                        Experimente mit neuen Technologien
-                    </div>
-                </details>
-
             </div>
 
         </div>
     </section>
 
-    <section id="contact" class="min-h-screen flex items-center justify-center px-6">
+    <section id="contact" class="py-24 md:py-32 flex items-center justify-center px-6">
         <h2 class="sr-only">Kontakt</h2>
         <div class="terminal">
             <div class="terminal-bar">
@@ -914,7 +1053,7 @@
             <button type="button" class="dock-start" data-target="home" aria-label="Zur Startsektion"><img src="/assets/logo.svg" alt="Logo"></button>
             <span class="dock-sep" aria-hidden="true"></span>
 
-            <a href="ueber-mich.html" class="dock-item" aria-label="Zur Ueber-mich-Seite">
+            <a href="#about" class="dock-item" data-target="about" aria-label="Zum Ueber-Bereich">
                 <span class="dock-icon" aria-hidden="true">◎</span>
                 <span class="dock-label">Ueber</span>
             </a>
@@ -929,7 +1068,7 @@
                 <span class="dock-label">Projekte</span>
             </a>
 
-            <a href="kontakt.html" class="dock-item" aria-label="Zur Kontaktseite">
+            <a href="#contact" class="dock-item" data-target="contact" aria-label="Zum Kontaktbereich">
                 <span class="dock-icon" aria-hidden="true">⌁</span>
                 <span class="dock-label">Kontakt</span>
             </a>
@@ -1094,15 +1233,21 @@
                 const scrollTargets = {
                     'home': 0,
                     'about': document.getElementById('about'),
-                    'projects': null,
+                    'projects': document.getElementById('projects-card'),
                     'contact': document.getElementById('contact'),
                     'tech': document.getElementById('about'),
                     'refresh': null
                 }
 
-                if (action === 'projects') {
-                    window.location.href = 'projects.html'
-                } else if (action === 'refresh') {
+                const pulseCard = (id) => {
+                    const card = document.getElementById(id)
+                    if (!card) return
+                    card.classList.remove('highlight')
+                    requestAnimationFrame(() => card.classList.add('highlight'))
+                    setTimeout(() => card.classList.remove('highlight'), 1200)
+                }
+
+                if (action === 'refresh') {
                     location.reload()
                 } else {
                     const target = scrollTargets[action]
@@ -1114,12 +1259,11 @@
 
                     // Tech-Card öffnen wenn "Technologie" geklickt
                     if (action === 'tech') {
-                        setTimeout(() => {
-                            const techCard = document.querySelectorAll('.ui.card')[1]
-                            if (techCard && !techCard.parentElement.hasAttribute('open')) {
-                                techCard.parentElement.setAttribute('open', '')
-                            }
-                        }, 800)
+                        setTimeout(() => pulseCard('skills'), 700)
+                    }
+
+                    if (action === 'projects') {
+                        setTimeout(() => pulseCard('projects-card'), 700)
                     }
                 }
 
@@ -1149,8 +1293,6 @@
 
         /* ================= VANTA (lazy) ================= */
         const heroBg = document.getElementById('vanta-hero')
-        const saveData = navigator.connection?.saveData === true
-        const lowEndNetwork = ['slow-2g', '2g'].includes(navigator.connection?.effectiveType || '')
         let vantaInitialized = false
         let vantaDependenciesPromise = null
 
@@ -1193,7 +1335,7 @@
         }
 
         async function initVanta() {
-            if (vantaInitialized || prefersReducedMotion || saveData || lowEndNetwork || !heroBg) return
+            if (vantaInitialized || prefersReducedMotion || !heroBg) return
 
             try {
                 await ensureVantaDependencies()
