@@ -18,6 +18,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 $acceptHeader = $_SERVER['HTTP_ACCEPT'] ?? '';
 $wantsJson = stripos($acceptHeader, 'application/json') !== false;
+$nextRaw = trim((string)($_POST['_next'] ?? '/kontakt.html?sent=1'));
+$nextPath = str_starts_with($nextRaw, '/') ? $nextRaw : '/kontakt.html?sent=1';
 
 $respond = static function (int $statusCode, bool $success, string $message, array $extra = []) use ($wantsJson): void {
     http_response_code($statusCode);
@@ -33,6 +35,15 @@ $respond = static function (int $statusCode, bool $success, string $message, arr
 
     header('Content-Type: text/plain; charset=utf-8');
     echo $message;
+    exit;
+};
+
+$redirectSuccess = static function (string $path) use ($wantsJson): void {
+    if ($wantsJson) {
+        return;
+    }
+
+    header('Location: ' . $path, true, 303);
     exit;
 };
 
@@ -88,4 +99,5 @@ if (!$mailSent) {
     $respond(500, false, 'Server konnte die E-Mail nicht versenden.');
 }
 
+$redirectSuccess($nextPath);
 $respond(200, true, 'Nachricht gesendet. Danke.');
