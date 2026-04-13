@@ -33,4 +33,27 @@
     revealNodes.forEach(function (node) { node.classList.add('visible'); });
   }
 
+  const sentMessage = document.querySelector('[data-sent-message]');
+  if (sentMessage) {
+    const params = new URLSearchParams(window.location.search);
+    const sent = params.get('sent');
+
+    if (sent === '1' || sent === '0') {
+      const isSuccess = sent === '1';
+      const text = params.get('msg');
+
+      sentMessage.hidden = false;
+      sentMessage.textContent = text || (isSuccess
+        ? 'Danke, deine Nachricht wurde erfolgreich gesendet.'
+        : 'Beim Senden ist ein Fehler aufgetreten. Bitte versuche es erneut.');
+      sentMessage.classList.toggle('is-success', isSuccess);
+      sentMessage.classList.toggle('is-error', !isSuccess);
+
+      if (window.history && typeof window.history.replaceState === 'function') {
+        const cleanUrl = window.location.pathname + window.location.hash;
+        window.history.replaceState({}, document.title, cleanUrl);
+      }
+    }
+  }
+
 })();

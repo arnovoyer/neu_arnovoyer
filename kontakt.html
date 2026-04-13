@@ -46,11 +46,11 @@
 
         <div class="flash" data-sent-message hidden>Danke, deine Nachricht wurde erfolgreich gesendet.</div>
 
-        <form class="form" action="/contact-send.php" method="POST">
+        <form class="form" action="https://formsubmit.io/send/arno.voyer@aon.at" method="POST" data-formsubmit-form>
           <input type="hidden" name="_subject" value="Neue Nachricht ueber arnovoyer.com/kontakt">
-          <input type="hidden" name="_next" value="/kontakt.html?sent=1">
+          <input type="hidden" name="_redirect" value="https://arnovoyer.com/thanks.html">
           <input type="hidden" name="source" value="kontakt-seite">
-          <input type="hidden" name="_honey" value="">
+          <input type="text" name="_formsubmit_id" value="" tabindex="-1" autocomplete="off" class="honeypot">
 
           <label>
             Name

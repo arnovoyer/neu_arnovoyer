@@ -108,11 +108,13 @@
     <section class="panel cta" id="contact">
       <p class="eyebrow reveal">OPEN FOR NEW PROJECTS</p>
       <h2 class="reveal">START A PROJECT</h2>
-      <form class="contact-form reveal" action="https://formsubmit.co/960b84b77c6a19818c6173d5ef6ff2a6" method="POST">
+      <div class="flash" data-sent-message hidden>Danke, deine Nachricht wurde erfolgreich gesendet.</div>
+
+      <form class="contact-form reveal" action="https://formsubmit.io/send/arno.voyer@aon.at" method="POST" data-formsubmit-form>
         <input type="hidden" name="_subject" value="Neue Nachricht ueber arnovoyer.com">
-        <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="_next" value="/index.html?sent=1#contact">
-        <input type="text" name="_honey" tabindex="-1" autocomplete="off" class="honeypot">
+        <input type="hidden" name="_redirect" value="https://arnovoyer.com/thanks.html">
+        <input type="hidden" name="source" value="startseite">
+        <input type="text" name="_formsubmit_id" value="" tabindex="-1" autocomplete="off" class="honeypot">
 
         <input type="text" name="name" placeholder="NAME" required>
         <input type="email" name="email" placeholder="E-MAIL" required>

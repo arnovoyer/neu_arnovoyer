@@ -3,9 +3,7 @@
 declare(strict_types=1);
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    http_response_code(200);
-    header('Content-Type: text/plain; charset=utf-8');
-    echo 'contact-send.php ist erreichbar. Bitte nur per POST vom Formular verwenden.';
+    header('Location: /kontakt.html?sent=0&msg=Bitte+nur+ueber+das+Formular+senden.', true, 303);
     exit;
 }
 
@@ -21,7 +19,29 @@ $wantsJson = stripos($acceptHeader, 'application/json') !== false;
 $nextRaw = trim((string)($_POST['_next'] ?? '/kontakt.html?sent=1'));
 $nextPath = str_starts_with($nextRaw, '/') ? $nextRaw : '/kontakt.html?sent=1';
 
-$respond = static function (int $statusCode, bool $success, string $message, array $extra = []) use ($wantsJson): void {
+$buildRedirectPath = static function (string $path, bool $success, string $message): string {
+    $parts = parse_url($path);
+    $targetPath = (string)($parts['path'] ?? '/kontakt.html');
+
+    if (!str_starts_with($targetPath, '/')) {
+        $targetPath = '/kontakt.html';
+    }
+
+    $query = [];
+    if (!empty($parts['query'])) {
+        parse_str($parts['query'], $query);
+    }
+
+    $query['sent'] = $success ? '1' : '0';
+    $query['msg'] = $message;
+
+    $queryString = http_build_query($query, '', '&', PHP_QUERY_RFC3986);
+    $fragment = isset($parts['fragment']) ? '#' . $parts['fragment'] : '';
+
+    return $targetPath . ($queryString !== '' ? '?' . $queryString : '') . $fragment;
+};
+
+$respond = static function (int $statusCode, bool $success, string $message, array $extra = []) use ($wantsJson, $nextPath, $buildRedirectPath): void {
     http_response_code($statusCode);
 
     if ($wantsJson) {
@@ -33,17 +53,7 @@ $respond = static function (int $statusCode, bool $success, string $message, arr
         exit;
     }
 
-    header('Content-Type: text/plain; charset=utf-8');
-    echo $message;
-    exit;
-};
-
-$redirectSuccess = static function (string $path) use ($wantsJson): void {
-    if ($wantsJson) {
-        return;
-    }
-
-    header('Location: ' . $path, true, 303);
+    header('Location: ' . $buildRedirectPath($nextPath, $success, $message), true, 303);
     exit;
 };
 
@@ -99,5 +109,4 @@ if (!$mailSent) {
     $respond(500, false, 'Server konnte die E-Mail nicht versenden.');
 }
 
-$redirectSuccess($nextPath);
 $respond(200, true, 'Nachricht gesendet. Danke.');
