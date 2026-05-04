@@ -93,13 +93,12 @@
   }
 
   // Rotating conic-gradient angle updater for button(s) with class `rotating`
-  (function startRotatingButtons(){
-    const rotBtn = document.querySelector('.btn.rotating');
-    if (!rotBtn) return;
+  (function startRotatingAngle(){
     let angle = 0;
     function step(){
       angle = (angle + 0.6) % 360;
-      rotBtn.style.setProperty('--angle', angle + 'deg');
+      // set a global CSS variable so both buttons and input wrappers can use it
+      document.documentElement.style.setProperty('--angle', angle + 'deg');
       requestAnimationFrame(step);
     }
     requestAnimationFrame(step);
