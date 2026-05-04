@@ -537,50 +537,9 @@ h3 {
 .contact-form textarea:focus {
   outline: none;
   border-color: var(--accent-2);
-  box-shadow: 0 0 0 3px rgba(121, 255, 209, 0.08);
-  animation: ledArc 2.4s linear infinite;
+  box-shadow: 0 0 0 2px rgba(121, 255, 209, 0.04);
 }
-
-.contact-form textarea {
-  resize: vertical;
-  min-height: 98px;
-}
-
-.contact-form input::placeholder,
-.contact-form textarea::placeholder {
-  color: rgba(242, 245, 255, 0.52);
-}
-
-.honeypot {
-  display: none;
-}
-
-.reveal {
-  opacity: 0;
-  transform: translateY(16px);
-  transition: opacity 0.45s ease, transform 0.45s ease;
-}
-
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Split/letter reveal */
-.split-reveal {
-  display: inline-block;
-  white-space: pre-wrap;
-  overflow: visible;
-}
-.split-reveal .char {
-  display: inline-block;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.45s cubic-bezier(.2,.9,.3,1), transform 0.45s cubic-bezier(.2,.9,.3,1);
-  transition-delay: calc(var(--i) * 0.03s);
-}
-.split-reveal.visible .char {
-  opacity: 1;
+/* removed rotating ring from inputs per user request */
   transform: translateY(0);
 }
 
@@ -601,6 +560,24 @@ h3 {
   border-top-color: var(--accent-2);
   opacity: 0;
   transition: opacity 0.18s ease;
+}
+
+/* Rotating conic-gradient border for a button (subtle) */
+.btn.rotating {
+  position: relative;
+  border-radius: 3rem;
+  padding: 18px 44px;
+  background: linear-gradient(var(--btn-bg, #0b0d11), var(--btn-bg, #0b0d11)) padding-box,
+    conic-gradient(from var(--angle, 0deg), rgba(121,255,209,0.18), rgba(121,255,209,0.06) 25%, rgba(121,255,209,0.04) 40%, transparent 60%) border-box;
+  border: 2px solid transparent;
+  overflow: hidden;
+}
+.btn.rotating:active {
+  transform: translateY(1px);
+}
+.btn.rotating .btn-inner {
+  position: relative;
+  z-index: 2;
 }
 .btn.sending {
   cursor: progress;
@@ -677,19 +654,31 @@ h3 {
   pointer-events: none;
   z-index: 1;
   opacity: 0;
-  transition: opacity 260ms ease;
-  background: conic-gradient(from 0deg, #ff0, #f0f, #6af, #0ff, #0f6, #ff0);
-  filter: blur(8px) saturate(1.2);
+  transition: opacity 260ms ease, transform 320ms ease;
+  /* Subtle discrete glow spots in the accent color */
+  background:
+    radial-gradient(6px 6px at 18% 14%, rgba(121,255,209,0.95) 0%, rgba(121,255,209,0.0) 60%),
+    radial-gradient(5px 5px at 82% 22%, rgba(121,255,209,0.82) 0%, rgba(121,255,209,0.0) 60%),
+    radial-gradient(5px 5px at 88% 78%, rgba(121,255,209,0.7) 0%, rgba(121,255,209,0.0) 60%),
+    radial-gradient(4px 4px at 50% 92%, rgba(121,255,209,0.6) 0%, rgba(121,255,209,0.0) 60%),
+    radial-gradient(5px 5px at 12% 78%, rgba(121,255,209,0.5) 0%, rgba(121,255,209,0.0) 60%);
+  filter: blur(8px) saturate(1.05);
+  transform-origin: center;
+  transform: rotate(0deg);
+  animation: spin-glow 3.2s linear infinite;
   -webkit-mask: radial-gradient(closest-side, transparent 74%, black 76%);
   mask: radial-gradient(closest-side, transparent 74%, black 76%);
-  transform-origin: center;
-  animation: rainbow-rotate 3.2s linear infinite;
 }
 .input-wrap:focus-within::before {
   opacity: 1;
 }
 
 @keyframes rainbow-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes spin-glow {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
