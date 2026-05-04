@@ -511,7 +511,6 @@ h3 {
   border-color: var(--accent-2);
   animation: ledGlow 1.2s ease-in-out infinite;
 }
-}
 
 .contact-form textarea {
   resize: vertical;
@@ -633,6 +632,15 @@ h3 {
   font-size: clamp(1.2rem, 2.5vw, 1.9rem);
   letter-spacing: 0.05em;
   font-weight: 800;
+}
+
+@keyframes ledGlow {
+  0%, 100% { box-shadow: 0 0 0 8px rgba(121, 255, 209, 0.1), 0 0 12px rgba(121, 255, 209, 0.3); }
+  50% { box-shadow: 0 0 0 8px rgba(121, 255, 209, 0.15), 0 0 18px rgba(121, 255, 209, 0.5); }
+}
+
+@media (max-width: 900px) {
+  .signal-board {
     grid-template-columns: 1fr;
   }
 
