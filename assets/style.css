@@ -576,7 +576,7 @@ h3 {
   position: relative;
   border-radius: 3rem;
   padding: 18px 44px;
-  background: linear-gradient(var(--btn-bg, #0b0d11), var(--btn-bg, #0b0d11)) padding-box,
+  background: linear-gradient(135deg, rgba(18, 28, 44, 0.98), rgba(27, 40, 62, 0.98)) padding-box,
     conic-gradient(from var(--angle, 0deg), rgba(121,255,209,0.18), rgba(121,255,209,0.06) 25%, rgba(121,255,209,0.04) 40%, transparent 60%) border-box;
   border: 2px solid transparent;
   overflow: hidden;
@@ -664,16 +664,20 @@ h3 {
   content: "";
   position: absolute;
   inset: -6px;
-  border-radius: 14px;
+  border-radius: 15px;
   pointer-events: none;
   z-index: 1;
   opacity: 0;
-  transition: opacity 220ms ease, transform 320ms ease;
-  /* subtle single-color conic border blurred for glow */
-  background: linear-gradient(rgba(11,16,22,0.9), rgba(11,16,22,0.9)) padding-box,
-    conic-gradient(from var(--angle, 0deg), rgba(121,255,209,0.16), rgba(121,255,209,0.06) 30%, transparent 60%) border-box;
+  transition: opacity 180ms ease, transform 320ms ease;
+  /* slightly stronger rotating border so it reads like the send button */
+  background: linear-gradient(135deg, rgba(10, 15, 24, 0.96), rgba(10, 15, 24, 0.96)) padding-box,
+    conic-gradient(from var(--angle, 0deg), rgba(121,255,209,0.56), rgba(121,255,209,0.18) 18%, rgba(121,255,209,0.05) 40%, rgba(121,255,209,0.05) 60%, rgba(121,255,209,0.18) 82%, rgba(121,255,209,0.56)) border-box;
   border: 2px solid transparent;
-  filter: blur(6px) saturate(1.02);
+  box-shadow:
+    0 0 0 1px rgba(121,255,209,0.22),
+    0 0 22px rgba(121,255,209,0.18),
+    inset 0 0 0 1px rgba(255,255,255,0.02);
+  filter: blur(1.5px) saturate(1.12);
 }
 .input-wrap:focus-within::after {
   opacity: 1;
