@@ -1,99 +1,107 @@
-// LENIS
-const lenis = new Lenis({
-  duration: 1.1,
-  smoothWheel: true
-})
+(function () {
+  const header = document.querySelector('[data-header]');
+  const menuBtn = document.querySelector('[data-menu-btn]');
+  const nav = document.querySelector('[data-nav]');
 
-function raf(time) {
-  lenis.raf(time)
-  requestAnimationFrame(raf)
-}
-requestAnimationFrame(raf)
+  if (header && menuBtn && nav) {
+    menuBtn.addEventListener('click', function () {
+      header.classList.toggle('open');
+      menuBtn.setAttribute('aria-expanded', header.classList.contains('open') ? 'true' : 'false');
+    });
 
-// VANTA
-VANTA.NET({
-  el: "#vanta",
-  color: 0x00f5d4,
-  backgroundColor: 0x0a0a0a,
-  points: 10,
-  maxDistance: 22
-})
+    nav.querySelectorAll('a').forEach(function (link) {
+      link.addEventListener('click', function () {
+        header.classList.remove('open');
+        menuBtn.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
 
-// HERO ANIMATION
-gsap.from(".hero-title", {
-  y: 80,
-  opacity: 0,
-  duration: 1.2,
-  ease: "power4.out"
-})
+  const revealNodes = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(function (entries, observer) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
 
-gsap.from(".hero-sub", {
-  y: 40,
-  opacity: 0,
-  delay: 0.2,
-  duration: 1,
-  ease: "power4.out"
-})
+    revealNodes.forEach(function (node) { io.observe(node); });
+  } else {
+    revealNodes.forEach(function (node) { node.classList.add('visible'); });
+  }
 
-// SCROLL REVEAL
-gsap.from(".about-text", {
-  scrollTrigger: {
-    trigger: ".about-text",
-    start: "top 80%"
-  },
-  y: 40,
-  opacity: 0,
-  duration: 1,
-  ease: "power3.out"
-})
-const canvas = document.getElementById("three-canvas")
+  // Split text into characters for staggered reveal
+  function splitText(node) {
+    if (!node || node.dataset._splitDone) return;
+    const text = node.textContent || '';
+    if (!text.trim()) return;
+    node.dataset._splitDone = '1';
+    // preserve leading/trailing whitespace by trimming then re-adding space nodes
+    const chars = Array.from(text);
+    node.textContent = '';
+    chars.forEach(function (ch, i) {
+      const span = document.createElement('span');
+      span.className = 'char';
+      span.textContent = ch;
+      span.style.setProperty('--i', i);
+      node.appendChild(span);
+    });
+  }
 
-const scene = new THREE.Scene()
-const camera = new THREE.PerspectiveCamera(
-    45,
-    window.innerWidth / window.innerHeight,
-    0.1,
-    100
-)
-camera.position.z = 6
+  // Prepare split for elements marked with data-split or .split-reveal
+  const splitNodes = document.querySelectorAll('[data-split], .split-reveal');
+  splitNodes.forEach(function (n) { splitText(n); });
 
-const renderer = new THREE.WebGLRenderer({
-    canvas,
-    alpha: true,
-    antialias: true
-})
-renderer.setSize(window.innerWidth, window.innerHeight)
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+  // Animated send button behavior (show spinner briefly before submit)
+  const contactForm = document.querySelector('.contact-form');
+  if (contactForm) {
+    contactForm.addEventListener('submit', function (ev) {
+      const btn = contactForm.querySelector('.btn.primary');
+      if (!btn) return;
+      ev.preventDefault();
+      btn.disabled = true;
+      btn.classList.add('sending');
+      // small UX delay to show spinner, then submit
+      setTimeout(function () { contactForm.submit(); }, 350);
+    });
+  }
 
-const geometry = new THREE.IcosahedronGeometry(1.5, 0)
-const material = new THREE.MeshStandardMaterial({
-    color: 0x00f5d4,
-    wireframe: true
-})
+  const sentMessage = document.querySelector('[data-sent-message]');
+  if (sentMessage) {
+    const params = new URLSearchParams(window.location.search);
+    const sent = params.get('sent');
 
-const mesh = new THREE.Mesh(geometry, material)
-scene.add(mesh)
+    if (sent === '1' || sent === '0') {
+      const isSuccess = sent === '1';
+      const text = params.get('msg');
 
-const light = new THREE.DirectionalLight(0xffffff, 1)
-light.position.set(5, 5, 5)
-scene.add(light)
+      sentMessage.hidden = false;
+      sentMessage.textContent = text || (isSuccess
+        ? 'Danke, deine Nachricht wurde erfolgreich gesendet.'
+        : 'Beim Senden ist ein Fehler aufgetreten. Bitte versuche es erneut.');
+      sentMessage.classList.toggle('is-success', isSuccess);
+      sentMessage.classList.toggle('is-error', !isSuccess);
 
-function animate() {
-    mesh.rotation.x += 0.002
-    mesh.rotation.y += 0.003
-    renderer.render(scene, camera)
-    requestAnimationFrame(animate)
-}
-animate()
+      if (window.history && typeof window.history.replaceState === 'function') {
+        const cleanUrl = window.location.pathname + window.location.hash;
+        window.history.replaceState({}, document.title, cleanUrl);
+      }
+    }
+  }
 
-window.addEventListener("resize", () => {
-    camera.aspect = window.innerWidth / window.innerHeight
-    camera.updateProjectionMatrix()
-    renderer.setSize(window.innerWidth, window.innerHeight)
-})
-document.getElementById("logo").addEventListener("dblclick", () => {
-  document.documentElement.style.setProperty(
-    "--accent",
-    "#" + Math.floor(Math.random()*16777215).toString(16)
-  )
-})
+  // Rotating conic-gradient angle updater for button(s) with class `rotating`
+  (function startRotatingAngle(){
+    let angle = 0;
+    function step(){
+      angle = (angle + 0.6) % 360;
+      // set a global CSS variable so both buttons and input wrappers can use it
+      document.documentElement.style.setProperty('--angle', angle + 'deg');
+      requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  })();
+
+})();

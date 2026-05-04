@@ -1,34 +1,793 @@
-html, body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Inter', sans-serif;
-  background: #0a0a0a;
-  color: white;
+:root {
+  --bg: #070b12;
+  --bg-2: #0d1320;
+  --line: rgba(152, 176, 255, 0.22);
+  --text: #f2f5ff;
+  --muted: rgba(242, 245, 255, 0.7);
+  --accent: #98b0ff;
+  --accent-2: #79ffd1;
+  --panel: rgba(14, 20, 33, 0.7);
+  --shadow: 0 24px 50px rgba(0, 0, 0, 0.35);
 }
 
-#vanta-bg {
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  color: var(--text);
+  font-family: "Space Grotesk", "Segoe UI", sans-serif;
+  background:
+    radial-gradient(1200px 700px at 88% -10%, rgba(152, 176, 255, 0.22), transparent 55%),
+    radial-gradient(900px 550px at -10% 120%, rgba(121, 255, 209, 0.13), transparent 60%),
+    linear-gradient(180deg, #070b12, #050810 72%);
+}
+
+main {
+  width: 100%;
+  margin: 0;
+  display: grid;
+  gap: 0;
+}
+
+body::before {
+  content: "";
   position: fixed;
   inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background-image:
+    linear-gradient(rgba(152, 176, 255, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(152, 176, 255, 0.12) 1px, transparent 1px);
+  background-size: 32px 32px;
+  opacity: 0.24;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background-image:
+    linear-gradient(rgba(121, 255, 209, 0.11) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(121, 255, 209, 0.11) 1px, transparent 1px);
+  background-size: 128px 128px;
+  opacity: 0.2;
+}
+
+.noise,
+.scanline {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
   z-index: -1;
 }
 
-.hero {
-  min-height: 100vh;
+.noise {
+  opacity: 0.025;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.6) 0.45px, transparent 0.45px);
+  background-size: 3px 3px;
+}
+
+.scanline {
+  opacity: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(152, 176, 255, 0.12),
+    rgba(152, 176, 255, 0.12) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+}
+
+.topbar {
+  width: 100%;
+  margin: 0;
+  padding: 12px 18px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  border-left: 0;
+  border-right: 0;
+  background: rgba(6, 10, 18, 0.94);
+  backdrop-filter: none;
+  box-shadow: none;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  position: sticky;
+  top: 0;
+  z-index: 40;
+}
+
+.brand {
+  color: var(--text);
+  text-decoration: none;
+  font-family: "Outfit", sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: var(--accent-2);
+  box-shadow: 0 0 14px rgba(121, 255, 209, 0.7);
+}
+
+.nav {
+  display: flex;
+  gap: 6px;
+}
+
+.nav a {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.84rem;
+  letter-spacing: 0.08em;
+  padding: 8px 11px;
+  border-radius: 0;
+  border: 1px solid var(--line);
+  transition: 0.2s ease;
+}
+
+.nav a:hover {
+  color: var(--text);
+  border-color: rgba(121, 255, 209, 0.45);
+  background: rgba(121, 255, 209, 0.12);
+}
+
+.menu-btn {
+  display: none;
+  border: 1px solid var(--line);
+  background: rgba(152, 176, 255, 0.08);
+  color: var(--text);
+  border-radius: 0;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  padding: 8px 10px;
+}
+
+main {
+  width: 100%;
+  margin: 0;
+  display: grid;
+  gap: 0;
+}
+
+.hero {
+  height: 100vh;
+  width: 100%;
+  display: grid;
+  align-content: center;
+  justify-content: start;
+  padding: clamp(20px, 3vw, 50px) clamp(16px, 2.5vw, 54px);
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.hero,
+.panel {
+  border: 1px solid var(--line);
+  border-radius: 0;
+  border-left: 0;
+  border-right: 0;
+  border-top: 0;
+  background: linear-gradient(160deg, rgba(11, 16, 28, 0.88), rgba(8, 13, 24, 0.84));
+  backdrop-filter: none;
+  box-shadow: none;
+}
+
+.hero {
+  border-top: 0 !important;
+  border-bottom: none !important;
+  height: 100vh !important;
+  min-height: unset !important;
+}
+  backdrop-filter: none;
+  box-shadow: none;
+}
+
+.hero {
+  min-height: 70vh;
+  max-height: 100vh;
+  display: grid;
+  align-content: center;
+  padding: clamp(28px, 5vw, 80px) clamp(20px, 3.5vw, 64px);
+  overflow: hidden;
+}
+
+.eyebrow {
+  margin: 0;
+  color: rgba(242, 245, 255, 0.58);
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-family: "Outfit", sans-serif;
+}
+
+.hero h1 {
+  margin-top: 14px;
+  font-size: clamp(2.2rem, 6.5vw, 5.2rem);
+  line-height: 0.95;
+  letter-spacing: 0.01em;
+  font-weight: 800;
+}
+
+.hero h1 span,
+.cta h2 span {
+  display: block;
+  color: var(--accent-2);
+}
+
+.hero-copy {
+  margin: 20px 0 0;
+  max-width: 35ch;
+  color: var(--muted);
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  line-height: 1.6;
+}
+
+.hero-actions {
+  margin-top: 26px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
   justify-content: center;
+  text-decoration: none;
+  border-radius: 0;
+  border: 1px solid var(--line);
+  color: var(--text);
+  padding: 11px 16px;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  transition: 0.2s ease;
 }
 
-.title {
-  font-size: clamp(3rem, 8vw, 6rem);
-  line-height: 1;
+.btn.primary {
+  border-color: rgba(121, 255, 209, 0.45);
+  background: linear-gradient(130deg, rgba(121, 255, 209, 0.22), rgba(152, 176, 255, 0.18));
 }
 
-.title span {
-  color: #00f5d4;
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
 }
 
-.subtitle {
-  font-size: 1.2rem;
-  opacity: 0.8;
+.panel {
+  padding: clamp(40px, 4vw, 60px) clamp(24px, 4vw, 80px);
+}
+
+#work {
+  padding-top: clamp(12px, 2vw, 18px);
+}
+
+.signal-board {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.signal-tile {
+  border: 1px solid var(--line);
+  border-radius: 0;
+  background: rgba(7, 11, 20, 0.9);
+  padding: 24px;
+  transition: 0.3s ease;
+}
+
+.signal-tile span {
+  display: block;
+  color: rgba(242, 245, 255, 0.56);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.signal-tile strong {
+  display: block;
+  margin-top: 8px;
+  font-family: "Outfit", sans-serif;
+  font-size: clamp(1.3rem, 3vw, 2rem);
+  line-height: 1.1;
+  color: var(--accent-2);
+  font-weight: 700;
+}
+
+.signal-tile p {
+  margin: 12px 0 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.panel-head {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+
+.panel-head h2 {
+  font-size: clamp(1.2rem, 2.5vw, 1.9rem);
+  letter-spacing: 0.05em;
+  font-weight: 800;
+}
+
+.panel-head p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.96rem;
+}
+
+.process-inline {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: clamp(0.95rem, 1.5vw, 1.05rem);
+  line-height: 1.6;
+}
+
+.process-inline div {
+  color: var(--muted);
+}
+
+.process-inline strong {
+  color: var(--text);
+  font-weight: 700;
+  font-family: "Outfit", sans-serif;
+}
+
+.compare {
+  border: 1px solid var(--line);
+  border-radius: 0;
+  overflow: hidden;
+  background: rgba(8, 13, 22, 0.8);
+}
+
+.compare-toolbar {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.segmented {
+  display: flex;
+  gap: 6px;
+  padding: 4px;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  background: rgba(152, 176, 255, 0.08);
+}
+
+.seg-btn {
+  border: none;
+  border-radius: 0;
+  padding: 8px 12px;
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+}
+
+.seg-btn.active {
+  background: rgba(121, 255, 209, 0.2);
+  color: var(--text);
+}
+
+.compare-stage {
+  margin: 0;
+  height: clamp(200px, 34vw, 420px);
+  background: #060a12;
+  position: relative;
+  overflow: hidden;
+}
+
+.compare-stage img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  transform: scale(1.01);
+  transition: opacity 0.2s ease;
+}
+
+.compare-stage img.active {
+  opacity: 1;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.tile {
+  grid-column: span 6;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  padding: 28px;
+  background: var(--panel);
+  transition: 0.3s ease;
+}
+
+.tile h3 {
+  font-size: 1.1rem;
+  letter-spacing: 0.04em;
+  font-weight: 700;
+}
+
+.tile p {
+  margin: 12px 0 0;
+  color: var(--muted);
+  font-size: 0.96rem;
+  line-height: 1.6;
+}
+
+.steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 10px;
+}
+
+.steps li {
+  border: 1px solid var(--line);
+  border-radius: 0;
+  padding: 12px;
+  background: var(--panel);
+  display: flex;
+  gap: 12px;
+}
+
+.steps li span {
+  font-family: "Outfit", sans-serif;
+  font-size: 1.45rem;
+  color: var(--accent);
+}
+
+.steps li p {
+  margin: 4px 0 0;
+  color: var(--muted);
+}
+
+.cta h2 {
+  margin-top: 12px;
+  font-size: clamp(1.8rem, 5vw, 3.2rem);
+  line-height: 0.98;
+  font-weight: 800;
+}
+
+.cta {
+  text-align: center;
+  display: grid;
+  justify-items: center;
+}
+
+.contact-form {
+  margin-top: 32px;
+  max-width: 620px;
+  width: min(620px, 100%);
+  display: grid;
+  gap: 12px;
+}
+
+/* hide honeypot field from users but keep it in the DOM for bots */
+.honeypot {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.flash {
+  margin: 0 0 14px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  background: rgba(8, 13, 22, 0.85);
+  color: var(--text);
+  font-size: 0.9rem;
+}
+
+.flash.is-success {
+  border-color: rgba(121, 255, 209, 0.45);
+  background: rgba(121, 255, 209, 0.12);
+}
+
+.flash.is-error {
+  border-color: rgba(255, 134, 134, 0.5);
+  background: rgba(255, 134, 134, 0.12);
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  background: rgba(8, 13, 22, 0.85);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.88rem;
+  letter-spacing: 0.05em;
+  padding: 16px 14px;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: none;
+  border-color: var(--accent-2);
+  box-shadow: 0 0 0 2px rgba(121, 255, 209, 0.04);
+}
+/* removed rotating ring from inputs per user request */
+
+/* Button sending animation */
+.btn {
+  position: relative;
+  overflow: hidden;
+}
+.btn .btn-spinner {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.12);
+  border-top-color: var(--accent-2);
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+
+/* Rotating conic-gradient border for a button (subtle) */
+.btn.rotating {
+  position: relative;
+  border-radius: 3rem;
+  padding: 18px 44px;
+  background: linear-gradient(135deg, rgba(18, 28, 44, 0.98), rgba(27, 40, 62, 0.98)) padding-box,
+    conic-gradient(from var(--angle, 0deg), rgba(121,255,209,0.18), rgba(121,255,209,0.06) 25%, rgba(121,255,209,0.04) 40%, transparent 60%) border-box;
+  border: 2px solid transparent;
+  overflow: hidden;
+  cursor: pointer;
+  color: var(--text);
+  box-shadow: 0 6px 18px rgba(7,11,20,0.6);
+}
+.btn.rotating:active {
+  transform: translateY(1px);
+}
+.btn.rotating .btn-inner {
+  position: relative;
+  z-index: 2;
+}
+.btn.sending {
+  cursor: progress;
+}
+.btn.sending .btn-spinner {
+  opacity: 1;
+  animation: spin 0.9s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: translateY(-50%) rotate(0deg); }
+  to { transform: translateY(-50%) rotate(360deg); }
+}
+
+@keyframes ledArc {
+  0% {
+    box-shadow:
+      8px 0 0 0 rgba(121, 255, 209, 0.7),
+      5.6px 5.6px 0 0 rgba(121, 255, 209, 0.4),
+      0 8px 0 0 rgba(121, 255, 209, 0.2),
+      -5.6px 5.6px 0 0 rgba(121, 255, 209, 0.15),
+      -8px 0 0 0 rgba(121, 255, 209, 0.1);
+  }
+  25% {
+    box-shadow:
+      5.6px 5.6px 0 0 rgba(121, 255, 209, 0.7),
+      0 8px 0 0 rgba(121, 255, 209, 0.4),
+      -5.6px 5.6px 0 0 rgba(121, 255, 209, 0.2),
+      -8px 0 0 0 rgba(121, 255, 209, 0.15),
+      -5.6px -5.6px 0 0 rgba(121, 255, 209, 0.1);
+  }
+  50% {
+    box-shadow:
+      0 8px 0 0 rgba(121, 255, 209, 0.7),
+      -5.6px 5.6px 0 0 rgba(121, 255, 209, 0.4),
+      -8px 0 0 0 rgba(121, 255, 209, 0.2),
+      -5.6px -5.6px 0 0 rgba(121, 255, 209, 0.15),
+      0 -8px 0 0 rgba(121, 255, 209, 0.1);
+  }
+  75% {
+    box-shadow:
+      -5.6px 5.6px 0 0 rgba(121, 255, 209, 0.7),
+      -8px 0 0 0 rgba(121, 255, 209, 0.4),
+      -5.6px -5.6px 0 0 rgba(121, 255, 209, 0.2),
+      0 -8px 0 0 rgba(121, 255, 209, 0.15),
+      5.6px -5.6px 0 0 rgba(121, 255, 209, 0.1);
+  }
+  100% {
+    box-shadow:
+      8px 0 0 0 rgba(121, 255, 209, 0.7),
+      5.6px 5.6px 0 0 rgba(121, 255, 209, 0.4),
+      0 8px 0 0 rgba(121, 255, 209, 0.2),
+      -5.6px 5.6px 0 0 rgba(121, 255, 209, 0.15),
+      -8px 0 0 0 rgba(121, 255, 209, 0.1);
+  }
+}
+
+/* subtle rotating border for focused inputs (uses global --angle) */
+.input-wrap {
+  position: relative;
+  display: block;
+  border-radius: 12px;
+}
+.input-wrap input,
+.input-wrap textarea {
+  border-radius: 10px;
+  background-clip: padding-box;
+  position: relative;
+  z-index: 2;
+}
+.input-wrap::after {
+  content: "";
+  position: absolute;
+  inset: -6px;
+  border-radius: 15px;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 180ms ease, transform 320ms ease;
+  /* slightly stronger rotating border so it reads like the send button */
+  background: linear-gradient(135deg, rgba(10, 15, 24, 0.96), rgba(10, 15, 24, 0.96)) padding-box,
+    conic-gradient(from var(--angle, 0deg), rgba(121,255,209,0.56), rgba(121,255,209,0.18) 18%, rgba(121,255,209,0.05) 40%, rgba(121,255,209,0.05) 60%, rgba(121,255,209,0.18) 82%, rgba(121,255,209,0.56)) border-box;
+  border: 2px solid transparent;
+  box-shadow:
+    0 0 0 1px rgba(121,255,209,0.22),
+    0 0 22px rgba(121,255,209,0.18),
+    inset 0 0 0 1px rgba(255,255,255,0.02);
+  filter: blur(1.5px) saturate(1.12);
+}
+.input-wrap:focus-within::after {
+  opacity: 1;
+}
+
+@keyframes rainbow-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes spin-glow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ensure input content stays above the ring */
+.input-wrap > input,
+.input-wrap > textarea {
+  position: relative;
+  z-index: 2;
+}
+
+/* Slight freedom: remove rigid borders for hero subtext */
+.hero .hero-sub {
+  display: block;
+  margin-top: 6px;
+  color: var(--accent-2);
+  font-weight: 600;
+}
+
+/* Showcase */
+
+
+/* Process centering + subtle divider */
+.process-inline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  line-height: 1.6;
+}
+
+.process-inline div {
+  color: var(--muted);
+}
+
+.process-inline strong {
+  color: var(--text);
+  font-weight: 700;
+  font-family: "Outfit", sans-serif;
+}
+
+.panel-head {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+
+.panel-head h2 {
+  font-size: clamp(1.2rem, 2.5vw, 1.9rem);
+  letter-spacing: 0.05em;
+  font-weight: 800;
+}
+
+@media (max-width: 900px) {
+  .signal-board {
+    grid-template-columns: 1fr;
+  }
+
+  .tile {
+    grid-column: span 12;
+  }
+}
+
+@media (max-width: 780px) {
+  .menu-btn {
+    display: inline-block;
+  }
+
+  .nav {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    padding: 10px;
+    border: 1px solid var(--line);
+    border-radius: 0;
+    background: rgba(8, 12, 20, 0.96);
+    display: grid;
+    gap: 6px;
+    opacity: 0;
+    pointer-events: none;
+    transform: scaleY(0.9);
+    transform-origin: top;
+    transition: 0.2s ease;
+  }
+
+  .topbar.open .nav {
+    opacity: 1;
+    pointer-events: auto;
+    transform: scaleY(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .btn,
+  .compare-stage img,
+  .nav {
+    transition: none;
+  }
 }
