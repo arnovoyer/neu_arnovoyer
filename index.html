@@ -55,7 +55,7 @@
         <article class="signal-tile">
           <span>VISUELL</span>
           <strong>High Contrast</strong>
-          <p>Klare, präzise Interfaces mit maximaler Lesbarkeit.</p>
+          <p>Klare, präzise Interfaces mit maeximaler Lesbarkeit.</p>
         </article>
         <article class="signal-tile">
           <span>STRUCTURE</span>
@@ -106,9 +106,15 @@
         <input type="hidden" name="source" value="startseite">
         <input type="text" name="_formsubmit_id" value="" tabindex="-1" autocomplete="off" class="honeypot">
 
-        <input type="text" name="name" placeholder="NAME" required>
-        <input type="email" name="email" placeholder="E-MAIL" required>
-        <textarea name="message" rows="3" placeholder="MESSAGE" required></textarea>
+        <div class="input-wrap">
+          <input type="text" name="name" placeholder="NAME" required>
+        </div>
+        <div class="input-wrap">
+          <input type="email" name="email" placeholder="E-MAIL" required>
+        </div>
+        <div class="input-wrap">
+          <textarea name="message" rows="3" placeholder="MESSAGE" required></textarea>
+        </div>
 
         <button class="btn primary" type="submit">SEND</button>
       </form>

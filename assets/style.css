@@ -30,6 +30,13 @@ body {
     linear-gradient(180deg, #070b12, #050810 72%);
 }
 
+main {
+  width: 100%;
+  margin: 0;
+  display: grid;
+  gap: 0;
+}
+
 body::before {
   content: "";
   position: fixed;
@@ -160,6 +167,17 @@ main {
   gap: 0;
 }
 
+.hero {
+  height: 100vh;
+  width: 100%;
+  display: grid;
+  align-content: center;
+  justify-content: start;
+  padding: clamp(20px, 3vw, 50px) clamp(16px, 2.5vw, 54px);
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
 .hero,
 .panel {
   border: 1px solid var(--line);
@@ -168,6 +186,16 @@ main {
   border-right: 0;
   border-top: 0;
   background: linear-gradient(160deg, rgba(11, 16, 28, 0.88), rgba(8, 13, 24, 0.84));
+  backdrop-filter: none;
+  box-shadow: none;
+}
+
+.hero {
+  border-top: 0 !important;
+  border-bottom: none !important;
+  height: 100vh !important;
+  min-height: unset !important;
+}
   backdrop-filter: none;
   box-shadow: none;
 }
@@ -197,7 +225,7 @@ h3 {
 
 .hero h1 {
   margin-top: 14px;
-  font-size: clamp(2.8rem, 8vw, 6.2rem);
+  font-size: clamp(2.2rem, 6.5vw, 5.2rem);
   line-height: 0.95;
   letter-spacing: 0.01em;
   font-weight: 800;
@@ -509,7 +537,8 @@ h3 {
 .contact-form textarea:focus {
   outline: none;
   border-color: var(--accent-2);
-  animation: ledGlow 1.2s ease-in-out infinite;
+  box-shadow: 0 0 0 3px rgba(121, 255, 209, 0.08);
+  animation: ledArc 2.4s linear infinite;
 }
 
 .contact-form textarea {
@@ -586,9 +615,90 @@ h3 {
   to { transform: translateY(-50%) rotate(360deg); }
 }
 
-@keyframes ledGlow {
-  0%, 100% { box-shadow: 0 0 0 8px rgba(121, 255, 209, 0.1), 0 0 12px rgba(121, 255, 209, 0.3); }
-  50% { box-shadow: 0 0 0 8px rgba(121, 255, 209, 0.15), 0 0 18px rgba(121, 255, 209, 0.5); }
+@keyframes ledArc {
+  0% {
+    box-shadow:
+      8px 0 0 0 rgba(121, 255, 209, 0.7),
+      5.6px 5.6px 0 0 rgba(121, 255, 209, 0.4),
+      0 8px 0 0 rgba(121, 255, 209, 0.2),
+      -5.6px 5.6px 0 0 rgba(121, 255, 209, 0.15),
+      -8px 0 0 0 rgba(121, 255, 209, 0.1);
+  }
+  25% {
+    box-shadow:
+      5.6px 5.6px 0 0 rgba(121, 255, 209, 0.7),
+      0 8px 0 0 rgba(121, 255, 209, 0.4),
+      -5.6px 5.6px 0 0 rgba(121, 255, 209, 0.2),
+      -8px 0 0 0 rgba(121, 255, 209, 0.15),
+      -5.6px -5.6px 0 0 rgba(121, 255, 209, 0.1);
+  }
+  50% {
+    box-shadow:
+      0 8px 0 0 rgba(121, 255, 209, 0.7),
+      -5.6px 5.6px 0 0 rgba(121, 255, 209, 0.4),
+      -8px 0 0 0 rgba(121, 255, 209, 0.2),
+      -5.6px -5.6px 0 0 rgba(121, 255, 209, 0.15),
+      0 -8px 0 0 rgba(121, 255, 209, 0.1);
+  }
+  75% {
+    box-shadow:
+      -5.6px 5.6px 0 0 rgba(121, 255, 209, 0.7),
+      -8px 0 0 0 rgba(121, 255, 209, 0.4),
+      -5.6px -5.6px 0 0 rgba(121, 255, 209, 0.2),
+      0 -8px 0 0 rgba(121, 255, 209, 0.15),
+      5.6px -5.6px 0 0 rgba(121, 255, 209, 0.1);
+  }
+  100% {
+    box-shadow:
+      8px 0 0 0 rgba(121, 255, 209, 0.7),
+      5.6px 5.6px 0 0 rgba(121, 255, 209, 0.4),
+      0 8px 0 0 rgba(121, 255, 209, 0.2),
+      -5.6px 5.6px 0 0 rgba(121, 255, 209, 0.15),
+      -8px 0 0 0 rgba(121, 255, 209, 0.1);
+  }
+}
+
+/* Rotating rainbow ring around focused input - using wrapper */
+.input-wrap {
+  position: relative;
+  display: block;
+  border-radius: 12px;
+}
+.input-wrap input,
+.input-wrap textarea {
+  border-radius: 10px;
+  background-clip: padding-box;
+}
+.input-wrap::before {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: 16px;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 260ms ease;
+  background: conic-gradient(from 0deg, #ff0, #f0f, #6af, #0ff, #0f6, #ff0);
+  filter: blur(8px) saturate(1.2);
+  -webkit-mask: radial-gradient(closest-side, transparent 74%, black 76%);
+  mask: radial-gradient(closest-side, transparent 74%, black 76%);
+  transform-origin: center;
+  animation: rainbow-rotate 3.2s linear infinite;
+}
+.input-wrap:focus-within::before {
+  opacity: 1;
+}
+
+@keyframes rainbow-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* ensure input content stays above the ring */
+.input-wrap > input,
+.input-wrap > textarea {
+  position: relative;
+  z-index: 2;
 }
 
 /* Slight freedom: remove rigid borders for hero subtext */
@@ -632,11 +742,6 @@ h3 {
   font-size: clamp(1.2rem, 2.5vw, 1.9rem);
   letter-spacing: 0.05em;
   font-weight: 800;
-}
-
-@keyframes ledGlow {
-  0%, 100% { box-shadow: 0 0 0 8px rgba(121, 255, 209, 0.1), 0 0 12px rgba(121, 255, 209, 0.3); }
-  50% { box-shadow: 0 0 0 8px rgba(121, 255, 209, 0.15), 0 0 18px rgba(121, 255, 209, 0.5); }
 }
 
 @media (max-width: 900px) {
