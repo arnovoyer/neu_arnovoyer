@@ -173,10 +173,12 @@ main {
 }
 
 .hero {
-  min-height: 88vh;
+  min-height: 70vh;
+  max-height: 100vh;
   display: grid;
   align-content: center;
-  padding: clamp(40px, 6vw, 100px) clamp(24px, 4vw, 80px);
+  padding: clamp(28px, 5vw, 80px) clamp(20px, 3.5vw, 64px);
+  overflow: hidden;
 }
 
 .eyebrow {
@@ -195,8 +197,8 @@ h3 {
 
 .hero h1 {
   margin-top: 14px;
-  font-size: clamp(3rem, 10vw, 8.2rem);
-  line-height: 0.93;
+  font-size: clamp(2.8rem, 8vw, 6.2rem);
+  line-height: 0.95;
   letter-spacing: 0.01em;
   font-weight: 800;
 }
@@ -499,6 +501,16 @@ h3 {
   font-size: 0.88rem;
   letter-spacing: 0.05em;
   padding: 16px 14px;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: none;
+  border-color: var(--accent-2);
+  animation: ledGlow 1.2s ease-in-out infinite;
+}
 }
 
 .contact-form textarea {
@@ -575,6 +587,11 @@ h3 {
   to { transform: translateY(-50%) rotate(360deg); }
 }
 
+@keyframes ledGlow {
+  0%, 100% { box-shadow: 0 0 0 8px rgba(121, 255, 209, 0.1), 0 0 12px rgba(121, 255, 209, 0.3); }
+  50% { box-shadow: 0 0 0 8px rgba(121, 255, 209, 0.15), 0 0 18px rgba(121, 255, 209, 0.5); }
+}
+
 /* Slight freedom: remove rigid borders for hero subtext */
 .hero .hero-sub {
   display: block;
@@ -584,21 +601,38 @@ h3 {
 }
 
 /* Showcase */
-.showcase-stage {
-  min-height: 44vh;
+
+
+/* Process centering + subtle divider */
+.process-inline {
   display: flex;
   align-items: center;
-  padding: 28px 12px;
-}
-.free-paragraph {
-  font-size: clamp(1.1rem, 2.6vw, 1.6rem);
-  max-width: 72ch;
-  color: var(--muted);
-  line-height: 1.8;
+  justify-content: center;
+  gap: 18px;
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  line-height: 1.6;
 }
 
-@media (max-width: 900px) {
-  .signal-board {
+.process-inline div {
+  color: var(--muted);
+}
+
+.process-inline strong {
+  color: var(--text);
+  font-weight: 700;
+  font-family: "Outfit", sans-serif;
+}
+
+.panel-head {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+
+.panel-head h2 {
+  font-size: clamp(1.2rem, 2.5vw, 1.9rem);
+  letter-spacing: 0.05em;
+  font-weight: 800;
     grid-template-columns: 1fr;
   }
 
