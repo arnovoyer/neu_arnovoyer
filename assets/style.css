@@ -174,6 +174,7 @@ main {
   align-content: center;
   justify-content: start;
   padding: clamp(20px, 3vw, 50px) clamp(16px, 2.5vw, 54px);
+  position: relative;
   overflow: hidden;
   box-sizing: border-box;
 }
@@ -248,7 +249,6 @@ main {
   border-bottom: none !important;
   height: 100vh !important;
   min-height: unset !important;
-}
   backdrop-filter: none;
   box-shadow: none;
 }
@@ -377,6 +377,7 @@ h3 {
   display: block;
   margin-top: 8px;
   font-family: "Outfit", sans-serif;
+}
 
 .btn.primary {
   border-color: rgba(121,255,209,0.18);
@@ -581,26 +582,27 @@ h3 {
 /* CONTACT FORM SECTION */
 .contact-form {
   margin-top: 32px;
-  max-width: 520px;
-  width: 100%;
+  width: min(560px, 100%);
+  max-width: 560px;
   display: grid;
   gap: 16px;
   position: relative;
   z-index: 1;
+  justify-self: center;
   margin-left: auto;
   margin-right: auto;
 }
 
-/* FORM INPUTS - explicit overrides */
-input[name="name"],
-input[name="email"],
-textarea[name="message"] {
+/* FORM INPUTS - direct selectors for index.html structure */
+.contact-form .input-wrap > input,
+.contact-form .input-wrap > textarea {
   width: 100%;
+  display: block;
   padding: 12px 14px;
-  border: 1px solid rgba(121, 255, 209, 0.25);
-  border-radius: 8px;
-  background-color: rgba(8, 12, 18, 0.96);
-  color: var(--text);
+  border: 1px solid rgba(121, 255, 209, 0.25) !important;
+  border-radius: 10px;
+  background: rgba(8, 12, 18, 0.96) !important;
+  color: var(--text) !important;
   font-size: 0.95rem;
   font-family: "Space Grotesk", -apple-system, sans-serif;
   font-weight: 400;
@@ -610,18 +612,17 @@ textarea[name="message"] {
   appearance: none;
   transition: all 0.18s ease;
   outline: none;
+  margin: 0;
 }
 
-input[name="name"]::placeholder,
-input[name="email"]::placeholder,
-textarea[name="message"]::placeholder {
+.contact-form .input-wrap > input::placeholder,
+.contact-form .input-wrap > textarea::placeholder {
   color: rgba(242, 245, 255, 0.52);
   font-weight: 400;
 }
 
-input[name="name"]:focus,
-input[name="email"]:focus,
-textarea[name="message"]:focus {
+.contact-form .input-wrap > input:focus,
+.contact-form .input-wrap > textarea:focus {
   border-color: rgba(121, 255, 209, 0.54);
   background-color: rgba(8, 12, 18, 0.98);
   box-shadow: 0 0 0 3px rgba(121, 255, 209, 0.15);
@@ -636,6 +637,16 @@ textarea[name="message"]:focus {
   overflow: hidden;
   opacity: 0;
   pointer-events: none;
+}
+
+/* extra-safe honeypot hiding in case class is altered */
+.contact-form input[name="_formsubmit_id"] {
+  position: absolute !important;
+  left: -9999px !important;
+  width: 1px !important;
+  height: 1px !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
 
 .flash {
@@ -774,15 +785,19 @@ textarea[name="message"]:focus {
   z-index: 1;
   opacity: 0;
   transition: opacity 150ms ease;
-  background: conic-gradient(
-    from var(--angle, 0deg),
-    rgba(121, 255, 209, 0.6),
-    rgba(121, 255, 209, 0.2) 25%,
-    rgba(121, 255, 209, 0.05) 50%,
-    rgba(121, 255, 209, 0.2) 75%,
-    rgba(121, 255, 209, 0.6)
-  );
-  border-radius: 12px;
+  background:
+    linear-gradient(135deg, rgba(8, 12, 18, 0.98), rgba(8, 12, 18, 0.98)) padding-box,
+    conic-gradient(
+      from var(--angle, 0deg),
+      rgba(121, 255, 209, 0.5),
+      rgba(121, 255, 209, 0.16) 22%,
+      rgba(121, 255, 209, 0.05) 45%,
+      rgba(121, 255, 209, 0.05) 55%,
+      rgba(121, 255, 209, 0.16) 78%,
+      rgba(121, 255, 209, 0.5)
+    ) border-box;
+  border: 1.5px solid transparent;
+  filter: saturate(1.05);
 }
 
 .input-wrap:focus-within::before {
