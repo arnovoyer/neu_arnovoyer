@@ -17,9 +17,17 @@
   <main class="error-page">
     <div class="error-card">
       <h1 class="error-h">401 — Zugriff verweigert</h1>
-      <p class="error-sub">Du hast keine Berechtigung, diese Seite anzusehen.</p>
+      <p class="error-sub">Diese Seite erfordert eine Berechtigung. Du kannst versuchen, dich anzumelden oder den Betreiber kontaktieren.</p>
+      <div style="margin:18px 0">
+        <svg width="160" height="120" viewBox="0 0 160 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="12" y="12" width="136" height="96" rx="10" fill="rgba(152,176,255,0.03)" stroke="rgba(152,176,255,0.06)"/>
+          <path d="M80 44v12" stroke="rgba(242,245,255,0.9)" stroke-width="3" stroke-linecap="round"/>
+          <circle cx="80" cy="78" r="8" fill="rgba(152,176,255,0.12)"></circle>
+        </svg>
+      </div>
       <p>
-        <a class="btn primary" href="index.html">Zurück zur Startseite</a>
+        <a class="btn primary" href="login.php">Anmelden</a>
+        <a class="btn" href="index.html" style="margin-left:12px">Zurück</a>
       </p>
     </div>
   </main>

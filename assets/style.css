@@ -178,6 +178,59 @@ main {
   box-sizing: border-box;
 }
 
+/* Brand mark and hero enhancements for memorability */
+.hero-inner {
+  position: relative;
+  max-width: 1060px;
+}
+.brand-mark {
+  width: 74px;
+  height: 74px;
+  border-radius: 18px;
+  background: conic-gradient(from 90deg, rgba(121,255,209,0.95), rgba(152,176,255,0.9));
+  box-shadow: 0 10px 40px rgba(121,255,209,0.12), inset 0 -6px 18px rgba(0,0,0,0.25);
+  margin-bottom: 18px;
+  transform: translateZ(0);
+}
+
+.hero h1 {
+  margin-top: 6px;
+  font-size: clamp(2.6rem, 7.2vw, 6.2rem);
+  line-height: 0.92;
+  letter-spacing: -0.01em;
+  font-weight: 900;
+  text-wrap: balance;
+}
+.hero .tagline {
+  margin-top: 12px;
+  color: rgba(242,245,255,0.6);
+  font-size: 0.95rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* subtle vertical sweep for hero - modern accent */
+.hero::before {
+  content: "";
+  position: absolute;
+  left: 48%;
+  top: -40%;
+  width: 38px;
+  height: 240%;
+  background: linear-gradient(180deg, rgba(121,255,209,0.02), rgba(121,255,209,0.12), rgba(121,255,209,0.02));
+  transform: rotate(10deg);
+  filter: blur(26px) saturate(1.1);
+  opacity: 0.32;
+  animation: hero-sweep 6s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes hero-sweep {
+  0% { transform: translateX(-6%) rotate(10deg); opacity: 0.18; }
+  50% { transform: translateX(6%) rotate(12deg); opacity: 0.32; }
+  100% { transform: translateX(-6%) rotate(10deg); opacity: 0.18; }
+}
+
 .hero,
 .panel {
   border: 1px solid var(--line);
