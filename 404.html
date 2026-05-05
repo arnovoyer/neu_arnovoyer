@@ -7,29 +7,22 @@
   <link rel="stylesheet" href="assets/style.css">
   <meta name="theme-color" content="#070b12">
   <style>
-    .error-page{min-height:100vh;display:grid;place-items:center;padding:40px;text-align:center}
-    .error-card{max-width:820px;padding:36px;border-radius:14px;background:linear-gradient(180deg, rgba(8,12,18,0.9), rgba(10,14,20,0.92));box-shadow:0 24px 48px rgba(0,0,0,0.5)}
-    .error-h{font-size:clamp(2.4rem,6vw,4rem);margin:0 0 12px}
-    .error-sub{color:var(--muted);margin-bottom:22px}
+    .error-page{min-height:100vh;display:grid;place-items:center;padding:clamp(30px,5vw,60px);text-align:center}
+    .error-card{max-width:720px;padding:clamp(40px,6vw,64px);border-radius:18px;border:1px solid rgba(121,255,209,0.08);background:linear-gradient(160deg, rgba(8,13,24,0.92), rgba(12,18,32,0.96));box-shadow:0 32px 64px rgba(0,0,0,0.4),0 0 1px rgba(121,255,209,0.1) inset}
+    .error-h{font-size:clamp(2.2rem,5.5vw,3.8rem);margin:0 0 16px;font-weight:900;letter-spacing:-0.01em}
+    .error-sub{color:var(--muted);margin-bottom:32px;font-size:1.05rem;line-height:1.6}
+    .error-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
   </style>
 </head>
 <body>
   <main class="error-page">
     <div class="error-card">
-      <h1 class="error-h">404 — Seite nicht gefunden</h1>
-      <p class="error-sub">Ups — hier gibt es nichts. Vielleicht hast du einen veralteten Link.</p>
-      <div style="margin:18px 0">
-        <!-- simple decorative SVG -->
-        <svg width="160" height="120" viewBox="0 0 160 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <rect x="12" y="12" width="136" height="96" rx="10" fill="rgba(121,255,209,0.04)" stroke="rgba(121,255,209,0.08)"/>
-          <circle cx="80" cy="60" r="18" fill="rgba(121,255,209,0.12)"></circle>
-          <text x="80" y="68" text-anchor="middle" font-family="Outfit, sans-serif" font-size="18" fill="rgba(242,245,255,0.9)">404</text>
-        </svg>
-      </div>
-      <p>
+      <h1 class="error-h">404</h1>
+      <p class="error-sub">Die angeforderte Seite existiert nicht oder wurde entfernt.</p>
+      <div class="error-actions" style="margin-top:28px">
         <a class="btn primary" href="index.html">Zurück zur Startseite</a>
-        <a class="btn" href="contact-send.php" style="margin-left:12px">Kontakt</a>
-      </p>
+        <a class="btn" href="index.html#contact">Nachricht senden</a>
+      </div>
     </div>
   </main>
   <script src="assets/main.js"></script>
