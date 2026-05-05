@@ -578,14 +578,53 @@ h3 {
   z-index: 0;
 }
 
+/* CONTACT FORM SECTION */
 .contact-form {
   margin-top: 32px;
-  max-width: 480px;
+  max-width: 520px;
   width: 100%;
   display: grid;
-  gap: 14px;
+  gap: 16px;
   position: relative;
   z-index: 1;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* FORM INPUTS - explicit overrides */
+input[name="name"],
+input[name="email"],
+textarea[name="message"] {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid rgba(121, 255, 209, 0.25);
+  border-radius: 8px;
+  background-color: rgba(8, 12, 18, 0.96);
+  color: var(--text);
+  font-size: 0.95rem;
+  font-family: "Space Grotesk", -apple-system, sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: all 0.18s ease;
+  outline: none;
+}
+
+input[name="name"]::placeholder,
+input[name="email"]::placeholder,
+textarea[name="message"]::placeholder {
+  color: rgba(242, 245, 255, 0.52);
+  font-weight: 400;
+}
+
+input[name="name"]:focus,
+input[name="email"]:focus,
+textarea[name="message"]:focus {
+  border-color: rgba(121, 255, 209, 0.54);
+  background-color: rgba(8, 12, 18, 0.98);
+  box-shadow: 0 0 0 3px rgba(121, 255, 209, 0.15);
 }
 
 /* hide honeypot field from users but keep it in the DOM for bots */
@@ -616,36 +655,6 @@ h3 {
 .flash.is-error {
   border-color: rgba(255, 134, 134, 0.5);
   background: rgba(255, 134, 134, 0.12);
-}
-
-.contact-form input,
-.contact-form textarea {
-  width: 100%;
-  display: block;
-  border: 1px solid rgba(121,255,209,0.15);
-  border-radius: 10px;
-  background: rgba(8, 12, 18, 0.88);
-  color: var(--text);
-  font-family: "Space Grotesk", sans-serif;
-  font-size: 0.9rem;
-  letter-spacing: 0.03em;
-  padding: 14px 16px;
-  position: relative;
-  transition: all 0.2s ease;
-  box-sizing: border-box;
-}
-
-.contact-form input::placeholder,
-.contact-form textarea::placeholder {
-  color: rgba(242,245,255,0.42);
-}
-
-.contact-form input:focus,
-.contact-form textarea:focus {
-  outline: none;
-  border-color: var(--accent-2);
-  background: rgba(8, 12, 18, 0.95);
-  box-shadow: 0 0 0 3px rgba(121,255,209,0.12), 0 4px 12px rgba(121,255,209,0.08);
 }
 
 /* Button sending animation */
@@ -747,31 +756,36 @@ h3 {
 .input-wrap {
   position: relative;
   display: block;
-  border-radius: 12px;
 }
+
 .input-wrap input,
 .input-wrap textarea {
-  border-radius: 10px;
-  background-clip: padding-box;
   position: relative;
-  z-index: 2;
+  z-index: 3;
 }
-.input-wrap::after {
+
+/* Animated border ring on focus */
+.input-wrap::before {
   content: "";
   position: absolute;
-  inset: -4px;
+  inset: -2px;
   border-radius: 12px;
   pointer-events: none;
   z-index: 1;
   opacity: 0;
-  transition: opacity 160ms ease;
-  background: linear-gradient(135deg, rgba(10, 15, 24, 0.94), rgba(10, 15, 24, 0.94)) padding-box,
-    conic-gradient(from var(--angle, 0deg), rgba(121,255,209,0.42), rgba(121,255,209,0.15) 20%, rgba(121,255,209,0.04) 45%, rgba(121,255,209,0.04) 55%, rgba(121,255,209,0.15) 80%, rgba(121,255,209,0.42)) border-box;
-  border: 1.5px solid transparent;
-  box-shadow: 0 0 16px rgba(121,255,209,0.12);
-  filter: blur(1px) saturate(1.05);
+  transition: opacity 150ms ease;
+  background: conic-gradient(
+    from var(--angle, 0deg),
+    rgba(121, 255, 209, 0.6),
+    rgba(121, 255, 209, 0.2) 25%,
+    rgba(121, 255, 209, 0.05) 50%,
+    rgba(121, 255, 209, 0.2) 75%,
+    rgba(121, 255, 209, 0.6)
+  );
+  border-radius: 12px;
 }
-.input-wrap:focus-within::after {
+
+.input-wrap:focus-within::before {
   opacity: 1;
 }
 
@@ -783,13 +797,6 @@ h3 {
 @keyframes spin-glow {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
-}
-
-/* ensure input content stays above the ring */
-.input-wrap > input,
-.input-wrap > textarea {
-  position: relative;
-  z-index: 2;
 }
 
 /* Slight freedom: remove rigid borders for hero subtext */
