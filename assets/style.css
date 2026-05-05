@@ -561,6 +561,12 @@ h3 {
   display: grid;
   justify-items: center;
   position: relative;
+  background: 
+    linear-gradient(0deg, rgba(121,255,209,0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(121,255,209,0.08) 1px, transparent 1px),
+    linear-gradient(160deg, rgba(14,20,33,0.85), rgba(8,13,24,0.78));
+  background-size: 48px 48px, 48px 48px, 100% 100%;
+  background-attachment: fixed, fixed, scroll;
 }
 
 .cta::before {
@@ -639,9 +645,8 @@ h3 {
   outline: none;
   border-color: var(--accent-2);
   background: rgba(8, 12, 18, 0.95);
-  box-shadow: 0 0 0 3px rgba(121,255,209,0.1);
+  box-shadow: 0 0 0 3px rgba(121,255,209,0.12), 0 4px 12px rgba(121,255,209,0.08);
 }
-/* removed rotating ring from inputs per user request */
 
 /* Button sending animation */
 .btn {
@@ -742,50 +747,13 @@ h3 {
 .input-wrap {
   position: relative;
   display: block;
-  border-radius: 12px;
 }
 .input-wrap input,
 .input-wrap textarea {
-  border-radius: 10px;
-  background-clip: padding-box;
   position: relative;
   z-index: 2;
 }
-.input-wrap::after {
-  content: "";
-  position: absolute;
-  inset: -4px;
-  border-radius: 12px;
-  pointer-events: none;
-  z-index: 1;
-  opacity: 0;
-  transition: opacity 160ms ease;
-  background: linear-gradient(135deg, rgba(10, 15, 24, 0.94), rgba(10, 15, 24, 0.94)) padding-box,
-    conic-gradient(from var(--angle, 0deg), rgba(121,255,209,0.42), rgba(121,255,209,0.15) 20%, rgba(121,255,209,0.04) 45%, rgba(121,255,209,0.04) 55%, rgba(121,255,209,0.15) 80%, rgba(121,255,209,0.42)) border-box;
-  border: 1.5px solid transparent;
-  box-shadow: 0 0 16px rgba(121,255,209,0.12);
-  filter: blur(1px) saturate(1.05);
-}
-.input-wrap:focus-within::after {
-  opacity: 1;
-}
-
-@keyframes rainbow-rotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-@keyframes spin-glow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-/* ensure input content stays above the ring */
-.input-wrap > input,
-.input-wrap > textarea {
-  position: relative;
-  z-index: 2;
-}
+/* remove complex overlay - focus effect is now on input itself */
 
 /* Slight freedom: remove rigid borders for hero subtext */
 .hero .hero-sub {
