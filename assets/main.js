@@ -96,7 +96,7 @@
   (function startRotatingAngle(){
     let angle = 0;
     function step(){
-      angle = (angle + 0.6) % 360;
+      angle = (angle + 2.4) % 360;
       // set a global CSS variable so both buttons and input wrappers can use it
       document.documentElement.style.setProperty('--angle', angle + 'deg');
       requestAnimationFrame(step);
