@@ -1,0 +1,79 @@
+/* ===== PREMIUM REVEAL & CHARACTER ANIMATIONS ===== */
+
+/* Base reveal animation for all .reveal elements */
+.reveal {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.reveal.visible {
+  animation: reveal-in 0.72s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes reveal-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Per-character stagger animation for split text */
+.char {
+  opacity: 0;
+  display: inline-block;
+  transform: translateY(8px);
+}
+
+.reveal.visible .char {
+  animation: char-reveal 0.5s ease-out forwards;
+}
+
+/* Stagger delays for each character index (--i variable) */
+.char[style*="--i: 0"] { animation-delay: 0ms; }
+.char[style*="--i: 1"] { animation-delay: 24ms; }
+.char[style*="--i: 2"] { animation-delay: 48ms; }
+.char[style*="--i: 3"] { animation-delay: 72ms; }
+.char[style*="--i: 4"] { animation-delay: 96ms; }
+.char[style*="--i: 5"] { animation-delay: 120ms; }
+.char[style*="--i: 6"] { animation-delay: 144ms; }
+.char[style*="--i: 7"] { animation-delay: 168ms; }
+.char[style*="--i: 8"] { animation-delay: 192ms; }
+.char[style*="--i: 9"] { animation-delay: 216ms; }
+.char[style*="--i: 10"] { animation-delay: 240ms; }
+.char[style*="--i: 11"] { animation-delay: 264ms; }
+.char[style*="--i: 12"] { animation-delay: 288ms; }
+.char[style*="--i: 13"] { animation-delay: 312ms; }
+.char[style*="--i: 14"] { animation-delay: 336ms; }
+.char[style*="--i: 15"] { animation-delay: 360ms; }
+.char[style*="--i: 16"] { animation-delay: 384ms; }
+.char[style*="--i: 17"] { animation-delay: 408ms; }
+.char[style*="--i: 18"] { animation-delay: 432ms; }
+.char[style*="--i: 19"] { animation-delay: 456ms; }
+.char[style*="--i: 20"] { animation-delay: 480ms; }
+.char[style*="--i: 21"] { animation-delay: 504ms; }
+.char[style*="--i: 22"] { animation-delay: 528ms; }
+.char[style*="--i: 23"] { animation-delay: 552ms; }
+.char[style*="--i: 24"] { animation-delay: 576ms; }
+.char[style*="--i: 25"] { animation-delay: 600ms; }
+.char[style*="--i: 26"] { animation-delay: 624ms; }
+.char[style*="--i: 27"] { animation-delay: 648ms; }
+.char[style*="--i: 28"] { animation-delay: 672ms; }
+.char[style*="--i: 29"] { animation-delay: 696ms; }
+.char[style*="--i: 30"] { animation-delay: 720ms; }
+.char[style*="--i: 31"] { animation-delay: 744ms; }
+.char[style*="--i: 32"] { animation-delay: 768ms; }
+.char[style*="--i: 33"] { animation-delay: 792ms; }
+.char[style*="--i: 34"] { animation-delay: 816ms; }
+.char[style*="--i: 35"] { animation-delay: 840ms; }
+.char[style*="--i: 36"] { animation-delay: 864ms; }
+.char[style*="--i: 37"] { animation-delay: 888ms; }
+.char[style*="--i: 38"] { animation-delay: 912ms; }
+.char[style*="--i: 39"] { animation-delay: 936ms; }
+.char[style*="--i: 40"] { animation-delay: 960ms; }
+
+@keyframes char-reveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
