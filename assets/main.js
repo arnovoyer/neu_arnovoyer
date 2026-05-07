@@ -104,4 +104,59 @@
     requestAnimationFrame(step);
   })();
 
+  // Cursor-tracking glow effect for workflow section
+  (function initWorkflowGlow() {
+    const workflow = document.querySelector('[data-workflow]');
+    const glow = document.querySelector('[data-workflow-glow]');
+    const nodes = workflow ? workflow.querySelectorAll('.workflow-node') : [];
+    
+    if (!workflow || !glow || nodes.length === 0) return;
+    
+    let mouseX = 0;
+    let mouseY = 0;
+    let glowX = 0;
+    let glowY = 0;
+    let isActive = false;
+    
+    workflow.addEventListener('mousemove', function(e) {
+      const rect = workflow.getBoundingClientRect();
+      mouseX = e.clientX - rect.left;
+      mouseY = e.clientY - rect.top;
+      isActive = true;
+      glow.style.opacity = '0.8';
+      
+      nodes.forEach(function(node) {
+        const nodeRect = node.getBoundingClientRect();
+        const nodeCenterX = nodeRect.left - rect.left + nodeRect.width / 2;
+        const nodeCenterY = nodeRect.top - rect.top + nodeRect.height / 2;
+        const dx = mouseX - nodeCenterX;
+        const dy = mouseY - nodeCenterY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        const mx = (dx / distance) * Math.min(distance, 24);
+        const my = (dy / distance) * Math.min(distance, 24);
+        node.style.setProperty('--mx', (50 + (mx / nodeRect.width) * 50) + '%');
+        node.style.setProperty('--my', (50 + (my / nodeRect.height) * 50) + '%');
+      });
+    });
+    
+    workflow.addEventListener('mouseleave', function() {
+      isActive = false;
+      glow.style.opacity = '0';
+      nodes.forEach(function(node) {
+        node.style.setProperty('--mx', '50%');
+        node.style.setProperty('--my', '50%');
+      });
+    });
+    
+    function animateGlow() {
+      if (isActive) {
+        glowX += (mouseX - glowX) * 0.18;
+        glowY += (mouseY - glowY) * 0.18;
+        glow.style.transform = 'translate(' + (glowX - 40) + 'px, ' + (glowY - 40) + 'px)';
+      }
+      requestAnimationFrame(animateGlow);
+    }
+    requestAnimationFrame(animateGlow);
+  })();
+
 })();
