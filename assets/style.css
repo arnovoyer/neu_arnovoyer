@@ -44,10 +44,10 @@ body::before {
   pointer-events: none;
   z-index: -1;
   background-image:
-    linear-gradient(rgba(152, 176, 255, 0.12) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(152, 176, 255, 0.12) 1px, transparent 1px);
+    linear-gradient(rgba(152, 176, 255, 0.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(152, 176, 255, 0.15) 1px, transparent 1px);
   background-size: 32px 32px;
-  opacity: 0.24;
+  opacity: 0.32;
 }
 
 body::after {
@@ -57,10 +57,10 @@ body::after {
   pointer-events: none;
   z-index: -1;
   background-image:
-    linear-gradient(rgba(121, 255, 209, 0.11) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(121, 255, 209, 0.11) 1px, transparent 1px);
+    linear-gradient(rgba(121, 255, 209, 0.15) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(121, 255, 209, 0.15) 1px, transparent 1px);
   background-size: 128px 128px;
-  opacity: 0.2;
+  opacity: 0.28;
 }
 
 .noise,
@@ -483,7 +483,7 @@ h3 {
   border: 1px solid rgba(121, 255, 209, 0.1);
   border-radius: 18px;
   background:
-    radial-gradient(circle at top, rgba(121, 255, 209, 0.08), transparent 42%),
+    radial-gradient(circle at top, rgba(121, 255, 209, 0.13), transparent 42%),
     linear-gradient(180deg, rgba(9, 13, 22, 0.88), rgba(8, 12, 20, 0.98));
   box-shadow: 0 18px 44px rgba(0, 0, 0, 0.2);
 }
@@ -493,10 +493,10 @@ h3 {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(121, 255, 209, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(121, 255, 209, 0.08) 1px, transparent 1px);
+    linear-gradient(rgba(121, 255, 209, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(121, 255, 209, 0.12) 1px, transparent 1px);
   background-size: 28px 28px;
-  opacity: 0.24;
+  opacity: 0.34;
   pointer-events: none;
 }
 
@@ -505,9 +505,9 @@ h3 {
   position: absolute;
   inset: auto 12% 18% 12%;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(152, 176, 255, 0.48), transparent);
-  box-shadow: 0 0 18px rgba(152, 176, 255, 0.24);
-  opacity: 0.7;
+  background: linear-gradient(90deg, transparent, rgba(152, 176, 255, 0.62), transparent);
+  box-shadow: 0 0 20px rgba(152, 176, 255, 0.3);
+  opacity: 0.88;
 }
 
 .tech-showcase-inner {
@@ -578,14 +578,14 @@ h3 {
   position: absolute;
   top: -18px;
   left: var(--x);
-  width: 7px;
-  height: 7px;
+  width: 8px;
+  height: 8px;
   border-radius: 2px;
   background: linear-gradient(180deg, rgba(121, 255, 209, 0.95), rgba(152, 176, 255, 0.8));
-  opacity: 0.16;
+  opacity: 0.28;
   animation: tech-drop 7.5s linear infinite;
   animation-delay: var(--d);
-  box-shadow: 0 0 14px rgba(121, 255, 209, 0.22);
+  box-shadow: 0 0 18px rgba(121, 255, 209, 0.3);
 }
 
 .site-footer {
