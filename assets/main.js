@@ -228,4 +228,70 @@
     }, { passive: true });
   })();
 
+  // Case-study before/after comparison
+  (function initCaseStudy(){
+    const compare = document.querySelector('[data-compare]');
+    if (!compare) return;
+
+    const stage = compare.querySelector('[data-compare-stage]');
+    const before = compare.querySelector('[data-compare-before]');
+    const after = compare.querySelector('[data-compare-after]');
+    const range = compare.querySelector('[data-compare-range]');
+    const buttons = compare.querySelectorAll('[data-compare-btn]');
+
+    if (!stage || !before || !after || !range || !buttons.length) return;
+
+    const sources = {
+      news: {
+        before: 'assets/rvhard-news-before.jpeg',
+        after: 'assets/rvhard-news-after.jpeg'
+      },
+      events: {
+        before: 'assets/rvhard-events-before.jpeg',
+        after: 'assets/rvhard-events-after.jpeg'
+      },
+      main: {
+        before: 'assets/rvhard-before.jpeg',
+        after: 'assets/rvhard-after.jpeg'
+      }
+    };
+
+    const labels = {
+      news: ['RV Hard News vor dem Redesign', 'RV Hard News nach dem Redesign'],
+      events: ['RV Hard Events vor dem Redesign', 'RV Hard Events nach dem Redesign'],
+      main: ['RV Hard Hauptseite vor dem Redesign', 'RV Hard Hauptseite nach dem Redesign']
+    };
+
+    function setActive(key) {
+      const source = sources[key];
+      if (!source) return;
+      before.src = source.before;
+      after.src = source.after;
+      before.alt = labels[key][0];
+      after.alt = labels[key][1];
+      buttons.forEach(function(btn){
+        const active = btn.getAttribute('data-compare-btn') === key;
+        btn.classList.toggle('active', active);
+        btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+      });
+    }
+
+    function setSplit(value) {
+      stage.style.setProperty('--split', value + '%');
+    }
+
+    buttons.forEach(function(button) {
+      button.addEventListener('click', function() {
+        setActive(button.getAttribute('data-compare-btn'));
+      });
+    });
+
+    range.addEventListener('input', function() {
+      setSplit(range.value);
+    });
+
+    setActive('news');
+    setSplit(range.value || 58);
+  })();
+
 })();

@@ -48,28 +48,44 @@
       </div>
     </section>
 
-    <section class="panel" id="stats">
+    <section class="panel" id="case-study">
       <div class="panel-head reveal">
-        <h2>IMPACT</h2>
-        <p>Ergebnisse & Erfahrung.</p>
+        <h2>CASE STUDY</h2>
+        <p>Eine seltene Vorher/Nachher-Ansicht aus einem echten Redesign.</p>
       </div>
-      <div class="stats-grid reveal" aria-hidden="false">
-        <div class="stat">
-          <div class="stat-value" data-target="120">0</div>
-          <div class="stat-label">Projekte</div>
+      <div class="compare reveal" data-compare>
+        <div class="compare-toolbar">
+          <div>
+            <strong>RV Hard</strong>
+            <p>Content-Struktur, Lesbarkeit und visuelle Ruhe im Vergleich.</p>
+          </div>
+          <div class="segmented" role="tablist" aria-label="Case Study Bilder">
+            <button class="seg-btn active" type="button" data-compare-btn="news" aria-pressed="true">NEWS</button>
+            <button class="seg-btn" type="button" data-compare-btn="events" aria-pressed="false">EVENTS</button>
+            <button class="seg-btn" type="button" data-compare-btn="main" aria-pressed="false">MAIN</button>
+          </div>
         </div>
-        <div class="stat">
-          <div class="stat-value" data-target="6">0</div>
-          <div class="stat-label">Jahre Erfahrung</div>
+        <div class="compare-stage-wrap">
+          <figure class="compare-stage" data-compare-stage>
+            <img class="compare-before" data-compare-before src="assets/rvhard-news-before.jpeg" alt="RV Hard News vor dem Redesign">
+            <img class="compare-after" data-compare-after src="assets/rvhard-news-after.jpeg" alt="RV Hard News nach dem Redesign">
+            <div class="compare-handle" aria-hidden="true"></div>
+          </figure>
+          <label class="compare-range-label">
+            <span>Vorher / Nachher</span>
+            <input class="compare-range" type="range" min="0" max="100" value="58" data-compare-range aria-label="Vorher und Nachher vergleichen">
+          </label>
         </div>
-        <div class="stat">
-          <div class="stat-value" data-target="35">0</div>
-          <div class="stat-label">Wiederkehrende Kunden</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value" data-target="12">0</div>
-          <div class="stat-label">Länder</div>
-        </div>
+      </div>
+      <div class="grid compare-notes reveal">
+        <article class="tile">
+          <h3>Vorher / Nachher</h3>
+          <p>Der Umschalter zeigt nicht nur ein Bild, sondern macht den Eingriff direkt vergleichbar.</p>
+        </article>
+        <article class="tile">
+          <h3>Seltenes Pattern</h3>
+          <p>Eine schlanke, tabartige Bildstudie ist auffälliger als die übliche Galerie und bleibt trotzdem klar.</p>
+        </article>
       </div>
     </section>
 
