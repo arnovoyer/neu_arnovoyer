@@ -159,4 +159,73 @@
     requestAnimationFrame(animateGlow);
   })();
 
+  // Scroll-spy navigation: highlight current section
+  (function initScrollSpy(){
+    const sections = document.querySelectorAll('main section[id]');
+    const navLinks = document.querySelectorAll('[data-nav] a');
+    if (!sections.length || !navLinks.length) return;
+
+    const spy = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting) {
+          const id = entry.target.id;
+          navLinks.forEach(function(a){
+            const href = a.getAttribute('href') || '';
+            a.classList.toggle('active', href === '#' + id);
+          });
+        }
+      });
+    }, { threshold: 0.5 });
+
+    sections.forEach(function(s){ spy.observe(s); });
+  })();
+
+  // Animated counters for stats
+  (function initCounters(){
+    const counters = document.querySelectorAll('.stat-value');
+    if (!counters.length || !('IntersectionObserver' in window)) return;
+
+    const runCounter = function(el){
+      const target = parseInt(el.getAttribute('data-target') || '0', 10);
+      const duration = 1200;
+      let start = null;
+      function step(ts){
+        if (!start) start = ts;
+        const progress = Math.min((ts - start) / duration, 1);
+        el.textContent = Math.floor(progress * target);
+        if (progress < 1) requestAnimationFrame(step);
+        else el.textContent = target + (target >= 100 ? '' : '');
+      }
+      requestAnimationFrame(step);
+    };
+
+    const observer = new IntersectionObserver(function(entries, obs){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting) {
+          runCounter(entry.target);
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    counters.forEach(function(c){ observer.observe(c); });
+  })();
+
+  // Ripple effect for buttons
+  (function initButtonRipple(){
+    document.addEventListener('click', function(e){
+      const btn = e.target.closest('.btn');
+      if (!btn) return;
+      const rect = btn.getBoundingClientRect();
+      const ripple = document.createElement('span');
+      ripple.className = 'ripple';
+      const size = Math.max(rect.width, rect.height) * 0.6;
+      ripple.style.width = ripple.style.height = size + 'px';
+      ripple.style.left = (e.clientX - rect.left - size/2) + 'px';
+      ripple.style.top = (e.clientY - rect.top - size/2) + 'px';
+      btn.appendChild(ripple);
+      setTimeout(function(){ ripple.remove(); }, 650);
+    }, { passive: true });
+  })();
+
 })();
