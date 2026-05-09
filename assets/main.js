@@ -278,6 +278,9 @@
 
     function setSplit(value) {
       stage.style.setProperty('--split', value + '%');
+      // JS fallback: also set handle position directly in case CSS variable isn't picked up
+      const handle = compare.querySelector('.compare-handle');
+      if (handle) handle.style.left = value + '%';
     }
 
     buttons.forEach(function(button) {
