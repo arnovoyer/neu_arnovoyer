@@ -826,10 +826,13 @@ h3 {
 }
 
 .compare {
-  border: 1px solid var(--line);
-  border-radius: 0;
-  overflow: hidden;
-  background: rgba(8, 13, 22, 0.8);
+  max-width: 920px;
+  margin: 0 auto;
+  border: none;
+  border-radius: 8px;
+  overflow: visible;
+  background: transparent;
+  padding: 6px 12px 0 12px;
 }
 
 .compare-toolbar {
@@ -837,40 +840,58 @@ h3 {
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 10px;
-  padding: 10px;
-  border-bottom: 1px solid var(--line);
+  padding: 6px 0 10px 0;
 }
 
 .segmented {
   display: flex;
-  gap: 6px;
-  padding: 4px;
-  border: 1px solid var(--line);
-  border-radius: 0;
-  background: rgba(152, 176, 255, 0.08);
+  gap: 8px;
 }
 
 .seg-btn {
-  border: none;
-  border-radius: 0;
-  padding: 8px 12px;
-  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid transparent;
+  padding: 6px 10px;
+  background: rgba(8,12,20,0.6);
   color: var(--muted);
-  font-size: 0.75rem;
+  font-size: 0.78rem;
   letter-spacing: 0.08em;
+  border-radius: 10px;
+  transition: transform 180ms ease, box-shadow 220ms ease, background 220ms ease;
+}
+
+.seg-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.35);
 }
 
 .seg-btn.active {
-  background: rgba(121, 255, 209, 0.2);
+  background: linear-gradient(90deg, rgba(121,255,209,0.06), rgba(152,176,255,0.03));
   color: var(--text);
+  border-color: rgba(121,255,209,0.18);
 }
 
+.seg-thumb {
+  width: 64px;
+  height: 44px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.04);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+  transition: transform 220ms ease, opacity 240ms ease;
+}
+
+.seg-btn span { display: inline-block; }
+
 .compare-stage {
-  margin: 0;
-  height: clamp(200px, 34vw, 420px);
-  background: #060a12;
+  margin: 0 auto;
+  height: clamp(220px, 40vw, 420px);
   position: relative;
   overflow: hidden;
+  background: transparent;
+  border-radius: 12px;
 }
 
 .compare-stage img {
@@ -883,19 +904,10 @@ h3 {
   transition: clip-path 0.25s ease, opacity 0.25s ease, transform 0.25s ease;
 }
 
-.compare-before {
-  opacity: 0.98;
-}
+.compare-before { opacity: 0.98; }
+.compare-after { clip-path: inset(0 calc(100% - var(--split, 58%)) 0 0); opacity: 1; }
 
-.compare-after {
-  clip-path: inset(0 calc(100% - var(--split, 58%)) 0 0);
-  opacity: 1;
-}
-
-.compare-stage-wrap {
-  display: grid;
-  gap: 12px;
-}
+.compare-stage-wrap { display: grid; gap: 12px; }
 
 .compare-handle {
   position: absolute;
@@ -904,7 +916,7 @@ h3 {
   width: 2px;
   height: 100%;
   background: rgba(242,245,255,0.92);
-  box-shadow: 0 0 16px rgba(121,255,209,0.38);
+  box-shadow: 0 0 16px rgba(121,255,209,0.18);
   transform: translateX(-1px);
   pointer-events: none;
 }
@@ -923,19 +935,18 @@ h3 {
   transform: translate(-50%, -50%);
 }
 
-.compare-range-label {
-  display: grid;
-  gap: 8px;
-  color: var(--muted);
-  font-size: 0.76rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
 
-.compare-range {
-  width: 100%;
-  accent-color: var(--accent-2);
+.compare-range-label { display: grid; gap: 8px; color: var(--muted); font-size: 0.76rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.compare-range { width: 100%; accent-color: var(--accent-2); }
+
+.compare {
+  transition: transform 220ms ease, box-shadow 260ms ease;
 }
+.compare:hover { transform: translateY(-6px); box-shadow: 0 24px 48px rgba(0,0,0,0.35); }
+
+/* subtle micro-animations */
+.seg-thumb:hover { transform: scale(1.04); }
+.compare-stage img { will-change: clip-path, transform, opacity; }
 
 .compare-notes {
   margin-top: 18px;
