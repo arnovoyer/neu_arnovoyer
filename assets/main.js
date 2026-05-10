@@ -293,8 +293,8 @@
       setSplit(range.value);
     });
 
-    setActive('news');
-    setSplit(range.value || 58);
+    setActive('main');
+    setSplit(range.value || 50);
   })();
 
 })();

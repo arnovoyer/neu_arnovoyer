@@ -893,6 +893,10 @@ h3 {
 
 .seg-btn span { display: inline-block; }
 
+.compare-stage-wrap {
+  width: min(100%, 680px);
+  margin: 0 auto;
+}
 .compare-stage {
   width: 100%;
   margin: 0 auto;
