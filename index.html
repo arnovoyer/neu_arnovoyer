@@ -45,22 +45,6 @@
         <div class="hero-actions reveal">
           <a class="btn primary" href="#contact">START PROJECT</a>
         </div>
-        <div class="hero-motion reveal" aria-hidden="true">
-          <div class="hero-motion-orbit"></div>
-          <div class="hero-motion-grid"></div>
-          <div class="hero-motion-track">
-            <span class="motion-chip">DESIGN</span>
-            <span class="motion-chip">CODE</span>
-            <span class="motion-chip">LAUNCH</span>
-          </div>
-          <div class="hero-motion-signal">
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -111,7 +95,7 @@
         <p>Kraftvolle Designs. Saubere Umsetzung.</p>
       </div>
 
-      <div class="signal-board reveal">
+      <div class="signal-board reveal" data-signal-board>
         <article class="signal-tile">
           <span>VISUELL</span>
           <strong>High Contrast</strong>
@@ -213,19 +197,19 @@
       <h2 class="reveal">START A PROJECT</h2>
       <div class="flash" data-sent-message hidden>Danke, deine Nachricht wurde erfolgreich gesendet.</div>
 
-      <form class="contact-form reveal" action="https://formsubmit.io/send/arno.voyer@aon.at" method="POST" data-formsubmit-form>
+      <form class="contact-form reveal" action="https://formsubmit.io/send/arno.voyer@aon.at" method="POST" data-formsubmit-form data-focus-glow>
         <input type="hidden" name="_subject" value="Neue Nachricht ueber arnovoyer.com">
         <input type="hidden" name="_redirect" value="https://arnovoyer.com/thanks.html">
         <input type="hidden" name="source" value="startseite">
         <input type="text" name="_formsubmit_id" value="" tabindex="-1" autocomplete="off" class="honeypot">
 
-        <div class="input-wrap">
+        <div class="input-wrap" data-input-glow>
           <input type="text" name="name" placeholder="NAME" required>
         </div>
-        <div class="input-wrap">
+        <div class="input-wrap" data-input-glow>
           <input type="email" name="email" placeholder="E-MAIL" required>
         </div>
-        <div class="input-wrap">
+        <div class="input-wrap" data-input-glow>
           <textarea name="message" rows="3" placeholder="MESSAGE" required></textarea>
         </div>
 

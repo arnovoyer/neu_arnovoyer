@@ -297,4 +297,73 @@
     setSplit(range.value || 50);
   })();
 
+  // Cursor-tracking glow for signal tiles
+  (function initSignalTileGlow() {
+    const board = document.querySelector('[data-signal-board]');
+    const tiles = board ? board.querySelectorAll('.signal-tile') : [];
+    
+    if (!board || tiles.length === 0) return;
+    
+    board.addEventListener('mousemove', function(e) {
+      const rect = board.getBoundingClientRect();
+      const boardX = e.clientX - rect.left;
+      const boardY = e.clientY - rect.top;
+      
+      tiles.forEach(function(tile) {
+        const tileRect = tile.getBoundingClientRect();
+        const tileCenterX = tileRect.left - rect.left + tileRect.width / 2;
+        const tileCenterY = tileRect.top - rect.top + tileRect.height / 2;
+        const dx = boardX - tileCenterX;
+        const dy = boardY - tileCenterY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        const maxDist = Math.max(tileRect.width, tileRect.height) * 1.2;
+        
+        if (distance < maxDist) {
+          const mx = (dx / distance) * Math.min(distance, 28);
+          const my = (dy / distance) * Math.min(distance, 28);
+          tile.style.setProperty('--sx', (50 + (mx / tileRect.width) * 50) + '%');
+          tile.style.setProperty('--sy', (50 + (my / tileRect.height) * 50) + '%');
+        } else {
+          tile.style.setProperty('--sx', '50%');
+          tile.style.setProperty('--sy', '50%');
+        }
+      });
+    });
+    
+    board.addEventListener('mouseleave', function() {
+      tiles.forEach(function(tile) {
+        tile.style.setProperty('--sx', '50%');
+        tile.style.setProperty('--sy', '50%');
+      });
+    });
+  })();
+
+  // Focus-tracking glow for form inputs
+  (function initInputFocusGlow() {
+    const wraps = document.querySelectorAll('[data-input-glow]');
+    
+    wraps.forEach(function(wrap) {
+      const input = wrap.querySelector('input, textarea');
+      if (!input) return;
+      
+      input.addEventListener('focus', function() {
+        wrap.style.setProperty('--ix', '50%');
+        wrap.style.setProperty('--iy', '50%');
+      });
+      
+      wrap.addEventListener('mousemove', function(e) {
+        const rect = wrap.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        wrap.style.setProperty('--ix', (x / rect.width) * 100 + '%');
+        wrap.style.setProperty('--iy', (y / rect.height) * 100 + '%');
+      });
+      
+      input.addEventListener('blur', function() {
+        wrap.style.setProperty('--ix', '50%');
+        wrap.style.setProperty('--iy', '50%');
+      });
+    });
+  })();
+
 })();
