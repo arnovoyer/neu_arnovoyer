@@ -420,11 +420,30 @@ h3 {
 }
 
 .signal-tile {
+  position: relative;
   border: 1px solid rgba(121,255,209,0.10);
   border-radius: 16px;
   background: linear-gradient(180deg, rgba(9,13,22,0.82), rgba(10,14,22,0.92));
   padding: 32px;
   transition: all 0.3s ease;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.signal-tile::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 16px;
+  background: radial-gradient(circle at var(--sx, 50%) var(--sy, 50%), rgba(121, 255, 209, 0.15), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.signal-tile:hover::before {
+  opacity: 1;
 }
 
 .signal-tile:hover {
@@ -788,11 +807,31 @@ h3 {
 
 .contact-form .input-wrap {
   position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.contact-form .input-wrap::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 8px;
+  background: radial-gradient(circle at var(--ix, 50%) var(--iy, 50%), rgba(121, 255, 209, 0.12), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.contact-form .input-wrap:focus-within::before {
+  opacity: 1;
 }
 
 .contact-form .input-wrap > input,
 .contact-form .input-wrap > textarea {
   will-change: transform, box-shadow, border-color;
+  position: relative;
+  z-index: 2;
 }
 
 .contact-form .input-wrap:hover > input,
