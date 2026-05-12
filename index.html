@@ -16,6 +16,8 @@
   <div class="noise" aria-hidden="true"></div>
   <div class="scanline" aria-hidden="true"></div>
 
+  <a href="#main-content" class="skip-link">Zum Hauptinhalt springen</a>
+
   <header class="topbar" data-header>
     <a href="#home" class="brand" aria-label="Home">
       <span class="brand-dot"></span>
@@ -30,7 +32,7 @@
     </nav>
   </header>
 
-  <main>
+  <main id="main-content">
     <section class="hero" id="home">
       <div class="hero-inner">
         <div class="brand-mark" aria-hidden="true"></div>
@@ -203,17 +205,26 @@
         <input type="hidden" name="source" value="startseite">
         <input type="text" name="_formsubmit_id" value="" tabindex="-1" autocomplete="off" class="honeypot">
 
-        <div class="input-wrap" data-input-glow>
-          <input type="text" name="name" placeholder="NAME" required>
+        <div class="form-group">
+          <label for="contact-name">Name <span aria-label="erforderlich" title="erforderlich">*</span></label>
+          <div class="input-wrap" data-input-glow>
+            <input type="text" id="contact-name" name="name" placeholder="Max Mustermann" required>
+          </div>
         </div>
-        <div class="input-wrap" data-input-glow>
-          <input type="email" name="email" placeholder="E-MAIL" required>
+        <div class="form-group">
+          <label for="contact-email">E-Mail <span aria-label="erforderlich" title="erforderlich">*</span></label>
+          <div class="input-wrap" data-input-glow>
+            <input type="email" id="contact-email" name="email" placeholder="max@example.com" required>
+          </div>
         </div>
-        <div class="input-wrap" data-input-glow>
-          <textarea name="message" rows="3" placeholder="MESSAGE" required></textarea>
+        <div class="form-group">
+          <label for="contact-message">Nachricht <span aria-label="erforderlich" title="erforderlich">*</span></label>
+          <div class="input-wrap" data-input-glow>
+            <textarea id="contact-message" name="message" rows="3" placeholder="Deine Nachricht..." required></textarea>
+          </div>
         </div>
 
-        <button class="btn primary rotating" type="submit"><span class="btn-inner">SEND</span></button>
+        <button class="btn primary rotating" type="submit" aria-label="Nachricht absenden"><span class="btn-inner">SEND</span></button>
       </form>
     </section>
 
