@@ -14,6 +14,11 @@
   box-sizing: border-box;
 }
 
+/* Respektiere HTML hidden Attribut */
+[hidden] {
+  display: none !important;
+}
+
 /* Skip Link für Keyboard-Navigation (Jacob's Law: Accessibility) */
 .skip-link {
   position: absolute;
@@ -1253,10 +1258,20 @@ h3 {
   color: var(--text);
   font-size: 0.9rem;
   border-radius: 8px;
-  display: flex;
+  display: none;
   align-items: center;
   gap: 8px;
+  min-height: 40px;
+}
+
+.flash:not([hidden]) {
+  display: flex;
   animation: slideDown 0.3s ease;
+}
+
+.flash[hidden]::before {
+  content: '';
+  display: none;
 }
 
 .flash::before {
