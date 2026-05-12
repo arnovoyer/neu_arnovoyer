@@ -92,6 +92,97 @@
     }
   }
 
+  (function initGitHubCard() {
+    const card = document.querySelector('[data-github-card]');
+    if (!card) return;
+
+    const stats = {
+      repos: card.querySelector('[data-stat="repos"]'),
+      latest: card.querySelector('[data-stat="latest"]'),
+      following: card.querySelector('[data-stat="following"]')
+    };
+
+    const githubUser = 'arnovoyer';
+    const cacheKey = 'github-card-cache-v1';
+    const cacheTtl = 60 * 60 * 1000;
+
+    function formatNumber(value) {
+      return new Intl.NumberFormat('de-AT').format(value);
+    }
+
+    function formatTimeAgo(dateStr) {
+      if (!dateStr) return '—';
+      const date = new Date(dateStr);
+      const now = new Date();
+      const diffMs = now - date;
+      const diffMins = Math.floor(diffMs / 60000);
+      const diffHours = Math.floor(diffMs / 3600000);
+      const diffDays = Math.floor(diffMs / 86400000);
+      
+      if (diffMins < 1) return 'now';
+      if (diffMins < 60) return diffMins + 'm ago';
+      if (diffHours < 24) return diffHours + 'h ago';
+      if (diffDays < 30) return diffDays + 'd ago';
+      return date.toLocaleDateString('de-AT', { month: 'short', day: 'numeric' });
+    }
+
+    function setStats(data) {
+      if (stats.repos) stats.repos.textContent = formatNumber(data.public_repos || 0);
+      if (stats.following) stats.following.textContent = formatNumber(data.following || 0);
+      if (stats.latest) {
+        const latestDate = data.pushed_at || data.updated_at;
+        stats.latest.textContent = formatTimeAgo(latestDate);
+      }
+    }
+
+    function readCache() {
+      try {
+        const raw = localStorage.getItem(cacheKey);
+        if (!raw) return null;
+        const cached = JSON.parse(raw);
+        if (!cached || !cached.data || !cached.timestamp) return null;
+        if (Date.now() - cached.timestamp > cacheTtl) return null;
+        return cached.data;
+      } catch (error) {
+        return null;
+      }
+    }
+
+    function writeCache(data) {
+      try {
+        localStorage.setItem(cacheKey, JSON.stringify({ timestamp: Date.now(), data: data }));
+      } catch (error) {
+        // ignore storage failures
+      }
+    }
+
+    const cached = readCache();
+    if (cached) {
+      setStats(cached);
+    }
+
+    fetch('https://api.github.com/users/' + githubUser, {
+      headers: { 'Accept': 'application/vnd.github+json' }
+    })
+      .then(function (response) {
+        if (!response.ok) {
+          throw new Error('GitHub API request failed');
+        }
+        return response.json();
+      })
+      .then(function (data) {
+        setStats(data);
+        writeCache(data);
+      })
+      .catch(function () {
+        if (!cached) {
+          if (stats.repos) stats.repos.textContent = '—';
+          if (stats.latest) stats.latest.textContent = '—';
+          if (stats.following) stats.following.textContent = '—';
+        }
+      });
+  })();
+
   // Rotating conic-gradient angle updater for button(s) with class `rotating`
   (function startRotatingAngle(){
     let angle = 0;
