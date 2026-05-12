@@ -92,97 +92,6 @@
     }
   }
 
-  (function initGitHubCard() {
-    const card = document.querySelector('[data-github-card]');
-    if (!card) return;
-
-    const stats = {
-      repos: card.querySelector('[data-stat="repos"]'),
-      latest: card.querySelector('[data-stat="latest"]'),
-      following: card.querySelector('[data-stat="following"]')
-    };
-
-    const githubUser = 'arnovoyer';
-    const cacheKey = 'github-card-cache-v1';
-    const cacheTtl = 60 * 60 * 1000;
-
-    function formatNumber(value) {
-      return new Intl.NumberFormat('de-AT').format(value);
-    }
-
-    function formatTimeAgo(dateStr) {
-      if (!dateStr) return '—';
-      const date = new Date(dateStr);
-      const now = new Date();
-      const diffMs = now - date;
-      const diffMins = Math.floor(diffMs / 60000);
-      const diffHours = Math.floor(diffMs / 3600000);
-      const diffDays = Math.floor(diffMs / 86400000);
-      
-      if (diffMins < 1) return 'now';
-      if (diffMins < 60) return diffMins + 'm ago';
-      if (diffHours < 24) return diffHours + 'h ago';
-      if (diffDays < 30) return diffDays + 'd ago';
-      return date.toLocaleDateString('de-AT', { month: 'short', day: 'numeric' });
-    }
-
-    function setStats(data) {
-      if (stats.repos) stats.repos.textContent = formatNumber(data.public_repos || 0);
-      if (stats.following) stats.following.textContent = formatNumber(data.following || 0);
-      if (stats.latest) {
-        const latestDate = data.pushed_at || data.updated_at;
-        stats.latest.textContent = formatTimeAgo(latestDate);
-      }
-    }
-
-    function readCache() {
-      try {
-        const raw = localStorage.getItem(cacheKey);
-        if (!raw) return null;
-        const cached = JSON.parse(raw);
-        if (!cached || !cached.data || !cached.timestamp) return null;
-        if (Date.now() - cached.timestamp > cacheTtl) return null;
-        return cached.data;
-      } catch (error) {
-        return null;
-      }
-    }
-
-    function writeCache(data) {
-      try {
-        localStorage.setItem(cacheKey, JSON.stringify({ timestamp: Date.now(), data: data }));
-      } catch (error) {
-        // ignore storage failures
-      }
-    }
-
-    const cached = readCache();
-    if (cached) {
-      setStats(cached);
-    }
-
-    fetch('https://api.github.com/users/' + githubUser, {
-      headers: { 'Accept': 'application/vnd.github+json' }
-    })
-      .then(function (response) {
-        if (!response.ok) {
-          throw new Error('GitHub API request failed');
-        }
-        return response.json();
-      })
-      .then(function (data) {
-        setStats(data);
-        writeCache(data);
-      })
-      .catch(function () {
-        if (!cached) {
-          if (stats.repos) stats.repos.textContent = '—';
-          if (stats.latest) stats.latest.textContent = '—';
-          if (stats.following) stats.following.textContent = '—';
-        }
-      });
-  })();
-
   // Rotating conic-gradient angle updater for button(s) with class `rotating`
   (function startRotatingAngle(){
     let angle = 0;
@@ -195,111 +104,191 @@
     requestAnimationFrame(step);
   })();
 
-  // Cursor-tracking glow effect for workflow section
   (function initWorkflowGlow() {
     const workflow = document.querySelector('[data-workflow]');
-    const glow = document.querySelector('[data-workflow-glow]');
-    const nodes = workflow ? workflow.querySelectorAll('.workflow-node') : [];
-    
-    if (!workflow || !glow || nodes.length === 0) return;
-    
-    let mouseX = 0;
-    let mouseY = 0;
-    let glowX = 0;
-    let glowY = 0;
-    let isActive = false;
-    
-    workflow.addEventListener('mousemove', function(e) {
+    if (!workflow) return;
+
+    function updateGlow(event) {
       const rect = workflow.getBoundingClientRect();
-      mouseX = e.clientX - rect.left;
-      mouseY = e.clientY - rect.top;
-      isActive = true;
-      glow.style.opacity = '0.8';
-      
-      nodes.forEach(function(node) {
-        const nodeRect = node.getBoundingClientRect();
-        const nodeCenterX = nodeRect.left - rect.left + nodeRect.width / 2;
-        const nodeCenterY = nodeRect.top - rect.top + nodeRect.height / 2;
-        const dx = mouseX - nodeCenterX;
-        const dy = mouseY - nodeCenterY;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        const mx = (dx / distance) * Math.min(distance, 24);
-        const my = (dy / distance) * Math.min(distance, 24);
-        node.style.setProperty('--mx', (50 + (mx / nodeRect.width) * 50) + '%');
-        node.style.setProperty('--my', (50 + (my / nodeRect.height) * 50) + '%');
-      });
-    });
-    
-    workflow.addEventListener('mouseleave', function() {
-      isActive = false;
-      glow.style.opacity = '0';
-      nodes.forEach(function(node) {
-        node.style.setProperty('--mx', '50%');
-        node.style.setProperty('--my', '50%');
-      });
-    });
-    
-    function animateGlow() {
-      if (isActive) {
-        glowX += (mouseX - glowX) * 0.18;
-        glowY += (mouseY - glowY) * 0.18;
-        glow.style.transform = 'translate(' + (glowX - 40) + 'px, ' + (glowY - 40) + 'px)';
-      }
-      requestAnimationFrame(animateGlow);
+      const x = ((event.clientX - rect.left) / rect.width) * 100;
+      const y = ((event.clientY - rect.top) / rect.height) * 100;
+      workflow.style.setProperty('--mx', x + '%');
+      workflow.style.setProperty('--my', y + '%');
     }
-    requestAnimationFrame(animateGlow);
+
+    workflow.addEventListener('mousemove', updateGlow);
+    workflow.addEventListener('mouseleave', function () {
+      workflow.style.setProperty('--mx', '50%');
+      workflow.style.setProperty('--my', '50%');
+    });
   })();
 
-  // Scroll-spy navigation: highlight current section
-  (function initScrollSpy(){
-    const sections = document.querySelectorAll('main section[id]');
-    const navLinks = document.querySelectorAll('[data-nav] a');
-    if (!sections.length || !navLinks.length) return;
+  (function initGitHubStats() {
+    const card = document.querySelector('[data-github-stats]');
+    if (!card) return;
 
-    const spy = new IntersectionObserver(function(entries){
-      entries.forEach(function(entry){
-        if (entry.isIntersecting) {
-          const id = entry.target.id;
-          navLinks.forEach(function(a){
-            const href = a.getAttribute('href') || '';
-            a.classList.toggle('active', href === '#' + id);
-          });
+    const latestCommitEl = card.querySelector('[data-stat="latest-commit"]');
+    const languagesEl = card.querySelector('[data-stat="languages"]');
+    const topReposEl = card.querySelector('[data-stat="top-repos"]');
+
+    const githubUser = 'arnovoyer';
+    const cacheKey = 'github-stats-cache-v2';
+    const cacheTtl = 60 * 60 * 1000;
+
+    function getCached() {
+      try {
+        const cached = localStorage.getItem(cacheKey);
+        if (!cached) return null;
+        const data = JSON.parse(cached);
+        if (!data || !data.repos || !data.timestamp) return null;
+        if (Date.now() - data.timestamp > cacheTtl) {
+          localStorage.removeItem(cacheKey);
+          return null;
         }
-      });
-    }, { threshold: 0.5 });
-
-    sections.forEach(function(s){ spy.observe(s); });
-  })();
-
-  // Animated counters for stats
-  (function initCounters(){
-    const counters = document.querySelectorAll('.stat-value');
-    if (!counters.length || !('IntersectionObserver' in window)) return;
-
-    const runCounter = function(el){
-      const target = parseInt(el.getAttribute('data-target') || '0', 10);
-      const duration = 1200;
-      let start = null;
-      function step(ts){
-        if (!start) start = ts;
-        const progress = Math.min((ts - start) / duration, 1);
-        el.textContent = Math.floor(progress * target);
-        if (progress < 1) requestAnimationFrame(step);
-        else el.textContent = target + (target >= 100 ? '' : '');
+        return data.repos;
+      } catch (error) {
+        return null;
       }
-      requestAnimationFrame(step);
-    };
+    }
 
-    const observer = new IntersectionObserver(function(entries, obs){
-      entries.forEach(function(entry){
-        if (entry.isIntersecting) {
-          runCounter(entry.target);
-          obs.unobserve(entry.target);
+    function setCached(repos) {
+      try {
+        localStorage.setItem(cacheKey, JSON.stringify({
+          repos: repos,
+          timestamp: Date.now()
+        }));
+      } catch (error) {
+        // ignore
+      }
+    }
+
+    function formatDate(dateStr) {
+      if (!dateStr) return '—';
+      const date = new Date(dateStr);
+      const day = String(date.getDate()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const hours = String(date.getHours()).padStart(2, '0');
+      const mins = String(date.getMinutes()).padStart(2, '0');
+      return `${day}.${month}. ${hours}:${mins}`;
+    }
+
+    function getLanguageColor(lang) {
+      const colors = {
+        JavaScript: '#f1e05a',
+        PHP: '#777bb4',
+        HTML: '#e34c26',
+        CSS: '#563d7c',
+        TypeScript: '#2b7489',
+        Python: '#3572A5',
+        Java: '#b07219',
+        Go: '#00ADD8',
+        Rust: '#ce422b',
+        Ruby: '#cc342d'
+      };
+      return colors[lang] || '#858585';
+    }
+
+    function renderLanguages(repos) {
+      const languages = {};
+      let totalSize = 0;
+
+      repos.forEach(function (repo) {
+        if (repo.language) {
+          languages[repo.language] = (languages[repo.language] || 0) + (repo.size || 1);
+          totalSize += repo.size || 1;
         }
       });
-    }, { threshold: 0.3 });
 
-    counters.forEach(function(c){ observer.observe(c); });
+      const topLangs = Object.entries(languages)
+        .sort(function (a, b) { return b[1] - a[1]; })
+        .slice(0, 5);
+
+      languagesEl.innerHTML = topLangs.map(function (entry) {
+        const lang = entry[0];
+        const size = entry[1];
+        const percent = totalSize ? Math.round((size / totalSize) * 100) : 0;
+        const color = getLanguageColor(lang);
+        return '<div class="lang-tag"><span class="lang-icon" style="background-color: ' + color + ';"></span><span>' + lang + ' <strong>' + percent + '%</strong></span></div>';
+      }).join('');
+    }
+
+    function renderTopRepos(repos) {
+      const topRepos = repos
+        .filter(function (repo) { return !repo.fork; })
+        .sort(function (a, b) { return (b.stargazers_count || 0) - (a.stargazers_count || 0); })
+        .slice(0, 3);
+
+      topReposEl.innerHTML = topRepos.map(function (repo) {
+        return '<a href="' + repo.html_url + '" target="_blank" rel="noopener noreferrer" class="repo-link"><svg class="repo-icon" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 0 0 1.5h2.5A1.75 1.75 0 0 0 15 14.25V.75A1.75 1.75 0 0 0 13.25 0H4.5A4 4 0 0 0 0 4.5v6.75a.75.75 0 0 0 1.5 0V4.5Z"/></svg><span>' + repo.name + '</span></a>';
+      }).join('');
+    }
+
+    function renderLatestCommit(repos) {
+      let latestDate = null;
+      repos.forEach(function (repo) {
+        if (repo.pushed_at) {
+          const pushDate = new Date(repo.pushed_at);
+          if (!latestDate || pushDate > latestDate) {
+            latestDate = pushDate;
+          }
+        }
+      });
+
+      if (latestCommitEl) {
+        latestCommitEl.textContent = latestDate ? formatDate(latestDate.toISOString()) : '—';
+      }
+    }
+
+    function setData(repos) {
+      renderLatestCommit(repos);
+      renderLanguages(repos);
+      renderTopRepos(repos);
+    }
+
+    function setFallbackData() {
+      if (latestCommitEl) latestCommitEl.textContent = 'Lokaler Aufruf blockiert';
+      if (languagesEl) {
+        languagesEl.innerHTML = [
+          '<div class="lang-tag"><span class="lang-icon" style="background-color: #f1e05a;"></span><span>JavaScript <strong>50%</strong></span></div>',
+          '<div class="lang-tag"><span class="lang-icon" style="background-color: #777bb4;"></span><span>PHP <strong>30%</strong></span></div>',
+          '<div class="lang-tag"><span class="lang-icon" style="background-color: #e34c26;"></span><span>HTML <strong>20%</strong></span></div>'
+        ].join('');
+      }
+      if (topReposEl) {
+        topReposEl.innerHTML = [
+          '<span class="repo-link"><span class="repo-icon">•</span><span>Projekt A</span></span>',
+          '<span class="repo-link"><span class="repo-icon">•</span><span>Projekt B</span></span>',
+          '<span class="repo-link"><span class="repo-icon">•</span><span>Projekt C</span></span>'
+        ].join('');
+      }
+    }
+
+    if (window.location.protocol === 'file:') {
+      setFallbackData();
+      return;
+    }
+
+    const cached = getCached();
+    if (cached) {
+      setData(cached);
+    }
+
+    fetch('https://api.github.com/users/' + githubUser + '/repos?per_page=100', {
+      headers: { 'Accept': 'application/vnd.github+json' }
+    })
+      .then(function (res) {
+        if (!res.ok) throw new Error('API error');
+        return res.json();
+      })
+      .then(function (repos) {
+        setCached(repos);
+        setData(repos);
+      })
+      .catch(function () {
+        if (!cached) {
+          setFallbackData();
+        }
+      });
   })();
 
   // Ripple effect for buttons
