@@ -14,6 +14,45 @@
   box-sizing: border-box;
 }
 
+/* Respektiere HTML hidden Attribut */
+[hidden] {
+  display: none !important;
+}
+
+/* Skip Link für Keyboard-Navigation (Jacob's Law: Accessibility) */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--accent-2);
+  color: var(--bg);
+  padding: 8px 16px;
+  text-decoration: none;
+  z-index: 100;
+  border-radius: 0 0 4px 0;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* Bessere Focus-Indikatoren für Keyboard-Navigation (Jacob's Law) */
+:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 2px;
+}
+
 html,
 body {
   margin: 0;
@@ -738,11 +777,153 @@ h3 {
   padding: 26px clamp(24px, 4vw, 80px) 34px;
   border-top: 1px solid rgba(121, 255, 209, 0.08);
   display: grid;
-  gap: 14px;
-  justify-items: start;
+  gap: 22px;
 }
 
-.site-footer-label {
+.footer-content {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(260px, 0.9fr);
+  gap: 18px;
+  align-items: stretch;
+}
+
+/* GitHub Stats Section */
+.github-stats {
+  margin-top: 30px;
+  padding: 24px;
+  border: 1px solid rgba(121, 255, 209, 0.12);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at top right, rgba(121, 255, 209, 0.06), transparent 42%),
+    linear-gradient(180deg, rgba(10, 14, 24, 0.92), rgba(8, 12, 20, 0.96));
+  display: grid;
+  gap: 20px;
+}
+
+.github-stats-head {
+  border-bottom: 1px solid rgba(121, 255, 209, 0.08);
+  padding-bottom: 12px;
+}
+
+.github-stats-head h3 {
+  margin: 0;
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.github-stats-content {
+  display: grid;
+  gap: 18px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.stat-block {
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(121, 255, 209, 0.08);
+  background: rgba(8, 12, 20, 0.7);
+}
+
+.stat-block-label {
+  display: block;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(242, 245, 255, 0.52);
+  margin-bottom: 8px;
+}
+
+.stat-block-value {
+  display: block;
+  font-family: "Outfit", sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--accent-2);
+}
+
+.languages-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.lang-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: rgba(121, 255, 209, 0.08);
+  border: 1px solid rgba(121, 255, 209, 0.12);
+  font-size: 0.75rem;
+  color: var(--text);
+}
+
+.lang-icon {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.top-repos {
+  padding-top: 6px;
+}
+
+.top-repos-label {
+  display: block;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(242, 245, 255, 0.52);
+  margin-bottom: 10px;
+}
+
+.repos-list {
+  display: grid;
+  gap: 8px;
+}
+
+.repo-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(121, 255, 209, 0.1);
+  background: linear-gradient(135deg, rgba(23, 34, 48, 0.88), rgba(30, 44, 64, 0.9));
+  color: var(--text);
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+}
+
+.repo-link:hover {
+  border-color: rgba(121, 255, 209, 0.3);
+  background: linear-gradient(135deg, rgba(30, 44, 64, 0.92), rgba(40, 54, 74, 0.94));
+  transform: translateX(4px);
+}
+
+.repo-icon {
+  width: 14px;
+  height: 14px;
+  opacity: 0.7;
+}
+
+.social-section {
+  display: grid;
+  gap: 14px;
+  align-content: start;
+}
+
+.social-label {
   margin: 0;
   color: rgba(242, 245, 255, 0.52);
   font-size: 0.72rem;
@@ -803,6 +984,30 @@ h3 {
 
 @keyframes ripple {
   to { transform: scale(6); opacity: 0; }
+}
+
+/* Form Group Styling (Jacob's Law: Konventionelle Forms) */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0.05em;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.form-group label span {
+  font-size: 0.75rem;
+  color: rgba(121, 255, 209, 0.8);
+  font-weight: 700;
 }
 
 .contact-form .input-wrap {
@@ -1153,6 +1358,19 @@ h3 {
   box-shadow: 0 0 0 3px rgba(121, 255, 209, 0.15);
 }
 
+/* Input invalid state (Jacob's Law: Clear error indication) */
+.contact-form .input-wrap > input:invalid:not(:placeholder-shown),
+.contact-form .input-wrap > textarea:invalid:not(:placeholder-shown) {
+  border-color: rgba(255, 134, 134, 0.6);
+  box-shadow: 0 0 0 3px rgba(255, 134, 134, 0.1);
+}
+
+.contact-form .input-wrap > input[aria-invalid="true"],
+.contact-form .input-wrap > textarea[aria-invalid="true"] {
+  border-color: rgba(255, 134, 134, 0.6);
+  box-shadow: 0 0 0 3px rgba(255, 134, 134, 0.1);
+}
+
 /* hide honeypot field from users but keep it in the DOM for bots */
 .honeypot {
   position: absolute;
@@ -1176,21 +1394,58 @@ h3 {
 
 .flash {
   margin: 0 0 14px;
-  padding: 10px 12px;
+  padding: 12px 14px;
   border: 1px solid var(--line);
   background: rgba(8, 13, 22, 0.85);
   color: var(--text);
   font-size: 0.9rem;
+  border-radius: 8px;
+  display: none;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+}
+
+.flash:not([hidden]) {
+  display: flex;
+  animation: slideDown 0.3s ease;
+}
+
+.flash[hidden]::before {
+  content: '';
+  display: none;
+}
+
+.flash::before {
+  content: '✓';
+  font-weight: 700;
 }
 
 .flash.is-success {
   border-color: rgba(121, 255, 209, 0.45);
   background: rgba(121, 255, 209, 0.12);
+  color: rgba(121, 255, 209, 0.9);
 }
 
 .flash.is-error {
   border-color: rgba(255, 134, 134, 0.5);
   background: rgba(255, 134, 134, 0.12);
+  color: rgba(255, 134, 134, 0.9);
+}
+
+.flash.is-error::before {
+  content: '⚠';
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Button sending animation */
@@ -1238,6 +1493,24 @@ h3 {
 .btn.sending .btn-spinner {
   opacity: 1;
   animation: spin 0.9s linear infinite;
+}
+
+/* Disabled button state (Jacob's Law: Clear indication of disabled state) */
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.btn.primary:disabled {
+  border-color: rgba(121, 255, 209, 0.15);
+  background: linear-gradient(135deg, rgba(121, 255, 209, 0.08), rgba(152, 176, 255, 0.06));
+  box-shadow: none;
+}
+
+.btn.rotating:disabled {
+  opacity: 0.45;
+  box-shadow: none;
 }
 
 @keyframes spin {
@@ -1515,6 +1788,10 @@ h3 {
 }
 
 @media (max-width: 540px) {
+  .github-stats {
+    padding: 16px;
+  }
+
   .topbar {
     padding: 10px 14px;
     gap: 10px;
@@ -1547,6 +1824,10 @@ h3 {
 }
 
 @media (max-width: 780px) {
+  .footer-content {
+    grid-template-columns: 1fr;
+  }
+
   .menu-btn {
     display: inline-block;
   }
@@ -1573,6 +1854,28 @@ h3 {
     opacity: 1;
     pointer-events: auto;
     transform: scaleY(1);
+  }
+
+  /* Mobile form styles (Jacob's Law: Improve readability on small screens) */
+  .form-group {
+    margin-bottom: 14px;
+    gap: 4px;
+  }
+
+  .form-group label {
+    font-size: 0.80rem;
+  }
+
+  .contact-form .input-wrap > input,
+  .contact-form .input-wrap > textarea {
+    padding: 11px 12px;
+    font-size: 16px; /* Prevents auto-zoom on mobile */
+    border-radius: 8px;
+  }
+
+  .btn.rotating {
+    padding: 16px 32px;
+    font-size: 0.9rem;
   }
 }
 
