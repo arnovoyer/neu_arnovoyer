@@ -453,9 +453,11 @@ h3 {
 }
 
 .signal-board {
+  position: relative;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
+  overflow: hidden;
 }
 
 .signal-tile {
@@ -488,8 +490,22 @@ h3 {
 .signal-tile:hover {
   border-color: rgba(121, 255, 209, 0.18);
   background: linear-gradient(180deg, rgba(9,13,22,0.88), rgba(10,14,22,0.98));
-  transform: translateY(-4px);
+  transform: translateY(-2px);
   box-shadow: 0 18px 36px rgba(121, 255, 209, 0.08);
+}
+
+.work-orb {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(121, 255, 209, 0.9), rgba(121, 255, 209, 0.22) 55%, transparent 75%);
+  box-shadow: 0 0 16px rgba(121, 255, 209, 0.24);
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.2s ease, transform 0.08s ease;
+  z-index: 2;
 }
 
 .signal-tile span {
@@ -598,7 +614,7 @@ h3 {
 
 .workflow-node:hover {
   border-color: rgba(121, 255, 209, 0.42);
-  box-shadow: 0 0 24px rgba(121, 255, 209, 0.18);
+  box-shadow: 0 0 14px rgba(121, 255, 209, 0.1);
 }
 
 .node-number {
@@ -649,29 +665,19 @@ h3 {
 
 .workflow-glow {
   position: absolute;
-  width: 120px;
-  height: 120px;
+  width: 88px;
+  height: 88px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(121, 255, 209, 0.35), rgba(121, 255, 209, 0.1) 40%, transparent 70%);
+  background: radial-gradient(circle, rgba(121, 255, 209, 0.22), rgba(121, 255, 209, 0.08) 42%, transparent 72%);
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.3s ease;
-  box-shadow: 0 0 48px rgba(121, 255, 209, 0.28), inset 0 0 32px rgba(121, 255, 209, 0.15);
+  box-shadow: 0 0 20px rgba(121, 255, 209, 0.16), inset 0 0 18px rgba(121, 255, 209, 0.08);
   z-index: 1;
   left: var(--glow-x, 50%);
   top: var(--glow-y, 50%);
   transform: translate(-50%, -50%);
-  filter: blur(1px);
-  animation: workflow-pulse 3s ease-in-out infinite;
-}
-
-@keyframes workflow-pulse {
-  0%, 100% { 
-    box-shadow: 0 0 48px rgba(121, 255, 209, 0.28), inset 0 0 32px rgba(121, 255, 209, 0.15);
-  }
-  50% { 
-    box-shadow: 0 0 64px rgba(121, 255, 209, 0.35), inset 0 0 48px rgba(121, 255, 209, 0.22);
-  }
+  filter: blur(0.5px);
 }
 
 .tech-showcase {
@@ -927,32 +933,8 @@ h3 {
   box-shadow: 0 0 24px rgba(121, 255, 209, 0.12);
 }
 
-/* Star rating color coding */
-.repo-link.repo-stars-hot {
-  border-color: rgba(255, 165, 0, 0.25);
-}
-
-.repo-link.repo-stars-hot:hover {
-  border-color: rgba(255, 165, 0, 0.5);
-  box-shadow: 0 0 24px rgba(255, 165, 0, 0.15);
-}
-
-.repo-link.repo-stars-warm {
-  border-color: rgba(121, 255, 209, 0.15);
-}
-
-.repo-link.repo-stars-warm:hover {
-  border-color: rgba(121, 255, 209, 0.35);
-  box-shadow: 0 0 24px rgba(121, 255, 209, 0.15);
-}
-
-.repo-link.repo-stars-cool {
-  border-color: rgba(152, 176, 255, 0.1);
-}
-
-.repo-link.repo-stars-cool:hover {
-  border-color: rgba(152, 176, 255, 0.3);
-  box-shadow: 0 0 24px rgba(152, 176, 255, 0.1);
+.repo-link-soft:hover {
+  box-shadow: 0 0 18px rgba(121, 255, 209, 0.08);
 }
 
 .repo-icon {
@@ -964,12 +946,6 @@ h3 {
 
 .repo-name {
   font-weight: 500;
-}
-
-.repo-stars {
-  font-size: 0.75rem;
-  color: var(--muted);
-  margin-left: 4px;
 }
 
 .social-section {
