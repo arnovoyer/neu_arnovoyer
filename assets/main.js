@@ -117,8 +117,10 @@
 
       const glowEl = workflow.parentElement.querySelector('[data-workflow-glow]');
       if (glowEl) {
-        glowEl.style.setProperty('--glow-x', (event.clientX - rect.left) + 'px');
-        glowEl.style.setProperty('--glow-y', (event.clientY - rect.top) + 'px');
+        // Berechne Position relativ zur Section (Parent des glow-Elements)
+        const sectionRect = workflow.parentElement.getBoundingClientRect();
+        glowEl.style.setProperty('--glow-x', (event.clientX - sectionRect.left) + 'px');
+        glowEl.style.setProperty('--glow-y', (event.clientY - sectionRect.top) + 'px');
         glowEl.style.opacity = '0.22';
       }
     }
