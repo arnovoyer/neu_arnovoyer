@@ -158,6 +158,11 @@ body::after {
   box-shadow: 0 0 24px rgba(121, 255, 209, 0.28);
 }
 
+.cursor-orb.is-over-system {
+  opacity: 0.5;
+  box-shadow: 0 0 24px rgba(121, 255, 209, 0.28);
+}
+
 .cursor-orb.is-over-workflow {
   opacity: 0.46;
 }

@@ -135,11 +135,13 @@
     document.addEventListener('mousemove', function (e) {
       const overTile = !!e.target.closest('.signal-tile');
       const overWorkflow = !!e.target.closest('[data-workflow]');
+      const overSystemInteractive = !!e.target.closest('#system .tile, #system .tech-core, #system .tech-pills span, #system .stat-block, #system .lang-tag, #system .repo-link');
 
       targetX = e.clientX + offsetX;
       targetY = e.clientY + offsetY;
-      targetScale = overTile ? 1.2 : (overWorkflow ? 1.08 : 1);
+      targetScale = (overTile || overSystemInteractive) ? 1.2 : (overWorkflow ? 1.08 : 1);
       orb.classList.toggle('is-over-tile', overTile);
+      orb.classList.toggle('is-over-system', overSystemInteractive);
       orb.classList.toggle('is-over-workflow', overWorkflow);
 
       if (!active) {
@@ -158,6 +160,7 @@
       active = false;
       orb.classList.remove('is-active');
       orb.classList.remove('is-over-tile');
+      orb.classList.remove('is-over-system');
       orb.classList.remove('is-over-workflow');
     });
 
