@@ -104,6 +104,61 @@
     requestAnimationFrame(step);
   })();
 
+  (function initCursorOrb() {
+    const orb = document.querySelector('[data-cursor-orb]');
+    if (!orb) return;
+    if (window.matchMedia('(hover: none), (pointer: coarse)').matches) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    let active = false;
+    let rafId = null;
+
+    const lag = 0.15;
+    const offsetX = 16;
+    const offsetY = 12;
+
+    let targetX = window.innerWidth / 2;
+    let targetY = window.innerHeight / 2;
+    let currentX = targetX;
+    let currentY = targetY;
+
+    function render() {
+      currentX += (targetX - currentX) * lag;
+      currentY += (targetY - currentY) * lag;
+      orb.style.transform = 'translate3d(' + currentX + 'px, ' + currentY + 'px, 0)';
+      rafId = requestAnimationFrame(render);
+    }
+
+    document.addEventListener('mousemove', function (e) {
+      targetX = e.clientX + offsetX;
+      targetY = e.clientY + offsetY;
+
+      if (!active) {
+        active = true;
+        orb.classList.add('is-active');
+        currentX = targetX;
+        currentY = targetY;
+      }
+
+      if (!rafId) {
+        rafId = requestAnimationFrame(render);
+      }
+    }, { passive: true });
+
+    document.addEventListener('mouseleave', function () {
+      active = false;
+      orb.classList.remove('is-active');
+    });
+
+    document.addEventListener('mousedown', function () {
+      orb.classList.add('is-clicking');
+    });
+
+    document.addEventListener('mouseup', function () {
+      orb.classList.remove('is-clicking');
+    });
+  })();
+
   (function initWorkflowGlow() {
     const workflow = document.querySelector('[data-workflow]');
     if (!workflow) return;

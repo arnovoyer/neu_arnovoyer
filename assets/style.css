@@ -127,6 +127,38 @@ body::after {
   );
 }
 
+.cursor-orb {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0;
+  transform: translate3d(-9999px, -9999px, 0);
+  transition: opacity 0.2s ease;
+  background: radial-gradient(circle, rgba(121, 255, 209, 0.8), rgba(121, 255, 209, 0.16) 62%, transparent 78%);
+  box-shadow: 0 0 18px rgba(121, 255, 209, 0.2);
+  filter: blur(0.2px);
+  will-change: transform;
+}
+
+.cursor-orb.is-active {
+  opacity: 0.42;
+}
+
+.cursor-orb.is-clicking {
+  opacity: 0.56;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .cursor-orb {
+    display: none;
+  }
+}
+
 .topbar {
   width: 100%;
   margin: 0;
