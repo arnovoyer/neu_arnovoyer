@@ -106,29 +106,49 @@
 
   (function initCursorOrb() {
     const orb = document.querySelector('[data-cursor-orb]');
-    if (!orb) return;
+    const ring = document.querySelector('[data-cursor-ring]');
+    if (!orb && !ring) return;
     if (window.matchMedia('(hover: none), (pointer: coarse)').matches) return;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    document.documentElement.classList.add('custom-cursor-enabled');
 
     let active = false;
     let rafId = null;
 
-    const lag = 0.15;
-    const offsetX = 16;
-    const offsetY = 12;
+    const orbLag = 0.24;
+    const ringLag = 0.13;
 
     let targetX = window.innerWidth / 2;
     let targetY = window.innerHeight / 2;
-    let currentX = targetX;
-    let currentY = targetY;
-    let targetScale = 1;
-    let currentScale = 1;
+    let orbX = targetX;
+    let orbY = targetY;
+    let ringX = targetX;
+    let ringY = targetY;
+    let orbTargetScale = 1;
+    let ringTargetScale = 1;
+    let orbScale = 1;
+    let ringScale = 1;
+
+    function setStateClass(name, enabled) {
+      if (orb) orb.classList.toggle(name, enabled);
+      if (ring) ring.classList.toggle(name, enabled);
+    }
 
     function render() {
-      currentX += (targetX - currentX) * lag;
-      currentY += (targetY - currentY) * lag;
-      currentScale += (targetScale - currentScale) * 0.2;
-      orb.style.transform = 'translate3d(' + currentX + 'px, ' + currentY + 'px, 0) scale(' + currentScale + ')';
+      orbX += (targetX - orbX) * orbLag;
+      orbY += (targetY - orbY) * orbLag;
+      ringX += (targetX - ringX) * ringLag;
+      ringY += (targetY - ringY) * ringLag;
+      orbScale += (orbTargetScale - orbScale) * 0.24;
+      ringScale += (ringTargetScale - ringScale) * 0.18;
+
+      if (orb) {
+        orb.style.transform = 'translate3d(' + orbX + 'px, ' + orbY + 'px, 0) translate(-50%, -50%) scale(' + orbScale + ')';
+      }
+      if (ring) {
+        ring.style.transform = 'translate3d(' + ringX + 'px, ' + ringY + 'px, 0) translate(-50%, -50%) scale(' + ringScale + ')';
+      }
       rafId = requestAnimationFrame(render);
     }
 
@@ -137,18 +157,22 @@
       const overWorkflow = !!e.target.closest('[data-workflow]');
       const overSystemInteractive = !!e.target.closest('#system .tile, #system .tech-core, #system .tech-pills span, #system .stat-block, #system .lang-tag, #system .repo-link');
 
-      targetX = e.clientX + offsetX;
-      targetY = e.clientY + offsetY;
-      targetScale = (overTile || overSystemInteractive) ? 1.2 : (overWorkflow ? 1.08 : 1);
-      orb.classList.toggle('is-over-tile', overTile);
-      orb.classList.toggle('is-over-system', overSystemInteractive);
-      orb.classList.toggle('is-over-workflow', overWorkflow);
+      targetX = e.clientX;
+      targetY = e.clientY;
+      orbTargetScale = (overTile || overSystemInteractive) ? 1.2 : (overWorkflow ? 1.08 : 1);
+      ringTargetScale = (overTile || overSystemInteractive) ? 1.34 : (overWorkflow ? 1.12 : 1);
+
+      setStateClass('is-over-tile', overTile);
+      setStateClass('is-over-system', overSystemInteractive);
+      setStateClass('is-over-workflow', overWorkflow);
 
       if (!active) {
         active = true;
-        orb.classList.add('is-active');
-        currentX = targetX;
-        currentY = targetY;
+        setStateClass('is-active', true);
+        orbX = targetX;
+        orbY = targetY;
+        ringX = targetX;
+        ringY = targetY;
       }
 
       if (!rafId) {
@@ -158,18 +182,20 @@
 
     document.addEventListener('mouseleave', function () {
       active = false;
-      orb.classList.remove('is-active');
-      orb.classList.remove('is-over-tile');
-      orb.classList.remove('is-over-system');
-      orb.classList.remove('is-over-workflow');
+      setStateClass('is-active', false);
+      setStateClass('is-over-tile', false);
+      setStateClass('is-over-system', false);
+      setStateClass('is-over-workflow', false);
+      orbTargetScale = 1;
+      ringTargetScale = 1;
     });
 
     document.addEventListener('mousedown', function () {
-      orb.classList.add('is-clicking');
+      setStateClass('is-clicking', true);
     });
 
     document.addEventListener('mouseup', function () {
-      orb.classList.remove('is-clicking');
+      setStateClass('is-clicking', false);
     });
   })();
 

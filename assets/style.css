@@ -137,7 +137,7 @@ body::after {
   pointer-events: none;
   z-index: 60;
   opacity: 0;
-  transform: translate3d(-9999px, -9999px, 0);
+  transform: translate3d(-9999px, -9999px, 0) translate(-50%, -50%);
   transition: opacity 0.2s ease;
   background: radial-gradient(circle, rgba(121, 255, 209, 0.8), rgba(121, 255, 209, 0.16) 62%, transparent 78%);
   box-shadow: 0 0 18px rgba(121, 255, 209, 0.2);
@@ -145,12 +145,43 @@ body::after {
   will-change: transform;
 }
 
+.cursor-ring {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 59;
+  opacity: 0;
+  transform: translate3d(-9999px, -9999px, 0) translate(-50%, -50%);
+  transition: opacity 0.24s ease;
+  border: 1px solid rgba(121, 255, 209, 0.4);
+  box-shadow: 0 0 18px rgba(121, 255, 209, 0.14), inset 0 0 10px rgba(121, 255, 209, 0.08);
+  background: radial-gradient(circle, rgba(121, 255, 209, 0.06), rgba(121, 255, 209, 0.01) 70%, transparent 85%);
+  will-change: transform;
+}
+
+.custom-cursor-enabled,
+.custom-cursor-enabled * {
+  cursor: none !important;
+}
+
 .cursor-orb.is-active {
   opacity: 0.42;
 }
 
+.cursor-ring.is-active {
+  opacity: 0.34;
+}
+
 .cursor-orb.is-clicking {
   opacity: 0.56;
+}
+
+.cursor-ring.is-clicking {
+  opacity: 0.46;
 }
 
 .cursor-orb.is-over-tile {
@@ -158,17 +189,34 @@ body::after {
   box-shadow: 0 0 24px rgba(121, 255, 209, 0.28);
 }
 
+.cursor-ring.is-over-tile {
+  opacity: 0.42;
+  border-color: rgba(121, 255, 209, 0.62);
+  box-shadow: 0 0 24px rgba(121, 255, 209, 0.22), inset 0 0 12px rgba(121, 255, 209, 0.12);
+}
+
 .cursor-orb.is-over-system {
   opacity: 0.5;
   box-shadow: 0 0 24px rgba(121, 255, 209, 0.28);
+}
+
+.cursor-ring.is-over-system {
+  opacity: 0.42;
+  border-color: rgba(121, 255, 209, 0.62);
+  box-shadow: 0 0 24px rgba(121, 255, 209, 0.22), inset 0 0 12px rgba(121, 255, 209, 0.12);
 }
 
 .cursor-orb.is-over-workflow {
   opacity: 0.46;
 }
 
+.cursor-ring.is-over-workflow {
+  opacity: 0.38;
+}
+
 @media (hover: none), (pointer: coarse) {
-  .cursor-orb {
+  .cursor-orb,
+  .cursor-ring {
     display: none;
   }
 }
