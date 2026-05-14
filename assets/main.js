@@ -121,17 +121,26 @@
     let targetY = window.innerHeight / 2;
     let currentX = targetX;
     let currentY = targetY;
+    let targetScale = 1;
+    let currentScale = 1;
 
     function render() {
       currentX += (targetX - currentX) * lag;
       currentY += (targetY - currentY) * lag;
-      orb.style.transform = 'translate3d(' + currentX + 'px, ' + currentY + 'px, 0)';
+      currentScale += (targetScale - currentScale) * 0.2;
+      orb.style.transform = 'translate3d(' + currentX + 'px, ' + currentY + 'px, 0) scale(' + currentScale + ')';
       rafId = requestAnimationFrame(render);
     }
 
     document.addEventListener('mousemove', function (e) {
+      const overTile = !!e.target.closest('.signal-tile');
+      const overWorkflow = !!e.target.closest('[data-workflow]');
+
       targetX = e.clientX + offsetX;
       targetY = e.clientY + offsetY;
+      targetScale = overTile ? 1.2 : (overWorkflow ? 1.08 : 1);
+      orb.classList.toggle('is-over-tile', overTile);
+      orb.classList.toggle('is-over-workflow', overWorkflow);
 
       if (!active) {
         active = true;
@@ -148,6 +157,8 @@
     document.addEventListener('mouseleave', function () {
       active = false;
       orb.classList.remove('is-active');
+      orb.classList.remove('is-over-tile');
+      orb.classList.remove('is-over-workflow');
     });
 
     document.addEventListener('mousedown', function () {
@@ -162,6 +173,7 @@
   (function initWorkflowGlow() {
     const workflow = document.querySelector('[data-workflow]');
     if (!workflow) return;
+    const hasGlobalOrb = !!document.querySelector('[data-cursor-orb]');
 
     function updateGlow(event) {
       const rect = workflow.getBoundingClientRect();
@@ -172,6 +184,10 @@
 
       const glowEl = workflow.parentElement.querySelector('[data-workflow-glow]');
       if (glowEl) {
+        if (hasGlobalOrb) {
+          glowEl.style.opacity = '0';
+          return;
+        }
         // Berechne Position relativ zur Section (Parent des glow-Elements)
         const sectionRect = workflow.parentElement.getBoundingClientRect();
         glowEl.style.setProperty('--glow-x', (event.clientX - sectionRect.left) + 'px');
@@ -453,21 +469,11 @@
   (function initSignalTileGlow() {
     const board = document.querySelector('[data-signal-board]');
     const tiles = board ? board.querySelectorAll('.signal-tile') : [];
-    const orb = board ? board.querySelector('[data-work-orb]') : null;
     
     if (!board || tiles.length === 0) return;
     
     board.addEventListener('mousemove', function(e) {
-      const rect = board.getBoundingClientRect();
-      const boardX = e.clientX - rect.left;
-      const boardY = e.clientY - rect.top;
       const hoveredTile = e.target.closest('.signal-tile');
-
-      if (orb) {
-        orb.style.left = boardX + 'px';
-        orb.style.top = boardY + 'px';
-        orb.style.opacity = '1';
-      }
       
       tiles.forEach(function(tile) {
         if (tile === hoveredTile) {
@@ -484,9 +490,6 @@
     });
     
     board.addEventListener('mouseleave', function() {
-      if (orb) {
-        orb.style.opacity = '0';
-      }
       tiles.forEach(function(tile) {
         tile.style.setProperty('--sx', '50%');
         tile.style.setProperty('--sy', '50%');

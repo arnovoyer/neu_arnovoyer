@@ -153,6 +153,15 @@ body::after {
   opacity: 0.56;
 }
 
+.cursor-orb.is-over-tile {
+  opacity: 0.5;
+  box-shadow: 0 0 24px rgba(121, 255, 209, 0.28);
+}
+
+.cursor-orb.is-over-workflow {
+  opacity: 0.46;
+}
+
 @media (hover: none), (pointer: coarse) {
   .cursor-orb {
     display: none;
@@ -538,6 +547,11 @@ h3 {
   transform: translate(-50%, -50%);
   transition: opacity 0.2s ease, transform 0.08s ease;
   z-index: 2;
+}
+
+/* Globaler Cursor-Orb ersetzt den lokalen Work-Orb */
+[data-cursor-orb] ~ main .work-orb {
+  display: none;
 }
 
 .signal-tile span {
