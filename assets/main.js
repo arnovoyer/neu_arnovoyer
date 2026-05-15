@@ -58,12 +58,24 @@
   // Animated send button behavior (show spinner briefly before submit)
   const contactForm = document.querySelector('.contact-form');
   if (contactForm) {
+    let submitting = false;
     contactForm.addEventListener('submit', function (ev) {
       const btn = contactForm.querySelector('.btn.primary');
-      if (!btn) return;
+      if (!btn || submitting) return;
       ev.preventDefault();
+      submitting = true;
       btn.disabled = true;
       btn.classList.add('sending');
+
+      // Fail-safe: if a third-party endpoint stalls, unlock UI again.
+      setTimeout(function () {
+        if (!document.hidden) {
+          submitting = false;
+          btn.disabled = false;
+          btn.classList.remove('sending');
+        }
+      }, 12000);
+
       // small UX delay to show spinner, then submit
       setTimeout(function () { contactForm.submit(); }, 350);
     });

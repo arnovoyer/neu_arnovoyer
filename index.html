@@ -182,11 +182,12 @@
       <h2 class="reveal">START A PROJECT</h2>
       <div class="flash" data-sent-message hidden></div>
 
-      <form class="contact-form reveal" action="https://formsubmit.io/send/arno.voyer@aon.at" method="POST" data-formsubmit-form data-focus-glow>
+      <form class="contact-form reveal" action="https://formsubmit.co/arno.voyer@aon.at" method="POST" data-focus-glow>
         <input type="hidden" name="_subject" value="Neue Nachricht ueber arnovoyer.com">
-        <input type="hidden" name="_redirect" value="https://arnovoyer.com/thanks.html">
+        <input type="hidden" name="_next" value="https://arnovoyer.com/?sent=1#contact">
+        <input type="hidden" name="_captcha" value="false">
         <input type="hidden" name="source" value="startseite">
-        <input type="text" name="_formsubmit_id" value="" tabindex="-1" autocomplete="off" class="honeypot">
+        <input type="text" name="_honey" value="" tabindex="-1" autocomplete="off" class="honeypot" aria-hidden="true">
 
         <div class="form-group">
           <label for="contact-name">Name <span aria-label="erforderlich" title="erforderlich">*</span></label>
