@@ -58,12 +58,24 @@
   // Animated send button behavior (show spinner briefly before submit)
   const contactForm = document.querySelector('.contact-form');
   if (contactForm) {
+    let submitting = false;
     contactForm.addEventListener('submit', function (ev) {
       const btn = contactForm.querySelector('.btn.primary');
-      if (!btn) return;
+      if (!btn || submitting) return;
       ev.preventDefault();
+      submitting = true;
       btn.disabled = true;
       btn.classList.add('sending');
+
+      // Fail-safe: if a third-party endpoint stalls, unlock UI again.
+      setTimeout(function () {
+        if (!document.hidden) {
+          submitting = false;
+          btn.disabled = false;
+          btn.classList.remove('sending');
+        }
+      }, 12000);
+
       // small UX delay to show spinner, then submit
       setTimeout(function () { contactForm.submit(); }, 350);
     });
@@ -104,9 +116,105 @@
     requestAnimationFrame(step);
   })();
 
+  (function initCursorOrb() {
+    const orb = document.querySelector('[data-cursor-orb]');
+    const ring = document.querySelector('[data-cursor-ring]');
+    if (!orb && !ring) return;
+    if (window.matchMedia('(hover: none), (pointer: coarse)').matches) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    document.documentElement.classList.add('custom-cursor-enabled');
+
+    let active = false;
+    let rafId = null;
+
+    const orbLag = 0.24;
+    const ringLag = 0.13;
+
+    let targetX = window.innerWidth / 2;
+    let targetY = window.innerHeight / 2;
+    let orbX = targetX;
+    let orbY = targetY;
+    let ringX = targetX;
+    let ringY = targetY;
+    let orbTargetScale = 1;
+    let ringTargetScale = 1;
+    let orbScale = 1;
+    let ringScale = 1;
+
+    function setStateClass(name, enabled) {
+      if (orb) orb.classList.toggle(name, enabled);
+      if (ring) ring.classList.toggle(name, enabled);
+    }
+
+    function render() {
+      orbX += (targetX - orbX) * orbLag;
+      orbY += (targetY - orbY) * orbLag;
+      ringX += (targetX - ringX) * ringLag;
+      ringY += (targetY - ringY) * ringLag;
+      orbScale += (orbTargetScale - orbScale) * 0.24;
+      ringScale += (ringTargetScale - ringScale) * 0.18;
+
+      if (orb) {
+        orb.style.transform = 'translate3d(' + orbX + 'px, ' + orbY + 'px, 0) translate(-50%, -50%) scale(' + orbScale + ')';
+      }
+      if (ring) {
+        ring.style.transform = 'translate3d(' + ringX + 'px, ' + ringY + 'px, 0) translate(-50%, -50%) scale(' + ringScale + ')';
+      }
+      rafId = requestAnimationFrame(render);
+    }
+
+    document.addEventListener('mousemove', function (e) {
+      const overTile = !!e.target.closest('.signal-tile');
+      const overWorkflow = !!e.target.closest('[data-workflow]');
+      const overSystemInteractive = !!e.target.closest('#system .tile, #system .tech-core, #system .tech-pills span, #system .stat-block, #system .lang-tag, #system .repo-link');
+
+      targetX = e.clientX;
+      targetY = e.clientY;
+      orbTargetScale = (overTile || overSystemInteractive) ? 1.2 : (overWorkflow ? 1.08 : 1);
+      ringTargetScale = (overTile || overSystemInteractive) ? 1.34 : (overWorkflow ? 1.12 : 1);
+
+      setStateClass('is-over-tile', overTile);
+      setStateClass('is-over-system', overSystemInteractive);
+      setStateClass('is-over-workflow', overWorkflow);
+
+      if (!active) {
+        active = true;
+        setStateClass('is-active', true);
+        orbX = targetX;
+        orbY = targetY;
+        ringX = targetX;
+        ringY = targetY;
+      }
+
+      if (!rafId) {
+        rafId = requestAnimationFrame(render);
+      }
+    }, { passive: true });
+
+    document.addEventListener('mouseleave', function () {
+      active = false;
+      setStateClass('is-active', false);
+      setStateClass('is-over-tile', false);
+      setStateClass('is-over-system', false);
+      setStateClass('is-over-workflow', false);
+      orbTargetScale = 1;
+      ringTargetScale = 1;
+    });
+
+    document.addEventListener('mousedown', function () {
+      setStateClass('is-clicking', true);
+    });
+
+    document.addEventListener('mouseup', function () {
+      setStateClass('is-clicking', false);
+    });
+  })();
+
   (function initWorkflowGlow() {
     const workflow = document.querySelector('[data-workflow]');
     if (!workflow) return;
+    const hasGlobalOrb = !!document.querySelector('[data-cursor-orb]');
 
     function updateGlow(event) {
       const rect = workflow.getBoundingClientRect();
@@ -117,8 +225,14 @@
 
       const glowEl = workflow.parentElement.querySelector('[data-workflow-glow]');
       if (glowEl) {
-        glowEl.style.setProperty('--glow-x', (event.clientX - rect.left) + 'px');
-        glowEl.style.setProperty('--glow-y', (event.clientY - rect.top) + 'px');
+        if (hasGlobalOrb) {
+          glowEl.style.opacity = '0';
+          return;
+        }
+        // Berechne Position relativ zur Section (Parent des glow-Elements)
+        const sectionRect = workflow.parentElement.getBoundingClientRect();
+        glowEl.style.setProperty('--glow-x', (event.clientX - sectionRect.left) + 'px');
+        glowEl.style.setProperty('--glow-y', (event.clientY - sectionRect.top) + 'px');
         glowEl.style.opacity = '0.22';
       }
     }
@@ -396,21 +510,11 @@
   (function initSignalTileGlow() {
     const board = document.querySelector('[data-signal-board]');
     const tiles = board ? board.querySelectorAll('.signal-tile') : [];
-    const orb = board ? board.querySelector('[data-work-orb]') : null;
     
     if (!board || tiles.length === 0) return;
     
     board.addEventListener('mousemove', function(e) {
-      const rect = board.getBoundingClientRect();
-      const boardX = e.clientX - rect.left;
-      const boardY = e.clientY - rect.top;
       const hoveredTile = e.target.closest('.signal-tile');
-
-      if (orb) {
-        orb.style.left = boardX + 'px';
-        orb.style.top = boardY + 'px';
-        orb.style.opacity = '1';
-      }
       
       tiles.forEach(function(tile) {
         if (tile === hoveredTile) {
@@ -427,9 +531,6 @@
     });
     
     board.addEventListener('mouseleave', function() {
-      if (orb) {
-        orb.style.opacity = '0';
-      }
       tiles.forEach(function(tile) {
         tile.style.setProperty('--sx', '50%');
         tile.style.setProperty('--sy', '50%');
