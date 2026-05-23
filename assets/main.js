@@ -128,8 +128,8 @@
     let active = false;
     let rafId = null;
 
-    const orbLag = 0.24;
-    const ringLag = 0.13;
+    const orbLag = 0.28;
+    const ringLag = 0.1;
 
     let targetX = window.innerWidth / 2;
     let targetY = window.innerHeight / 2;
@@ -171,8 +171,8 @@
 
       targetX = e.clientX;
       targetY = e.clientY;
-      orbTargetScale = (overTile || overSystemInteractive) ? 1.2 : (overWorkflow ? 1.08 : 1);
-      ringTargetScale = (overTile || overSystemInteractive) ? 1.34 : (overWorkflow ? 1.12 : 1);
+      orbTargetScale = (overTile || overSystemInteractive) ? 1.1 : (overWorkflow ? 1.04 : 1);
+      ringTargetScale = (overTile || overSystemInteractive) ? 1.14 : (overWorkflow ? 1.06 : 1);
 
       setStateClass('is-over-tile', overTile);
       setStateClass('is-over-system', overSystemInteractive);
