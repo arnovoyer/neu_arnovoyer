@@ -1,13 +1,13 @@
 :root {
   --bg: #070b12;
   --bg-2: #0d1320;
-  --line: rgba(152, 176, 255, 0.14);
+  --line: rgba(163, 174, 202, 0.12);
   --text: #f2f5ff;
-  --muted: rgba(242, 245, 255, 0.66);
-  --accent: #98b0ff;
-  --accent-2: #8de3c8;
-  --panel: rgba(14, 20, 33, 0.78);
-  --shadow: 0 18px 36px rgba(0, 0, 0, 0.32);
+  --muted: rgba(242, 245, 255, 0.62);
+  --accent: #8e9cc4;
+  --accent-2: #cbb98a;
+  --panel: rgba(14, 20, 33, 0.82);
+  --shadow: 0 16px 30px rgba(0, 0, 0, 0.3);
 }
 
 * {
@@ -64,8 +64,8 @@ body {
   color: var(--text);
   font-family: "Space Grotesk", "Segoe UI", sans-serif;
   background:
-    radial-gradient(900px 620px at 88% -10%, rgba(152, 176, 255, 0.14), transparent 58%),
-    radial-gradient(760px 500px at -8% 120%, rgba(141, 227, 200, 0.08), transparent 62%),
+    radial-gradient(900px 620px at 88% -10%, rgba(142, 156, 196, 0.12), transparent 58%),
+    radial-gradient(760px 500px at -8% 120%, rgba(203, 185, 138, 0.06), transparent 62%),
     linear-gradient(180deg, #070b12, #050810 72%);
 }
 
@@ -83,10 +83,10 @@ body::before {
   pointer-events: none;
   z-index: -1;
   background-image:
-    linear-gradient(rgba(152, 176, 255, 0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(152, 176, 255, 0.07) 1px, transparent 1px);
+    linear-gradient(rgba(163, 174, 202, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(163, 174, 202, 0.05) 1px, transparent 1px);
   background-size: 44px 44px;
-  opacity: 0.18;
+  opacity: 0.12;
 }
 
 body::after {
@@ -96,10 +96,10 @@ body::after {
   pointer-events: none;
   z-index: -1;
   background-image:
-    linear-gradient(rgba(141, 227, 200, 0.08) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(141, 227, 200, 0.08) 1px, transparent 1px);
+    linear-gradient(rgba(203, 185, 138, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(203, 185, 138, 0.05) 1px, transparent 1px);
   background-size: 180px 180px;
-  opacity: 0.14;
+  opacity: 0.08;
 }
 
 .noise,
@@ -111,17 +111,17 @@ body::after {
 }
 
 .noise {
-  opacity: 0.015;
+  opacity: 0.01;
   background-image: radial-gradient(rgba(255, 255, 255, 0.6) 0.45px, transparent 0.45px);
   background-size: 3px 3px;
 }
 
 .scanline {
-  opacity: 0.04;
+  opacity: 0.02;
   background: repeating-linear-gradient(
     to bottom,
-    rgba(152, 176, 255, 0.05),
-    rgba(152, 176, 255, 0.05) 1px,
+    rgba(163, 174, 202, 0.04),
+    rgba(163, 174, 202, 0.04) 1px,
     transparent 1px,
     transparent 6px
   );
@@ -224,8 +224,8 @@ body::after {
   width: 100%;
   margin: 0;
   padding: 12px 18px;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
+  border-top: 1px solid rgba(163, 174, 202, 0.08);
+  border-bottom: 1px solid rgba(163, 174, 202, 0.08);
   border-left: 0;
   border-right: 0;
   background: rgba(6, 10, 18, 0.88);
@@ -256,7 +256,7 @@ body::after {
   height: 9px;
   border-radius: 999px;
   background: var(--accent-2);
-  box-shadow: 0 0 14px rgba(121, 255, 209, 0.7);
+  box-shadow: 0 0 12px rgba(203, 185, 138, 0.45);
 }
 
 .nav {
@@ -277,8 +277,8 @@ body::after {
 
 .nav a:hover {
   color: var(--text);
-  border-color: rgba(121, 255, 209, 0.45);
-  background: rgba(121, 255, 209, 0.12);
+  border-color: rgba(203, 185, 138, 0.28);
+  background: rgba(203, 185, 138, 0.08);
 }
 
 .menu-btn {
@@ -350,10 +350,10 @@ main {
   top: -40%;
   width: 38px;
   height: 240%;
-  background: linear-gradient(180deg, rgba(121,255,209,0.02), rgba(121,255,209,0.12), rgba(121,255,209,0.02));
+  background: linear-gradient(180deg, rgba(203,185,138,0.02), rgba(203,185,138,0.11), rgba(203,185,138,0.02));
   transform: rotate(10deg);
   filter: blur(26px) saturate(1.1);
-  opacity: 0.32;
+  opacity: 0.22;
   animation: hero-sweep 6s linear infinite;
   pointer-events: none;
 }
@@ -371,7 +371,7 @@ main {
   border-left: 0;
   border-right: 0;
   border-top: 0;
-  background: linear-gradient(160deg, rgba(11, 16, 28, 0.88), rgba(8, 13, 24, 0.84));
+  background: linear-gradient(160deg, rgba(11, 16, 28, 0.9), rgba(8, 13, 24, 0.88));
   backdrop-filter: none;
   box-shadow: none;
 }
@@ -412,8 +412,9 @@ h3 {
   margin-top: 14px;
   font-size: clamp(2.2rem, 6.5vw, 5.2rem);
   line-height: 0.95;
-  letter-spacing: 0.01em;
-  font-weight: 800;
+  letter-spacing: -0.025em;
+  font-weight: 700;
+  font-family: "Cormorant Garamond", Georgia, serif;
 }
 
 .hero h1 span,
@@ -422,12 +423,29 @@ h3 {
   color: var(--accent-2);
 }
 
+.hero h1 span {
+  font-family: "Outfit", sans-serif;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  font-size: 0.26em;
+  margin-top: 0.35em;
+  color: rgba(242, 245, 255, 0.76);
+}
+
 .hero-copy {
   margin: 20px 0 0;
   max-width: 35ch;
   color: var(--muted);
   font-size: clamp(1rem, 1.6vw, 1.15rem);
   line-height: 1.6;
+}
+
+.hero-signature {
+  margin: 12px 0 0;
+  color: rgba(242, 245, 255, 0.45);
+  font-size: 0.72rem;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
 }
 
 .hero-actions {
@@ -621,8 +639,8 @@ h3 {
 }
 
 .btn.primary {
-  border-color: rgba(141,227,200,0.14);
-  background: linear-gradient(135deg, rgba(23,34,48,0.9), rgba(30,44,64,0.92));
+  border-color: rgba(203,185,138,0.16);
+  background: linear-gradient(135deg, rgba(23,34,48,0.92), rgba(30,44,64,0.96));
   padding: 14px 26px;
   font-weight: 600;
   letter-spacing: 0.06em;
@@ -631,7 +649,7 @@ h3 {
 }
 
 .btn.primary:hover {
-  border-color: rgba(141,227,200,0.28);
+  border-color: rgba(203,185,138,0.3);
   background: linear-gradient(135deg, rgba(30,45,60,0.98), rgba(40,55,75,0.98));
   transform: translateY(-2px);
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
@@ -654,6 +672,7 @@ h3 {
   font-size: clamp(1.2rem, 2.5vw, 1.9rem);
   letter-spacing: 0.05em;
   font-weight: 800;
+  font-family: "Cormorant Garamond", Georgia, serif;
 }
 
 .panel-head p {
