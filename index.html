@@ -1,240 +1,1093 @@
 <!DOCTYPE html>
-<html lang="de-AT">
+<html lang="de" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Arno Voyer</title>
-  <meta name="description" content="Futuristische, performante Websites mit klarer Struktur und starkem visuellen Auftritt.">
-  <meta name="theme-color" content="#070b12">
-  <link rel="icon" type="image/svg+xml" href="assets/logo.svg">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kreativ-Studio | Portfolio der nächsten Generation</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=Syne:wght@500;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Space Grotesk', 'sans-serif'],
+                        display: ['Syne', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#0F0F11',
+                            light: '#FAF9F6',
+                            accent: '#FF5A36', // Neon Orange-Rot
+                            yellow: '#F3C13F', // Retro Gelb
+                            blue: '#3F84F3',   // Electric Blue
+                            purple: '#A23FF3', // Cosmic Purple
+                        }
+                    },
+                    boxShadow: {
+                        'brutal': '6px 6px 0px 0px #0F0F11',
+                        'brutal-lg': '12px 12px 0px 0px #0F0F11',
+                        'brutal-accent': '6px 6px 0px 0px #FF5A36',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: #FAF9F6;
+            color: #0F0F11;
+            overflow-x: hidden;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        h1, h2, h3, .font-display {
+            font-family: 'Syne', sans-serif;
+        }
+
+        /* Brutalismus Scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FAF9F6;
+            border-left: 3px solid #0F0F11;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #FF5A36;
+            border: 3px solid #0F0F11;
+            border-radius: 0px;
+        }
+
+        /* Custom Styles für interaktive Elemente */
+        .brutal-border {
+            border: 3px solid #0F0F11;
+        }
+
+        .text-stroke {
+            -webkit-text-stroke: 1px #0F0F11;
+            color: transparent;
+        }
+
+        .text-stroke-white {
+            -webkit-text-stroke: 1px #FAF9F6;
+            color: transparent;
+        }
+
+        /* Schwebe-Animationen */
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(2deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float-reverse {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(8px) rotate(-3deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+        .animate-float-rev {
+            animation: float-reverse 8s ease-in-out infinite;
+        }
+
+        /* Custom Cursor für den spielerischen Touch */
+        .custom-cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #0F0F11;
+            border-radius: 50%;
+            position: fixed;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 9999;
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+            mix-blend-mode: difference;
+            background-color: transparent;
+        }
+        
+        /* Cursor auf Desktops aktivieren, auf Touch-Geräten verstecken */
+        @media (hover: none) {
+            .custom-cursor { display: none; }
+        }
+
+        /* Drei verschiedene Website-Themes gesteuert via JS */
+        body.theme-corporate {
+            background-color: #f1f5f9;
+            color: #0f172a;
+        }
+        body.theme-corporate .brutal-border {
+            border-color: #334155;
+            border-radius: 8px;
+        }
+        body.theme-corporate .shdw-brutal {
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        }
+
+        body.theme-hacker {
+            background-color: #050505;
+            color: #39FF14;
+        }
+        body.theme-hacker .brutal-border {
+            border-color: #39FF14;
+        }
+        body.theme-hacker .bg-brand-light {
+            background-color: #111;
+        }
+        body.theme-hacker .text-black {
+            color: #39FF14 !important;
+        }
+        body.theme-hacker p, body.theme-hacker span {
+            font-family: 'Courier New', Courier, monospace;
+        }
+    </style>
 </head>
-<body>
-  <div class="noise" aria-hidden="true"></div>
-  <div class="scanline" aria-hidden="true"></div>
-  <div class="cursor-orb" data-cursor-orb aria-hidden="true"></div>
-  <div class="cursor-ring" data-cursor-ring aria-hidden="true"></div>
+<body class="selection:bg-brand-accent selection:text-white">
 
-  <a href="#main-content" class="skip-link">Zum Hauptinhalt springen</a>
+    <!-- Custom Cursor -->
+    <div class="custom-cursor" id="customCursor"></div>
 
-  <header class="topbar" data-header>
-    <a href="#home" class="brand" aria-label="Home">
-      <span class="brand-dot"></span>
-      <span>ARNO VOYER</span>
-    </a>
-    <button class="menu-btn" type="button" aria-expanded="false" aria-label="Menue" data-menu-btn>MENU</button>
-    <nav class="nav" data-nav>
-      <a href="#work">WORK</a>
-      <a href="#system">SYSTEM</a>
-      <a href="#process">PROCESS</a>
-      <a href="#contact">CONTACT</a>
-    </nav>
-  </header>
-
-  <main id="main-content">
-    <section class="hero" id="home">
-      <div class="hero-inner">
-        <div class="brand-mark" aria-hidden="true"></div>
-        <p class="eyebrow reveal">INDEPENDENT WEB SYSTEMS / DORNBIRN</p>
-        <h1 class="reveal">Modern Digital Surfaces
-          <span>Engineered for Clarity.</span>
-        </h1>
-        <p class="tagline reveal">Mehr Signal. Weniger Rauschen.</p>
-        <p class="hero-copy reveal">
-          Maximum impact through focused interfaces and precise systems.
-        </p>
-        <div class="hero-actions reveal">
-          <a class="btn primary" href="#contact">START PROJECT</a>
-        </div>
-      </div>
-    </section>
-
-    <section class="panel" id="work">
-      <div class="panel-head reveal">
-        <h2>WORK</h2>
-        <p>Kraftvolle Designs. Saubere Umsetzung.</p>
-      </div>
-
-      <div class="signal-board reveal" data-signal-board data-work-board>
-        <article class="signal-tile">
-          <span>VISUELL</span>
-          <strong>High Contrast</strong>
-          <p>Klare, präzise Interfaces mit maximaler Lesbarkeit.</p>
-        </article>
-        <article class="signal-tile">
-          <span>STRUCTURE</span>
-          <strong>Modular</strong>
-          <p>Saubere Architektur. Wartbar. Skalierbar.</p>
-        </article>
-        <div class="work-orb" data-work-orb aria-hidden="true"></div>
-      </div>
-    </section>
-
-    <section class="panel" id="system">
-      <div class="panel-head reveal">
-        <h2>SYSTEM</h2>
-        <p>Was du bekommst.</p>
-      </div>
-      <div class="tech-showcase reveal" aria-label="Technologie Showcase">
-        <div class="tech-rain" aria-hidden="true">
-          <span style="--x: 8%; --d: 0s;"></span>
-          <span style="--x: 18%; --d: 1.2s;"></span>
-          <span style="--x: 30%; --d: 2.1s;"></span>
-          <span style="--x: 44%; --d: 0.6s;"></span>
-          <span style="--x: 58%; --d: 1.7s;"></span>
-          <span style="--x: 71%; --d: 0.3s;"></span>
-          <span style="--x: 82%; --d: 1.4s;"></span>
-          <span style="--x: 90%; --d: 2.4s;"></span>
-        </div>
-        <div class="tech-showcase-inner">
-          <div class="tech-core">
-            <span class="tech-core-label">STACK</span>
-            <strong>Frontend / Backend / Motion</strong>
-            <p>Saubere Systeme, schnelle Umsetzung, starke Details.</p>
-          </div>
-          <div class="tech-pills" aria-label="Technologien und Tools">
-            <span>HTML5</span>
-            <span>CSS3</span>
-            <span>JavaScript</span>
-            <span>PHP</span>
-            <span>Git</span>
-            <span>Responsive</span>
-            <span>SEO</span>
-            <span>Forms</span>
-          </div>
-        </div>
-      </div>
-      <div class="grid">
-        <article class="tile reveal">
-          <h3>Zukunftsgerichtet.</h3>
-          <p>Tech-getrieben, hochwertig, präzise.</p>
-        </article>
-        <article class="tile reveal">
-          <h3>Schnell. Im echten Einsatz.</h3>
-          <p>Performance ist nicht optional. Sauberer Code, moderne Architektur.</p>
-        </article>
-        <article class="tile reveal">
-          <h3>Überall gleich stark.</h3>
-          <p>Mobile First. Tablet. Desktop. Ein System, jede Auflösung.</p>
-        </article>
-      </div>
-      <div class="github-stats reveal" data-github-stats>
-        <div class="github-stats-head">
-          <h3>GitHub Activity</h3>
-        </div>
-        <div class="github-stats-content">
-          <div class="stats-grid">
-            <div class="stat-block">
-              <div class="stat-block-label">Latest Commit</div>
-              <div class="stat-block-value" data-stat="latest-commit">—</div>
-            </div>
-            <div class="stat-block">
-              <div class="stat-block-label">Languages</div>
-              <div class="languages-list" data-stat="languages"></div>
-            </div>
-          </div>
-          <div class="top-repos">
-            <div class="top-repos-label">Top Repos</div>
-            <div class="repos-list" data-stat="top-repos"></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="panel" id="process">
-      <div class="panel-head reveal">
-        <h2>PROCESS</h2>
-        <p>Drei klare Phasen. Transparent. Nachvollziehbar.</p>
-      </div>
-      <div class="workflow reveal" data-workflow>
-        <div class="workflow-step">
-          <div class="workflow-node" data-step="1">
-            <span class="node-number">01</span>
-            <span class="node-icon" aria-hidden="true">⟲</span>
-          </div>
-          <p class="step-label"><strong>Analyse</strong><br><span>Dein Ziel verstehen</span></p>
-        </div>
-        <div class="workflow-connector" aria-hidden="true"></div>
-        <div class="workflow-step">
-          <div class="workflow-node" data-step="2">
-            <span class="node-number">02</span>
-            <span class="node-icon" aria-hidden="true">◆</span>
-          </div>
-          <p class="step-label"><strong>Design + Build</strong><br><span>Saubere Umsetzung</span></p>
-        </div>
-        <div class="workflow-connector" aria-hidden="true"></div>
-        <div class="workflow-step">
-          <div class="workflow-node" data-step="3">
-            <span class="node-number">03</span>
-            <span class="node-icon" aria-hidden="true">→</span>
-          </div>
-          <p class="step-label"><strong>Launch & Support</strong><br><span>Live und stabil</span></p>
-        </div>
-      </div>
-      <div class="workflow-glow" data-workflow-glow aria-hidden="true"></div>
-    </section>
-
-    <section class="panel cta" id="contact">
-      <p class="eyebrow reveal">OPEN FOR NEW PROJECTS</p>
-      <h2 class="reveal">START A PROJECT</h2>
-      <div class="flash" data-sent-message hidden></div>
-
-      <form class="contact-form reveal" action="https://formsubmit.co/arno.voyer@aon.at" method="POST" data-focus-glow>
-        <input type="hidden" name="_subject" value="Neue Nachricht ueber arnovoyer.com">
-        <input type="hidden" name="_next" value="https://arnovoyer.com/?sent=1#contact">
-        <input type="hidden" name="_captcha" value="false">
-        <input type="hidden" name="source" value="startseite">
-        <input type="text" name="_honey" value="" tabindex="-1" autocomplete="off" class="honeypot" aria-hidden="true">
-
-        <div class="form-group">
-          <label for="contact-name">Name <span aria-label="erforderlich" title="erforderlich">*</span></label>
-          <div class="input-wrap" data-input-glow>
-            <input type="text" id="contact-name" name="name" placeholder="Max Mustermann" required>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="contact-email">E-Mail <span aria-label="erforderlich" title="erforderlich">*</span></label>
-          <div class="input-wrap" data-input-glow>
-            <input type="email" id="contact-email" name="email" placeholder="max@example.com" required>
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="contact-message">Nachricht <span aria-label="erforderlich" title="erforderlich">*</span></label>
-          <div class="input-wrap" data-input-glow>
-            <textarea id="contact-message" name="message" rows="3" placeholder="Deine Nachricht..." required></textarea>
-          </div>
-        </div>
-
-        <button class="btn primary rotating" type="submit" aria-label="Nachricht absenden"><span class="btn-inner">SEND</span></button>
-      </form>
-    </section>
-
-    <footer class="site-footer reveal" aria-label="Social Links">
-      <div class="footer-content">
-        <div class="social-section">
-          <p class="social-label">CONNECT</p>
-          <div class="social-links">
-            <a class="social-link" href="https://github.com/arnovoyer" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                <path d="M12 2a10 10 0 0 0-3.16 19.5c.5.1.66-.22.66-.48v-1.69c-2.68.58-3.25-1.15-3.25-1.15-.44-1.1-1.08-1.39-1.08-1.39-.88-.6.07-.59.07-.59.97.07 1.48 1 1.48 1 .86 1.47 2.27 1.04 2.83.8.09-.63.34-1.05.61-1.29-2.14-.24-4.39-1.07-4.39-4.76 0-1.05.38-1.9 1-2.57-.1-.24-.44-1.22.1-2.54 0 0 .82-.26 2.7 1a9.3 9.3 0 0 1 4.92 0c1.88-1.26 2.7-1 2.7-1 .54 1.32.2 2.3.1 2.54.62.67 1 1.52 1 2.57 0 3.7-2.26 4.51-4.4 4.75.35.3.67.89.67 1.8v2.67c0 .27.15.59.67.49A10 10 0 0 0 12 2Z" fill="currentColor"/>
-              </svg>
-              <span>GitHub</span>
+    <!-- Header / Navigation (Brutalist Style) -->
+    <header class="sticky top-0 z-50 w-full bg-brand-light brutal-border border-t-0 border-l-0 border-r-0 transition-colors duration-500">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <!-- Logo -->
+            <a href="#" class="font-display font-extrabold text-2xl tracking-tighter flex items-center gap-2 group">
+                <span class="bg-brand-accent text-brand-light px-3 py-1 brutal-border group-hover:rotate-3 transition-transform duration-300">DANIEL</span>
+                <span class="text-stroke group-hover:text-brand-dark transition-all duration-300">.STUDIO</span>
             </a>
-            <a class="social-link" href="https://instagram.com/arno.voyer" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                <path d="M7.8 2h8.4A5.8 5.8 0 0 1 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8A5.8 5.8 0 0 1 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2Zm0 1.8A4 4 0 0 0 3.8 7.8v8.4a4 4 0 0 0 4 4h8.4a4 4 0 0 0 4-4V7.8a4 4 0 0 0-4-4H7.8Zm9.8 1.4a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2ZM12 6.6A5.4 5.4 0 1 1 6.6 12 5.4 5.4 0 0 1 12 6.6Zm0 1.8A3.6 3.6 0 1 0 15.6 12 3.6 3.6 0 0 0 12 8.4Z" fill="currentColor"/>
-              </svg>
-              <span>Instagram</span>
-            </a>
-          </div>
+
+            <!-- Navigation Links -->
+            <nav class="hidden md:flex items-center gap-8 font-semibold">
+                <a href="#about" class="hover:text-brand-accent transition-colors duration-200">Über mich</a>
+                <a href="#work" class="hover:text-brand-accent transition-colors duration-200">Projekte</a>
+                <a href="#experiments" class="hover:text-brand-accent transition-colors duration-200">Spielplatz</a>
+                <a href="#contact" class="hover:text-brand-accent transition-colors duration-200">Kontakt</a>
+            </nav>
+
+            <!-- CTA & Sound Button -->
+            <div class="flex items-center gap-4">
+                <button id="soundToggle" class="w-10 h-10 brutal-border bg-brand-yellow flex items-center justify-center hover:bg-brand-accent hover:-translate-y-1 hover:translate-x-1 hover:shadow-brutal transition-all duration-200" title="Soundeffekte umschalten">
+                    <i class="fa-solid fa-volume-xmark" id="soundIcon"></i>
+                </button>
+                <a href="#contact" class="hidden sm:inline-block px-5 py-2 brutal-border bg-brand-accent text-brand-light font-bold hover:-translate-y-1 hover:translate-x-1 hover:shadow-brutal transition-all duration-200">
+                    SAY HELLO!
+                </a>
+                <!-- Mobile Nav Button -->
+                <button id="mobileMenuBtn" class="md:hidden w-10 h-10 brutal-border bg-brand-light flex items-center justify-center text-xl">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
         </div>
-      </div>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobileMenu" class="fixed inset-0 bg-brand-light z-40 flex-col justify-center items-center gap-8 text-2xl font-display font-bold hidden brutal-border border-8 m-4">
+        <button id="closeMobileMenuBtn" class="absolute top-6 right-6 w-12 h-12 brutal-border bg-brand-accent text-white flex items-center justify-center">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <a href="#about" class="hover:text-brand-accent transition-colors">Über mich</a>
+        <a href="#work" class="hover:text-brand-accent transition-colors">Projekte</a>
+        <a href="#experiments" class="hover:text-brand-accent transition-colors">Spielplatz</a>
+        <a href="#contact" class="hover:text-brand-accent transition-colors">Kontakt</a>
+    </div>
+
+    <!-- HERO SECTION: INTERACTIVE PHYSICAL CANVAS -->
+    <section class="relative min-h-[90vh] flex flex-col justify-center items-center overflow-hidden border-b-3 brutal-border px-6 py-12 transition-colors duration-500 bg-brand-light">
+        <!-- Interactive Physics Background -->
+        <canvas id="physicsCanvas" class="absolute inset-0 w-full h-full pointer-events-auto z-10"></canvas>
+
+        <!-- Main Hero Card (Floating above canvas) -->
+        <div class="relative z-20 max-w-4xl text-center pointer-events-none select-none bg-brand-light bg-opacity-95 p-8 md:p-12 brutal-border shadow-brutal-lg max-w-3xl transform -rotate-1 hover:rotate-0 transition-transform duration-500">
+            <!-- Dynamic Badges -->
+            <div class="flex flex-wrap justify-center gap-3 mb-6 pointer-events-auto">
+                <span class="px-3 py-1 bg-brand-yellow font-bold text-xs uppercase brutal-border animate-float">
+                    ⚡ Web Developer
+                </span>
+                <span class="px-3 py-1 bg-brand-blue text-white font-bold text-xs uppercase brutal-border animate-float-rev">
+                    🎨 Creative Thinker
+                </span>
+                <span class="px-3 py-1 bg-brand-purple text-white font-bold text-xs uppercase brutal-border animate-float">
+                    🎮 Digital Alchemist
+                </span>
+            </div>
+
+            <!-- Main Title -->
+            <h1 class="text-4xl md:text-7xl font-display font-extrabold tracking-tight mb-6 leading-none">
+                Ich baue digitale <br>
+                <span class="text-brand-accent inline-block transform hover:scale-110 hover:-rotate-3 transition-transform duration-200 cursor-pointer pointer-events-auto">Erlebnisse</span>, die hängen bleiben.
+            </h1>
+
+            <p class="text-lg md:text-xl font-medium max-w-2xl mx-auto mb-8 pointer-events-auto">
+                Hallo, ich bin <strong class="underline decoration-brand-accent decoration-3">Daniel</strong>. Keine generischen Vorlagen, kein langweiliges KI-Rauschen. Nur echtes, interaktives Handwerk, das Geschichten erzählt.
+            </p>
+
+            <!-- Call to Actions -->
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-4 pointer-events-auto">
+                <a href="#work" class="w-full sm:w-auto px-8 py-4 bg-brand-accent text-white font-bold text-lg brutal-border shadow-brutal hover:translate-x-1 hover:-translate-y-1 hover:shadow-brutal-accent transition-all duration-200">
+                    Projekte ansehen <i class="fa-solid fa-arrow-right ml-2"></i>
+                </a>
+                <button onclick="spawnBalls(15)" class="w-full sm:w-auto px-8 py-4 bg-brand-yellow text-brand-dark font-bold text-lg brutal-border shadow-brutal hover:bg-brand-dark hover:text-brand-yellow hover:translate-x-1 hover:-translate-y-1 transition-all duration-200">
+                    Bälle spawnen! 🟠
+                </button>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator (Absolute Bottom) -->
+        <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 z-20 text-center animate-bounce pointer-events-auto">
+            <a href="#vibe-control" class="flex flex-col items-center gap-1 font-bold text-xs uppercase tracking-widest text-brand-dark opacity-60 hover:opacity-100 transition-opacity">
+                <span>Vibe steuern</span>
+                <i class="fa-solid fa-chevron-down"></i>
+            </a>
+        </div>
+    </section>
+
+    <!-- INTERACTIVE VIBE CONTROL SECTION -->
+    <section id="vibe-control" class="py-16 px-6 brutal-border border-b-3 border-l-0 border-r-0 border-t-0 bg-brand-yellow transition-colors duration-500">
+        <div class="max-w-5xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                <div class="md:col-span-5">
+                    <span class="px-2 py-1 bg-brand-dark text-brand-yellow font-bold text-xs uppercase brutal-border">
+                        DEIN DESIGN-VIBE
+                    </span>
+                    <h2 class="text-3xl md:text-5xl font-display font-extrabold mt-4 mb-4 leading-none">
+                        Bestimme den Vibe dieser Seite.
+                    </h2>
+                    <p class="font-medium text-brand-dark opacity-90">
+                        Warum ein statisches Design, wenn du die Realität biegen kannst? Nutze das Bedienfeld rechts, um die Atmosphäre an deine Stimmung anzupassen.
+                    </p>
+                </div>
+                <div class="md:col-span-7 bg-brand-light brutal-border p-6 md:p-8 shadow-brutal">
+                    <h3 class="font-display font-bold text-xl mb-6 flex items-center gap-2">
+                        <i class="fa-solid fa-sliders text-brand-accent"></i> Vibe-Regler
+                    </h3>
+
+                    <!-- Vibe Sliders / Options -->
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between font-bold text-sm mb-2">
+                                <span>🎨 Stilrichtung</span>
+                                <span id="currentStyleLabel" class="text-brand-accent">Neo-Brutalismus</span>
+                            </div>
+                            <input type="range" id="styleSlider" min="1" max="3" value="1" class="w-full h-3 bg-brand-dark brutal-border rounded-none appearance-none cursor-pointer accent-brand-accent">
+                            <div class="flex justify-between text-xs font-bold mt-1 opacity-70">
+                                <span>Brutalismus</span>
+                                <span>Corporate 💼</span>
+                                <span>Terminal 💻</span>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between font-bold text-sm mb-2">
+                                <span>🌀 Schwerkraft im Hero-Bereich</span>
+                                <span id="gravityVal">Normal</span>
+                            </div>
+                            <input type="range" id="gravitySlider" min="0" max="2" step="0.5" value="1" class="w-full h-3 bg-brand-dark brutal-border rounded-none appearance-none cursor-pointer accent-brand-accent">
+                            <div class="flex justify-between text-xs font-bold mt-1 opacity-70">
+                                <span>Schwerelos 🚀</span>
+                                <span>Normal</span>
+                                <span>Jupiter-Schwere ⚓</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sound Pad Mini Game -->
+                    <div class="mt-8 border-t-2 border-brand-dark pt-6">
+                        <h4 class="font-bold text-sm mb-3 flex items-center gap-2">
+                            🔊 Integrierter Mini-Synthesizer: <span class="text-xs bg-brand-yellow px-2 py-0.5 brutal-border">Klick oder Hover!</span>
+                        </h4>
+                        <div class="grid grid-cols-4 gap-2">
+                            <button class="synth-pad p-4 brutal-border bg-brand-accent text-white font-bold text-center hover:bg-brand-dark transition-colors" data-note="C4">C</button>
+                            <button class="synth-pad p-4 brutal-border bg-brand-yellow text-brand-dark font-bold text-center hover:bg-brand-dark hover:text-brand-yellow transition-colors" data-note="E4">E</button>
+                            <button class="synth-pad p-4 brutal-border bg-brand-blue text-white font-bold text-center hover:bg-brand-dark transition-colors" data-note="G4">G</button>
+                            <button class="synth-pad p-4 brutal-border bg-brand-purple text-white font-bold text-center hover:bg-brand-dark transition-colors" data-note="C5">C+</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT SECTION: WHO AM I? -->
+    <section id="about" class="py-24 px-6 max-w-7xl mx-auto transition-colors duration-500">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            <!-- Bio & Experience Text -->
+            <div class="lg:col-span-7 space-y-6">
+                <span class="px-3 py-1 bg-brand-accent text-brand-light font-bold text-sm uppercase brutal-border inline-block">
+                    Das bin ich
+                </span>
+                <h2 class="text-4xl md:text-6xl font-display font-extrabold tracking-tight leading-none">
+                    Keine Lust auf <br><span class="text-stroke">Einheitsbrei?</span> Ich auch nicht.
+                </h2>
+                <p class="text-lg font-medium">
+                    In einer Welt voller AI-generierter, glattgebügelter Standard-Webseiten helfe ich Brands und Einzelpersonen, aus dem Schatten der Austauschbarkeit zu treten. 
+                </p>
+                <p class="text-base text-gray-700 font-medium">
+                    Ich kombiniere modernste Frontend-Technologie mit einem brutal ehrlichen Design-Verständnis. Jede Interaktion, jede Animation und jede Zeile Code hat nur ein Ziel: Deinen Besuchern ein Lächeln ins Gesicht zu zaubern und im Gedächtnis zu bleiben.
+                </p>
+
+                <!-- Interactive Stats Grid -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-4">
+                    <div class="p-4 brutal-border bg-brand-light shadow-brutal hover:-translate-y-1 transition-all duration-200">
+                        <span class="block font-display font-black text-3xl md:text-4xl text-brand-accent">50+</span>
+                        <span class="text-xs font-bold uppercase tracking-wider text-gray-600">Interaktive Projekte</span>
+                    </div>
+                    <div class="p-4 brutal-border bg-brand-light shadow-brutal hover:-translate-y-1 transition-all duration-200">
+                        <span class="block font-display font-black text-3xl md:text-4xl text-brand-blue">100k+</span>
+                        <span class="text-xs font-bold uppercase tracking-wider text-gray-600">Zeilen Code</span>
+                    </div>
+                    <div class="p-4 brutal-border bg-brand-light shadow-brutal hover:-translate-y-1 transition-all duration-200 col-span-2 sm:col-span-1">
+                        <span class="block font-display font-black text-3xl md:text-4xl text-brand-purple">99%</span>
+                        <span class="text-xs font-bold uppercase tracking-wider text-gray-600">Kein Template-Vibe</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fun Interactive Profile Card -->
+            <div class="lg:col-span-5 flex justify-center">
+                <div class="relative w-full max-w-sm">
+                    <!-- Retro Window Frame -->
+                    <div class="bg-brand-light brutal-border shadow-brutal-lg transform rotate-2 hover:rotate-0 transition-transform duration-300">
+                        <!-- Top Bar of window -->
+                        <div class="bg-brand-dark text-white px-4 py-2 flex justify-between items-center brutal-border border-t-0 border-l-0 border-r-0">
+                            <span class="font-bold text-xs tracking-wider">DANIEL_BIO_v1.0</span>
+                            <div class="flex gap-1.5">
+                                <span class="w-3 h-3 rounded-full bg-brand-accent border border-black inline-block"></span>
+                                <span class="w-3 h-3 rounded-full bg-brand-yellow border border-black inline-block"></span>
+                                <span class="w-3 h-3 rounded-full bg-brand-blue border border-black inline-block"></span>
+                            </div>
+                        </div>
+                        <!-- Content -->
+                        <div class="p-6 space-y-6">
+                            <!-- Avatar Placeholder (Fun SVG / Emoji mixture) -->
+                            <div class="w-full h-64 bg-brand-yellow brutal-border flex flex-col items-center justify-center relative overflow-hidden group">
+                                <!-- Interactive Avatar Emoji that changes on hover -->
+                                <div id="avatarEmoji" class="text-8xl select-none transition-transform duration-300 group-hover:scale-125 cursor-pointer">🕶️</div>
+                                <span class="absolute bottom-2 text-xs font-bold bg-brand-light px-2 py-0.5 brutal-border">KLICK MICH!</span>
+                            </div>
+                            
+                            <div class="space-y-2">
+                                <h4 class="font-display font-bold text-2xl">Daniel</h4>
+                                <p class="text-sm font-medium text-gray-600">
+                                    "Code ist mein Spielplatz, Design mein Pinsel. Ich trinke zu viel Espresso und denke in Vektoren."
+                                </p>
+                            </div>
+
+                            <div class="flex gap-4">
+                                <a href="https://github.com" target="_blank" class="w-10 h-10 brutal-border flex items-center justify-center hover:bg-brand-accent hover:text-white transition-all"><i class="fa-brands fa-github text-xl"></i></a>
+                                <a href="https://linkedin.com" target="_blank" class="w-10 h-10 brutal-border flex items-center justify-center hover:bg-brand-blue hover:text-white transition-all"><i class="fa-brands fa-linkedin text-xl"></i></a>
+                                <a href="https://twitter.com" target="_blank" class="w-10 h-10 brutal-border flex items-center justify-center hover:bg-brand-dark hover:text-white transition-all"><i class="fa-brands fa-x-twitter text-xl"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- PORTFOLIO / WORK: CHUNKY SHOWER CARDS -->
+    <section id="work" class="py-24 px-6 border-t-3 brutal-border transition-colors duration-500 bg-brand-light">
+        <div class="max-w-7xl mx-auto">
+            
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-4">
+                <div>
+                    <span class="px-3 py-1 bg-brand-blue text-white font-bold text-sm uppercase brutal-border">
+                        Mein Werk
+                    </span>
+                    <h2 class="text-4xl md:text-6xl font-display font-extrabold tracking-tight mt-4 leading-none">
+                        Ausgewählte <br>Projekte.
+                    </h2>
+                </div>
+                <p class="max-w-md font-medium text-gray-700">
+                    Kombinationen aus Kunst, Physik und funktionaler Entwicklung. Klicke auf die Karten, um direkt in die Details zu hüpfen.
+                </p>
+            </div>
+
+            <!-- Brutalist Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- Project 1 -->
+                <div class="project-card bg-brand-light brutal-border shadow-brutal hover:-translate-y-2 hover:shadow-brutal-lg transition-all duration-300 flex flex-col justify-between group overflow-hidden">
+                    <div>
+                        <!-- Project Image/Banner with SVG pattern fallback -->
+                        <div class="h-48 bg-brand-accent brutal-border border-t-0 border-l-0 border-r-0 flex items-center justify-center relative overflow-hidden">
+                            <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                            <span class="font-display font-black text-6xl text-stroke-white opacity-40 select-none group-hover:scale-110 transition-transform duration-300">01</span>
+                            <!-- Mock Project UI -->
+                            <div class="absolute bottom-4 left-4 right-4 bg-brand-light p-3 brutal-border flex justify-between items-center">
+                                <span class="font-bold text-xs">CYBER_ARCADE</span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="font-display font-bold text-2xl mb-2 group-hover:text-brand-accent transition-colors">Neo-Arcade Game Center</h3>
+                            <p class="text-sm text-gray-700 font-medium">
+                                Ein vollwertiges Retro-Spielezentrum im Browser mit lokaler Physik und Custom-Audio. Komplett in Vanilla JS gebaut.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0 flex gap-2 flex-wrap">
+                        <span class="px-2 py-0.5 bg-brand-yellow text-xs font-bold brutal-border">JavaScript</span>
+                        <span class="px-2 py-0.5 bg-brand-light text-xs font-bold brutal-border">Canvas API</span>
+                        <span class="px-2 py-0.5 bg-brand-light text-xs font-bold brutal-border">Web Audio</span>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="project-card bg-brand-light brutal-border shadow-brutal hover:-translate-y-2 hover:shadow-brutal-lg transition-all duration-300 flex flex-col justify-between group overflow-hidden">
+                    <div>
+                        <div class="h-48 bg-brand-blue brutal-border border-t-0 border-l-0 border-r-0 flex items-center justify-center relative overflow-hidden">
+                            <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                            <span class="font-display font-black text-6xl text-stroke-white opacity-40 select-none group-hover:scale-110 transition-transform duration-300">02</span>
+                            <div class="absolute bottom-4 left-4 right-4 bg-brand-light p-3 brutal-border flex justify-between items-center">
+                                <span class="font-bold text-xs">GLOW_BRAND</span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="font-display font-bold text-2xl mb-2 group-hover:text-brand-blue transition-colors">Brutalist Branding Engine</h3>
+                            <p class="text-sm text-gray-700 font-medium">
+                                Ein interaktives Identity-Tool für Agenturen, das dynamische Brutalismus-Layouts basierend auf der Nutzerstimmung generiert.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0 flex gap-2 flex-wrap">
+                        <span class="px-2 py-0.5 bg-brand-accent text-white text-xs font-bold brutal-border font-sans">Brand Identity</span>
+                        <span class="px-2 py-0.5 bg-brand-light text-xs font-bold brutal-border">CSS Grid</span>
+                        <span class="px-2 py-0.5 bg-brand-light text-xs font-bold brutal-border">Web Animations</span>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="project-card bg-brand-light brutal-border shadow-brutal hover:-translate-y-2 hover:shadow-brutal-lg transition-all duration-300 flex flex-col justify-between group overflow-hidden">
+                    <div>
+                        <div class="h-48 bg-brand-purple brutal-border border-t-0 border-l-0 border-r-0 flex items-center justify-center relative overflow-hidden">
+                            <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#000_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                            <span class="font-display font-black text-6xl text-stroke-white opacity-40 select-none group-hover:scale-110 transition-transform duration-300">03</span>
+                            <div class="absolute bottom-4 left-4 right-4 bg-brand-light p-3 brutal-border flex justify-between items-center">
+                                <span class="font-bold text-xs">AUDIO_VISUAL</span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-brand-accent animate-ping"></span>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="font-display font-bold text-2xl mb-2 group-hover:text-brand-purple transition-colors">Cosmic Soundscapes</h3>
+                            <p class="text-sm text-gray-700 font-medium">
+                                Ein Echtzeit-Audio-Visualizer, der Musikfrequenzen in lebendige SVG-Geometrien übersetzt. Ein absolutes Sinneserlebnis.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0 flex gap-2 flex-wrap">
+                        <span class="px-2 py-0.5 bg-brand-yellow text-xs font-bold brutal-border">SVG Mapping</span>
+                        <span class="px-2 py-0.5 bg-brand-light text-xs font-bold brutal-border">Fourier Transform</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- EXTRA EXPERIMENTAL PLAYGROUND (UNEXPECTED & FUN) -->
+    <section id="experiments" class="py-24 px-6 bg-brand-dark text-brand-light border-b-3 border-t-3 brutal-border relative overflow-hidden">
+        <div class="absolute inset-0 opacity-5 bg-[radial-gradient(#FAF9F6_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none"></div>
+        
+        <div class="max-w-5xl mx-auto relative z-10">
+            <span class="px-3 py-1 bg-brand-yellow text-brand-dark font-bold text-sm uppercase brutal-border inline-block">
+                Interaktives Spielzeug
+            </span>
+            <h2 class="text-4xl md:text-6xl font-display font-extrabold tracking-tight mt-4 mb-6 leading-none text-white">
+                Der digitale <br>Sandkasten.
+            </h2>
+            <p class="max-w-2xl text-lg opacity-80 mb-12 font-medium">
+                Klicke auf den "Zeichenmodus", um direkt auf dieser Sektion Linien zu malen! Deaktiviere es, um wieder normal zu navigieren. Das ist Webentwicklung ohne Grenzen.
+            </p>
+
+            <div class="flex flex-col md:flex-row gap-6 items-center">
+                <!-- Paint Controls -->
+                <div class="w-full md:w-1/3 space-y-4">
+                    <button id="paintToggleBtn" class="w-full p-4 brutal-border border-white bg-brand-accent text-white font-bold text-lg hover:-translate-y-1 hover:shadow-[6px_6px_0px_0px_#FAF9F6] transition-all">
+                        🎨 Zeichenmodus: AUS
+                    </button>
+                    <button id="clearPaintBtn" class="w-full p-4 brutal-border border-white bg-transparent text-white font-bold text-lg hover:bg-brand-light hover:text-brand-dark transition-all">
+                        🧹 Leinwand löschen
+                    </button>
+                    <div class="p-4 brutal-border border-white bg-brand-light text-brand-dark">
+                        <h4 class="font-bold text-sm mb-2">Farbe wählen:</h4>
+                        <div class="flex gap-2">
+                            <span class="paint-color w-8 h-8 rounded-full bg-brand-accent border-2 border-black cursor-pointer transform hover:scale-110 transition-transform" data-color="#FF5A36"></span>
+                            <span class="paint-color w-8 h-8 rounded-full bg-brand-yellow border-2 border-black cursor-pointer transform hover:scale-110 transition-transform" data-color="#F3C13F"></span>
+                            <span class="paint-color w-8 h-8 rounded-full bg-brand-blue border-2 border-black cursor-pointer transform hover:scale-110 transition-transform" data-color="#3F84F3"></span>
+                            <span class="paint-color w-8 h-8 rounded-full bg-brand-purple border-2 border-black cursor-pointer transform hover:scale-110 transition-transform" data-color="#A23FF3"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Canvas Area Mock (Actually uses a full-screen dynamic overlay canvas when active) -->
+                <div class="w-full md:w-2/3 bg-black brutal-border border-white h-72 flex flex-col justify-center items-center text-center p-6 relative overflow-hidden">
+                    <div class="border-2 border-dashed border-zinc-800 p-8">
+                        <i class="fa-solid fa-wand-magic-sparkles text-5xl mb-4 text-brand-yellow animate-float"></i>
+                        <h3 class="font-display font-bold text-xl text-white">Aktiviere den Modus links</h3>
+                        <p class="text-xs text-zinc-400 mt-2 max-w-sm">
+                            Sobald der Zeichenmodus aktiv ist, kannst du mit gedrückter Maustaste überall auf dem Bildschirm Linien zeichnen.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT SECTION: THE FUNNEL -->
+    <section id="contact" class="py-24 px-6 max-w-5xl mx-auto transition-colors duration-500">
+        <div class="bg-brand-light brutal-border p-8 md:p-16 shadow-brutal-lg transform -rotate-1 hover:rotate-0 transition-transform duration-500">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                
+                <div class="lg:col-span-5 space-y-6">
+                    <span class="px-3 py-1 bg-brand-purple text-white font-bold text-sm uppercase brutal-border inline-block">
+                        Lass uns quatschen
+                    </span>
+                    <h2 class="text-4xl md:text-5xl font-display font-extrabold tracking-tight leading-none">
+                        Bereit für <br><span class="text-stroke">Großes?</span>
+                    </h2>
+                    <p class="text-sm font-medium text-gray-700">
+                        Hast du eine unkonventionelle Idee, die du zum Leben erwecken willst? Oder brauchst du ein markantes Web-Erlebnis?
+                    </p>
+                    <div class="space-y-3 font-bold text-sm">
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 brutal-border flex items-center justify-center bg-brand-yellow"><i class="fa-regular fa-envelope"></i></span>
+                            <a href="mailto:hello@daniel.studio" class="hover:underline">hello@daniel.studio</a>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span class="w-8 h-8 brutal-border flex items-center justify-center bg-brand-blue text-white"><i class="fa-solid fa-phone"></i></span>
+                            <span>+49 (0) 123 456 789</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <form id="contactForm" onsubmit="handleFormSubmit(event)" class="lg:col-span-7 space-y-4">
+                    <div>
+                        <label class="block font-bold text-sm mb-1 uppercase">Wie heißt du?</label>
+                        <input type="text" required class="w-full p-3 brutal-border bg-brand-light focus:bg-white focus:outline-none focus:shadow-brutal transition-all" placeholder="Dein Name">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-sm mb-1 uppercase">Deine E-Mail</label>
+                        <input type="email" required class="w-full p-3 brutal-border bg-brand-light focus:bg-white focus:outline-none focus:shadow-brutal transition-all" placeholder="deine@mail.de">
+                    </div>
+                    <div>
+                        <label class="block font-bold text-sm mb-1 uppercase">Was schwebt dir vor?</label>
+                        <textarea required rows="4" class="w-full p-3 brutal-border bg-brand-light focus:bg-white focus:outline-none focus:shadow-brutal transition-all" placeholder="Erzähl mir ein bisschen von deinem Projekt..."></textarea>
+                    </div>
+                    <button type="submit" class="w-full py-4 bg-brand-accent text-white font-bold text-lg brutal-border shadow-brutal hover:bg-brand-dark hover:text-brand-accent hover:-translate-y-1 transition-all">
+                        Nachricht absenden! 🚀
+                    </button>
+                </form>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- SUCCESS MODAL FOR FORM -->
+    <div id="successModal" class="fixed inset-0 z-50 flex items-center justify-center hidden bg-black bg-opacity-50 p-6">
+        <div class="bg-brand-light brutal-border p-8 max-w-md w-full shadow-brutal-lg text-center transform -rotate-1">
+            <span class="text-6xl mb-4 block">🎉</span>
+            <h3 class="font-display font-bold text-2xl mb-2">Nachricht abgeschickt!</h3>
+            <p class="text-sm font-medium text-gray-700 mb-6">
+                Großartig! Ich werde mich schneller bei dir melden, als du "Anti-Generic" sagen kannst.
+            </p>
+            <button onclick="closeModal()" class="px-6 py-2 bg-brand-accent text-white font-bold brutal-border shadow-brutal hover:translate-y-0.5 transition-transform">
+                Alles klar!
+            </button>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-brand-dark text-brand-light py-12 px-6 border-t-3 brutal-border transition-colors duration-500">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8 text-center md:text-left">
+            <div>
+                <a href="#" class="font-display font-extrabold text-2xl tracking-tighter flex items-center justify-center md:justify-start gap-2">
+                    <span class="bg-brand-accent text-brand-light px-3 py-1 brutal-border">DANIEL</span>
+                    <span class="text-stroke-white">.STUDIO</span>
+                </a>
+                <p class="text-xs opacity-60 mt-2 max-w-sm">
+                    © 2026 Daniel. All rights reserved. Handgeschrieben mit Blut, Schweiß und WebGL/Canvas-Träumen.
+                </p>
+            </div>
+            
+            <div class="flex gap-6 font-bold text-sm">
+                <a href="#" class="hover:text-brand-accent">Impressum</a>
+                <a href="#" class="hover:text-brand-accent">Datenschutz</a>
+                <a href="#vibe-control" class="hover:text-brand-accent">Vibe-Check</a>
+            </div>
+        </div>
     </footer>
-  </main>
 
-  <script src="assets/main.js"></script>
+    <!-- AUDIO & PHYSICS LOGIC SCRIPT -->
+    <script>
+        // Custom Cursor Logic
+        const cursor = document.querySelector('.custom-cursor');
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        document.querySelectorAll('a, button, input, textarea, [role="button"]').forEach(elem => {
+            elem.addEventListener('mouseenter', () => {
+                cursor.style.width = '40px';
+                cursor.style.height = '40px';
+                cursor.style.backgroundColor = 'rgba(255, 90, 54, 0.2)';
+            });
+            elem.addEventListener('mouseleave', () => {
+                cursor.style.width = '20px';
+                cursor.style.height = '20px';
+                cursor.style.backgroundColor = 'transparent';
+            });
+        });
+
+        // Sound Engine (Web Audio API)
+        let audioCtx = null;
+        let isMuted = true;
+
+        const soundToggle = document.getElementById('soundToggle');
+        const soundIcon = document.getElementById('soundIcon');
+
+        soundToggle.addEventListener('click', () => {
+            isMuted = !isMuted;
+            if (isMuted) {
+                soundIcon.className = 'fa-solid fa-volume-xmark';
+                soundToggle.classList.remove('bg-brand-accent');
+                soundToggle.classList.add('bg-brand-yellow');
+            } else {
+                soundIcon.className = 'fa-solid fa-volume-high';
+                soundToggle.classList.remove('bg-brand-yellow');
+                soundToggle.classList.add('bg-brand-accent');
+                if (!audioCtx) {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                }
+            }
+        });
+
+        function playSynthNote(freq, type = 'sine', duration = 0.3) {
+            if (isMuted || !audioCtx) return;
+            
+            // Web Audio Nodes init
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            
+            osc.type = type;
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            
+            // Envelope (Attack-Decay-Sustain-Release)
+            gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+            
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+            
+            osc.start();
+            osc.stop(audioCtx.currentTime + duration);
+        }
+
+        // Notes frequency mapper
+        const notes = {
+            'C4': 261.63,
+            'E4': 329.63,
+            'G4': 392.00,
+            'C5': 523.25
+        };
+
+        document.querySelectorAll('.synth-pad').forEach(pad => {
+            const note = pad.dataset.note;
+            const freq = notes[note];
+            
+            // Sound on hover
+            pad.addEventListener('mouseenter', () => {
+                playSynthNote(freq, 'triangle', 0.2);
+            });
+            
+            // Sound on click
+            pad.addEventListener('click', () => {
+                playSynthNote(freq, 'sawtooth', 0.5);
+                // Fun tilt effect on click
+                pad.style.transform = 'scale(0.95) rotate(-3deg)';
+                setTimeout(() => { pad.style.transform = 'none'; }, 150);
+            });
+        });
+
+        // Physics Engine for Canvas background (custom 2D engine)
+        const canvas = document.getElementById('physicsCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let width = canvas.width = canvas.offsetWidth;
+        let height = canvas.height = canvas.offsetHeight;
+
+        window.addEventListener('resize', () => {
+            width = canvas.width = canvas.offsetWidth;
+            height = canvas.height = canvas.offsetHeight;
+        });
+
+        let gravity = 0.15;
+        let bounce = 0.75;
+        let friction = 0.99;
+
+        class Particle {
+            constructor(x, y, r, color) {
+                this.x = x;
+                this.y = y;
+                this.vx = (Math.random() - 0.5) * 8;
+                this.vy = (Math.random() - 0.5) * 8;
+                this.radius = r;
+                this.color = color;
+                this.mass = r;
+            }
+
+            update() {
+                this.vy += gravity;
+                this.vx *= friction;
+                this.vy *= friction;
+
+                this.x += this.vx;
+                this.y += this.vy;
+
+                // Wall collisions
+                if (this.x + this.radius > width) {
+                    this.x = width - this.radius;
+                    this.vx *= -bounce;
+                } else if (this.x - this.radius < 0) {
+                    this.x = this.radius;
+                    this.vx *= -bounce;
+                }
+
+                if (this.y + this.radius > height) {
+                    this.y = height - this.radius;
+                    this.vy *= -bounce;
+                } else if (this.y - this.radius < 0) {
+                    this.y = this.radius;
+                    this.vy *= -bounce;
+                }
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.lineWidth = 3;
+                ctx.strokeStyle = '#0F0F11';
+                ctx.fill();
+                ctx.stroke();
+            }
+        }
+
+        const colors = ['#FF5A36', '#F3C13F', '#3F84F3', '#A23FF3'];
+        let particles = [];
+
+        function spawnBalls(count) {
+            playSynthNote(300, 'sine', 0.15);
+            for (let i = 0; i < count; i++) {
+                const radius = Math.random() * 20 + 15;
+                const x = Math.random() * (width - radius * 2) + radius;
+                const y = Math.random() * (height - radius * 2) + radius;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                particles.push(new Particle(x, y, radius, color));
+            }
+        }
+
+        // Spawn a few initial particles
+        spawnBalls(12);
+
+        // Interaction with mouse/touch
+        let mouse = { x: null, y: null, active: false };
+
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            mouse.x = e.clientX - rect.left;
+            mouse.y = e.clientY - rect.top;
+        });
+
+        canvas.addEventListener('mousedown', () => {
+            // Push balls away on click
+            playSynthNote(150, 'triangle', 0.2);
+            particles.forEach(p => {
+                const dx = p.x - mouse.x;
+                const dy = p.y - mouse.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 200) {
+                    const force = (200 - dist) / 10;
+                    p.vx += (dx / dist) * force;
+                    p.vy += (dy / dist) * force;
+                }
+            });
+        });
+
+        // Main Simulation Loop
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+
+            // Draw line from mouse to nearby particles (subtle effect)
+            if (mouse.x !== null) {
+                particles.forEach(p => {
+                    const dx = p.x - mouse.x;
+                    const dy = p.y - mouse.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 150) {
+                        ctx.beginPath();
+                        ctx.moveTo(mouse.x, mouse.y);
+                        ctx.lineTo(p.x, p.y);
+                        ctx.strokeStyle = 'rgba(15, 15, 17, 0.08)';
+                        ctx.lineWidth = 1;
+                        ctx.stroke();
+                    }
+                });
+            }
+
+            // Particle Updates and Collisions
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                
+                // Ball-to-Ball Collisions
+                for (let j = i + 1; j < particles.length; j++) {
+                    const p1 = particles[i];
+                    const p2 = particles[j];
+                    const dx = p2.x - p1.x;
+                    const dy = p2.y - p1.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < p1.radius + p2.radius) {
+                        // Elastic collision math
+                        const angle = Math.atan2(dy, dx);
+                        const sin = Math.sin(angle);
+                        const cos = Math.cos(angle);
+
+                        // Position rotation
+                        let x1 = 0, y1 = 0;
+                        let x2 = dx * cos + dy * sin;
+                        let y2 = dy * cos - dx * sin;
+
+                        // Velocity rotation
+                        let vx1 = p1.vx * cos + p1.vy * sin;
+                        let vy1 = p1.vy * cos - p1.vx * sin;
+                        let vx2 = p2.vx * cos + p2.vy * sin;
+                        let vy2 = p2.vy * cos - p2.vx * sin;
+
+                        // Swap velocities (simplified elastic collision)
+                        let vx1Final = ((p1.mass - p2.mass) * vx1 + 2 * p2.mass * vx2) / (p1.mass + p2.mass);
+                        let vx2Final = ((p2.mass - p1.mass) * vx2 + 2 * p1.mass * vx1) / (p1.mass + p2.mass);
+
+                        // Separate balls so they don't stick
+                        const overlap = (p1.radius + p2.radius) - dist;
+                        p1.x -= (overlap / 2) * cos;
+                        p1.y -= (overlap / 2) * sin;
+                        p2.x += (overlap / 2) * cos;
+                        p2.y += (overlap / 2) * sin;
+
+                        // Rotate velocities back
+                        p1.vx = vx1Final * cos - vy1 * sin;
+                        p1.vy = vy1 * cos + vx1Final * sin;
+                        p2.vx = vx2Final * cos - vy2 * sin;
+                        p2.vy = vy2 * cos + vx2Final * sin;
+                        
+                        if (dist < (p1.radius + p2.radius) * 1.05) {
+                            playSynthNote(p1.radius * 10, 'sine', 0.05);
+                        }
+                    }
+                }
+                
+                particles[i].draw();
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        window.onload = function () {
+            animate();
+        }
+
+        // Vibe Controls Settings
+        const styleSlider = document.getElementById('styleSlider');
+        const gravitySlider = document.getElementById('gravitySlider');
+        const styleLabel = document.getElementById('currentStyleLabel');
+        const gravityVal = document.getElementById('gravityVal');
+
+        styleSlider.addEventListener('input', (e) => {
+            const val = parseInt(e.target.value);
+            document.body.className = "selection:bg-brand-accent selection:text-white"; // reset
+            
+            if (val === 1) {
+                styleLabel.textContent = "Neo-Brutalismus 🎨";
+                playSynthNote(261.63, 'triangle', 0.3); // Note C
+            } else if (val === 2) {
+                styleLabel.textContent = "Corporate Clean 💼";
+                document.body.classList.add('theme-corporate');
+                playSynthNote(329.63, 'sine', 0.3); // Note E
+            } else if (val === 3) {
+                styleLabel.textContent = "Hacker Terminal 💻";
+                document.body.classList.add('theme-hacker');
+                playSynthNote(392.00, 'sawtooth', 0.3); // Note G
+            }
+        });
+
+        gravitySlider.addEventListener('input', (e) => {
+            const val = parseFloat(e.target.value);
+            if (val === 0) {
+                gravity = 0;
+                gravityVal.textContent = "Schwerelos 🚀";
+                // Add minor initial float to stop stagnation
+                particles.forEach(p => {
+                    p.vy = (Math.random() - 0.5) * 4;
+                    p.vx = (Math.random() - 0.5) * 4;
+                });
+            } else if (val === 1) {
+                gravity = 0.15;
+                gravityVal.textContent = "Normal";
+            } else if (val === 2) {
+                gravity = 0.5;
+                gravityVal.textContent = "Jupiter-Schwere ⚓";
+            }
+        });
+
+        // DRAWING ON SCREEN (EXPERT EXPERIMENT MODAL)
+        let drawingMode = false;
+        let drawingColor = '#FF5A36';
+        let paintingCanvas = null;
+        let paintCtx = null;
+
+        const paintToggleBtn = document.getElementById('paintToggleBtn');
+        const clearPaintBtn = document.getElementById('clearPaintBtn');
+
+        function setupPaintingCanvas() {
+            if (paintingCanvas) return;
+            paintingCanvas = document.createElement('canvas');
+            paintingCanvas.id = 'drawingCanvasOverlay';
+            paintingCanvas.style.position = 'fixed';
+            paintingCanvas.style.top = '0';
+            paintingCanvas.style.left = '0';
+            paintingCanvas.style.width = '100vw';
+            paintingCanvas.style.height = '100vh';
+            paintingCanvas.style.pointerEvents = 'none';
+            paintingCanvas.style.zIndex = '35';
+            document.body.appendChild(paintingCanvas);
+            
+            paintCtx = paintingCanvas.getContext('2d');
+            paintingCanvas.width = window.innerWidth;
+            paintingCanvas.height = window.innerHeight;
+
+            window.addEventListener('resize', () => {
+                paintingCanvas.width = window.innerWidth;
+                paintingCanvas.height = window.innerHeight;
+            });
+        }
+
+        paintToggleBtn.addEventListener('click', () => {
+            drawingMode = !drawingMode;
+            setupPaintingCanvas();
+            if (drawingMode) {
+                paintToggleBtn.textContent = "🎨 Zeichenmodus: AN";
+                paintToggleBtn.classList.add('bg-brand-yellow', 'text-brand-dark');
+                paintingCanvas.style.pointerEvents = 'auto';
+                cursor.style.display = 'none'; // hide custom cursor to avoid overlap
+            } else {
+                paintToggleBtn.textContent = "🎨 Zeichenmodus: AUS";
+                paintToggleBtn.classList.remove('bg-brand-yellow', 'text-brand-dark');
+                paintingCanvas.style.pointerEvents = 'none';
+                cursor.style.display = 'block';
+            }
+        });
+
+        clearPaintBtn.addEventListener('click', () => {
+            if (paintCtx) {
+                paintCtx.clearRect(0, 0, paintingCanvas.width, paintingCanvas.height);
+            }
+        });
+
+        // Selecting colors
+        document.querySelectorAll('.paint-color').forEach(c => {
+            c.addEventListener('click', () => {
+                drawingColor = c.dataset.color;
+                // simple visual scale to indicate active color
+                document.querySelectorAll('.paint-color').forEach(el => el.classList.remove('scale-125', 'border-white'));
+                c.classList.add('scale-125', 'border-white');
+            });
+        });
+
+        // Paint drawing logic
+        let isDrawing = false;
+        document.addEventListener('mousedown', (e) => {
+            if (!drawingMode || !paintCtx) return;
+            isDrawing = true;
+            paintCtx.beginPath();
+            paintCtx.moveTo(e.clientX, e.clientY);
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!drawingMode || !isDrawing || !paintCtx) return;
+            paintCtx.lineTo(e.clientX, e.clientY);
+            paintCtx.strokeStyle = drawingColor;
+            paintCtx.lineWidth = 6;
+            paintCtx.lineCap = 'round';
+            paintCtx.stroke();
+            
+            // tiny synth sweep sound while drawing
+            playSynthNote(e.clientY * 0.5, 'sine', 0.05);
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDrawing = false;
+        });
+
+        // Dynamic Avatar change
+        const avatarEmoji = document.getElementById('avatarEmoji');
+        const funEmojis = ['🕶️', '🚀', '👾', '🔥', '☕', '🧠', '🧙‍♂️', '⚡'];
+        avatarEmoji.addEventListener('click', () => {
+            const current = avatarEmoji.textContent;
+            let next = current;
+            while(next === current) {
+                next = funEmojis[Math.floor(Math.random() * funEmojis.length)];
+            }
+            avatarEmoji.textContent = next;
+            playSynthNote(440, 'triangle', 0.1);
+        });
+
+        // Mobile Menu toggles
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const closeMobileMenuBtn = document.getElementById('closeMobileMenuBtn');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.remove('hidden');
+            mobileMenu.classList.add('flex');
+        });
+
+        const closeMenu = () => {
+            mobileMenu.classList.add('hidden');
+            mobileMenu.classList.remove('flex');
+        };
+
+        closeMobileMenuBtn.addEventListener('click', closeMenu);
+        mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+
+        // Form Submission Mock
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            document.getElementById('successModal').classList.remove('hidden');
+            playSynthNote(523.25, 'sine', 0.5); // high pitch success sound
+            setTimeout(() => { playSynthNote(659.25, 'sine', 0.5); }, 150);
+        }
+
+        function closeModal() {
+            document.getElementById('successModal').classList.add('hidden');
+            document.getElementById('contactForm').reset();
+        }
+    </script>
 </body>
 </html>
