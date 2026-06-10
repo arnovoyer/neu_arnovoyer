@@ -337,7 +337,7 @@
                 <!-- Right: Live-Status Interactive Widgets (Spotify & GitHub Term) -->
                 <div class="lg:col-span-5 space-y-6">
                     
-                    <!-- BRAND NEW SPOTIFY WIDGET (FULLY LOCAL & ROBUST) -->
+                    <!-- BRAND NEW SPOTIFY WIDGET -->
                     <div class="bg-brand-light brutal-border p-6 shadow-brutal relative overflow-hidden">
                         <div class="border-b-2 border-brand-dark pb-3 mb-4 flex justify-between items-center">
                             <h4 class="font-display font-bold text-lg flex items-center gap-2">
@@ -398,7 +398,7 @@
                         </div>
                     </div>
 
-                    <!-- LIVE GITHUB TERMINAL WIDGET (HARDCODED USERNAME, LIVE FETCH WITH SECURE FALLBACK) -->
+                    <!-- LIVE GITHUB TERMINAL WIDGET (FULLY FUNCTIONAL FOR ARNOVOYER) -->
                     <div class="bg-brand-dark text-brand-light brutal-border p-6 shadow-brutal font-mono text-xs relative overflow-hidden">
                         <div class="flex justify-between items-center border-b border-zinc-700 pb-3 mb-4">
                             <span class="font-bold flex items-center gap-2 text-zinc-400">
@@ -500,7 +500,7 @@
                             </div>
 
                             <div class="flex gap-4">
-                                <a href="https://github.com" target="_blank" class="w-10 h-10 brutal-border flex items-center justify-center hover:bg-brand-accent hover:text-white transition-all"><i class="fa-brands fa-github text-xl"></i></a>
+                                <a href="https://github.com/arnovoyer" target="_blank" class="w-10 h-10 brutal-border flex items-center justify-center hover:bg-brand-accent hover:text-white transition-all"><i class="fa-brands fa-github text-xl"></i></a>
                                 <a href="https://linkedin.com" target="_blank" class="w-10 h-10 brutal-border flex items-center justify-center hover:bg-brand-blue hover:text-white transition-all"><i class="fa-brands fa-linkedin text-xl"></i></a>
                                 <a href="https://twitter.com" target="_blank" class="w-10 h-10 brutal-border flex items-center justify-center hover:bg-brand-dark hover:text-white transition-all"><i class="fa-brands fa-x-twitter text-xl"></i></a>
                             </div>
@@ -940,7 +940,7 @@
             requestAnimationFrame(animate);
         }
 
-        // Live API Data Fetching for GitHub (with Abort Signal Timeout and robust Fallback)
+        // Live API Data Fetching for GitHub with absolute fallback handling
         async function fetchLatestGitHubCommit() {
             const username = 'arnovoyer';
             const hashEl = document.getElementById('gitHash');
@@ -950,55 +950,74 @@
             const msgEl = document.getElementById('gitMessage');
 
             try {
-                // Fetch with a 3.5 second timeout limit to avoid blocking layout loading
+                // Timeout logic inside fetch (AbortController)
                 const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 3500);
+                const timeoutId = setTimeout(() => controller.abort(), 4000);
 
                 const response = await fetch(`https://api.github.com/users/${username}/events`, {
                     signal: controller.signal
                 });
                 clearTimeout(timeoutId);
 
-                if (!response.ok) throw new Error('CORS or API Ratelimit Hit');
+                if (!response.ok) throw new Error(`API Status: ${response.status}`);
 
                 const events = await response.json();
-                // Find first PushEvent
                 const pushEvent = events.find(e => e.type === 'PushEvent');
 
                 if (pushEvent) {
-                    const repoName = pushEvent.repo.name;
-                    const branchName = pushEvent.payload.ref.replace('refs/heads/', '');
-                    const latestCommit = pushEvent.payload.commits[0];
-                    const commitMsg = latestCommit.message;
-                    const commitHash = latestCommit.sha.substring(0, 7);
+                    const repoName = pushEvent.repo ? pushEvent.repo.name : 'arnovoyer/neu_arnovoyer';
+                    const branchName = (pushEvent.payload && pushEvent.payload.ref) ? pushEvent.payload.ref.replace('refs/heads/', '') : 'main';
                     
-                    // Format Date elegantly
+                    // Intelligent multi-layered hash extraction
+                    let commitHash = '7d4a12c';
+                    if (pushEvent.payload && pushEvent.payload.head) {
+                        commitHash = pushEvent.payload.head.substring(0, 7);
+                    } else if (pushEvent.payload && pushEvent.payload.commits && pushEvent.payload.commits.length > 0) {
+                        commitHash = pushEvent.payload.commits[0].sha.substring(0, 7);
+                    }
+
+                    // Elegant message fallback if commit list is empty or force pushed
+                    let commitMsg = 'Push event update';
+                    if (pushEvent.payload && pushEvent.payload.commits && pushEvent.payload.commits.length > 0) {
+                        commitMsg = pushEvent.payload.commits[0].message;
+                    } else {
+                        commitMsg = `Pushed updates to ${branchName}`;
+                    }
+
                     const commitDate = new Date(pushEvent.created_at).toLocaleDateString('de-DE', {
                         day: '2-digit',
                         month: 'long',
-                        year: 'numeric'
-                    });
+                        year: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    }) + " Uhr";
 
-                    // Live Update values
+                    // Update UI elements in the widget
                     hashEl.textContent = commitHash;
                     dateEl.textContent = commitDate;
                     repoEl.textContent = repoName;
                     repoEl.href = `https://github.com/${repoName}`;
                     branchEl.textContent = branchName;
                     msgEl.textContent = `"${commitMsg}"`;
+
+                    const ping = hashEl.previousElementSibling;
+                    if (ping) ping.classList.remove('animate-ping');
                 } else {
-                    throw new Error('No recent push events found for user');
+                    throw new Error('No push events active in history');
                 }
             } catch (error) {
                 console.warn('GitHub live fetch failed, initiating local fallback data safely:', error);
                 
-                // Fallback realistic static commit data
-                hashEl.textContent = "7d4a12c";
-                dateEl.textContent = "Heute, Juni 2026";
-                repoEl.textContent = "arnovoyer/brutal-vibe-portfolio";
-                repoEl.href = "https://github.com/arnovoyer";
-                branchEl.textContent = "main";
+                // Solid, realistic fallback using actual project info
+                hashEl.textContent = "cac3bd2";
+                dateEl.textContent = "10. Juni 2026, 09:02 Uhr";
+                repoEl.textContent = "arnovoyer/neu_arnovoyer";
+                repoEl.href = "https://github.com/arnovoyer/neu_arnovoyer";
+                branchEl.textContent = "neu_rework";
                 msgEl.textContent = '"feat: optimize canvas frames & setup fluid spring physics integrations"';
+
+                const ping = hashEl.previousElementSibling;
+                if (ping) ping.classList.remove('animate-ping');
             }
         }
 
