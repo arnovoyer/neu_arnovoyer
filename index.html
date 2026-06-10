@@ -49,7 +49,7 @@
             overflow-x: hidden;
         }
 
-        h1, h2, h3, .font-display {
+        h1, h2, h3, h4, .font-display {
             font-family: 'Syne', sans-serif;
         }
 
@@ -99,6 +99,37 @@
             animation: float-reverse 7s ease-in-out infinite;
         }
 
+        /* Marquee Endless Scroll Animation */
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+            animation: marquee 20s linear infinite;
+        }
+
+        /* Spinning Vinyl animation */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+            animation: spin 8s linear infinite;
+        }
+
+        /* Dynamic Visualizer Bar animation */
+        @keyframes dance {
+            0%, 100% { height: 4px; }
+            50% { height: 28px; }
+        }
+        .visualizer-bar {
+            animation: dance 1s ease-in-out infinite;
+        }
+        .visualizer-bar:nth-child(2) { animation-delay: 0.15s; }
+        .visualizer-bar:nth-child(3) { animation-delay: 0.3s; }
+        .visualizer-bar:nth-child(4) { animation-delay: 0.45s; }
+        .visualizer-bar:nth-child(5) { animation-delay: 0.2s; }
+
         /* Subtle modern Custom Cursor */
         .custom-cursor {
             width: 20px;
@@ -129,13 +160,14 @@
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <!-- Logo -->
             <a href="#" class="font-display font-extrabold text-2xl tracking-tighter flex items-center gap-2 group">
-                <span class="bg-brand-accent text-brand-light px-3 py-1 brutal-border group-hover:rotate-2 transition-transform duration-300">Arno Voyer</span>
+                <span class="bg-brand-accent text-brand-light px-3 py-1 brutal-border group-hover:rotate-2 transition-transform duration-300">ARNO_VOYER</span>
                 <span class="text-stroke group-hover:text-brand-dark transition-all duration-300">.STUDIO</span>
             </a>
 
             <!-- Navigation Links -->
             <nav class="hidden md:flex items-center gap-10 font-bold">
                 <a href="#about" class="hover:text-brand-accent transition-colors duration-200">Über mich</a>
+                <a href="#logbuch" class="hover:text-brand-accent transition-colors duration-200">Logbuch & News</a>
                 <a href="#work" class="hover:text-brand-accent transition-colors duration-200">Projekte</a>
                 <a href="#contact" class="hover:text-brand-accent transition-colors duration-200">Kontakt</a>
             </nav>
@@ -162,6 +194,7 @@
             <i class="fa-solid fa-xmark"></i>
         </button>
         <a href="#about" class="hover:text-brand-accent transition-colors">Über mich</a>
+        <a href="#logbuch" class="hover:text-brand-accent transition-colors">Logbuch & News</a>
         <a href="#work" class="hover:text-brand-accent transition-colors">Projekte</a>
         <a href="#contact" class="hover:text-brand-accent transition-colors">Kontakt</a>
     </div>
@@ -201,9 +234,213 @@
                 <a href="#work" class="w-full sm:w-auto px-8 py-4 bg-brand-accent text-white font-bold text-lg brutal-border shadow-brutal hover:translate-x-1 hover:-translate-y-1 hover:shadow-brutal-accent transition-all duration-200">
                     Projekte ansehen <i class="fa-solid fa-arrow-right ml-2"></i>
                 </a>
-                <a href="#contact" class="w-full sm:w-auto px-8 py-4 bg-brand-light text-brand-dark font-bold text-lg brutal-border shadow-brutal hover:bg-brand-dark hover:text-brand-light hover:translate-x-1 hover:-translate-y-1 transition-all duration-200">
-                    Kontakt aufnehmen 💬
+                <a href="#logbuch" class="w-full sm:w-auto px-8 py-4 bg-brand-light text-brand-dark font-bold text-lg brutal-border shadow-brutal hover:bg-brand-dark hover:text-brand-light hover:translate-x-1 hover:-translate-y-1 transition-all duration-200">
+                    Logbuch lesen 📝
                 </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ENDLESS SCROLLING NEWS TICKER -->
+    <div class="w-full bg-brand-dark text-brand-light py-4 border-b-3 brutal-border overflow-hidden select-none flex">
+        <div class="animate-marquee flex whitespace-nowrap gap-12 font-display font-bold text-lg uppercase tracking-wider">
+            <span>🚀 Aktuelles Projekt: Brutalist Web-Hub fast fertig!</span>
+            <span>⚡ Open for Freelance Gigs 2026</span>
+            <span>🎮 Live-Widgets auf Basis echter APIs</span>
+            <span>🧠 "Simplicity is the ultimate sophistication"</span>
+            <span>⚡ Web Animationen mit 60 FPS</span>
+            <!-- Duplicate for seamless loop -->
+            <span>🚀 Aktuelles Projekt: Brutalist Web-Hub fast fertig!</span>
+            <span>⚡ Open for Freelance Gigs 2026</span>
+            <span>🎮 Live-Widgets auf Basis echter APIs</span>
+            <span>🧠 "Simplicity is the ultimate sophistication"</span>
+            <span>⚡ Web Animationen mit 60 FPS</span>
+        </div>
+    </div>
+
+    <!-- LOGBUCH & NEWS SECTION -->
+    <section id="logbuch" class="py-24 px-6 bg-brand-yellow/15 border-b-3 brutal-border">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-4">
+                <div>
+                    <span class="px-3 py-1 bg-brand-purple text-white font-bold text-sm uppercase brutal-border">
+                        Live aus dem Studio
+                    </span>
+                    <h2 class="text-4xl md:text-6xl font-display font-extrabold tracking-tight mt-4 leading-none">
+                        Das Logbuch.
+                    </h2>
+                </div>
+                <p class="max-w-md font-medium text-gray-700">
+                    Kurze Gedanken, Code-Schnipsel und persönliche Meilensteine. Frisch aktualisiert, direkt aus dem Maschinenraum.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                <!-- Left: Interactive Logbook Cards with Category Filter -->
+                <div class="lg:col-span-7 space-y-6">
+                    <!-- Category Tabs -->
+                    <div class="flex flex-wrap gap-2 mb-8">
+                        <button class="filter-btn px-4 py-2 brutal-border bg-brand-dark text-white font-bold text-xs uppercase hover:bg-brand-accent transition-colors active" data-filter="all">
+                            Alle Einträge
+                        </button>
+                        <button class="filter-btn px-4 py-2 brutal-border bg-brand-light text-brand-dark font-bold text-xs uppercase hover:bg-brand-accent hover:text-white transition-colors" data-filter="tech">
+                            ⚡ Tech & Code
+                        </button>
+                        <button class="filter-btn px-4 py-2 brutal-border bg-brand-light text-brand-dark font-bold text-xs uppercase hover:bg-brand-accent hover:text-white transition-colors" data-filter="thoughts">
+                            💡 Gedanken
+                        </button>
+                        <button class="filter-btn px-4 py-2 brutal-border bg-brand-light text-brand-dark font-bold text-xs uppercase hover:bg-brand-accent hover:text-white transition-colors" data-filter="milestone">
+                            🚀 Meilensteine
+                        </button>
+                    </div>
+
+                    <!-- Log Items -->
+                    <div class="space-y-6" id="logContainer">
+                        <!-- Log Card 1 -->
+                        <div class="log-item bg-brand-light brutal-border p-6 shadow-brutal hover:-translate-y-1 transition-all" data-category="tech">
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="px-2.5 py-0.5 bg-brand-blue text-white text-xs font-bold brutal-border uppercase">⚡ Tech & Code</span>
+                                <span class="text-xs font-bold text-gray-500">08. Juni 2026</span>
+                            </div>
+                            <h3 class="font-display font-bold text-2xl mb-2 hover:text-brand-accent transition-colors cursor-pointer">Web Audio Synthese perfektioniert</h3>
+                            <p class="text-sm font-medium text-gray-600 leading-relaxed">
+                                Heute habe ich die Web Audio API tiefgehend erforscht. Mit wenigen Zeilen Code lassen sich großartige Retro-Synthesizer bauen, die ganz ohne externe Sounddateien auskommen. Sound gehört einfach zum interaktiven Erleben im Web dazu!
+                            </p>
+                        </div>
+
+                        <!-- Log Card 2 -->
+                        <div class="log-item bg-brand-light brutal-border p-6 shadow-brutal hover:-translate-y-1 transition-all" data-category="milestone">
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="px-2.5 py-0.5 bg-brand-accent text-white text-xs font-bold brutal-border uppercase">🚀 Meilensteine</span>
+                                <span class="text-xs font-bold text-gray-500">22. Mai 2026</span>
+                            </div>
+                            <h3 class="font-display font-bold text-2xl mb-2 hover:text-brand-accent transition-colors cursor-pointer">Neuer Server für WebGL Experimente online</h3>
+                            <p class="text-sm font-medium text-gray-600 leading-relaxed">
+                                Meine 3D-Projekte haben endlich ein neues, dediziertes Zuhause. Dank optimierter Asset-Pipelines laden die komplexen WebGL-Szenarien jetzt in unter 150 Millisekunden. Die Zukunft des Webs ist dreidimensional und extrem flink!
+                            </p>
+                        </div>
+
+                        <!-- Log Card 3 -->
+                        <div class="log-item bg-brand-light brutal-border p-6 shadow-brutal hover:-translate-y-1 transition-all" data-category="thoughts">
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="px-2.5 py-0.5 bg-brand-yellow text-brand-dark text-xs font-bold brutal-border uppercase">💡 Gedanken</span>
+                                <span class="text-xs font-bold text-gray-500">14. April 2026</span>
+                            </div>
+                            <h3 class="font-display font-bold text-2xl mb-2 hover:text-brand-accent transition-colors cursor-pointer">KI ist das Werkzeug, nicht der Schöpfer</h3>
+                            <p class="text-sm font-medium text-gray-600 leading-relaxed">
+                                KI-generierte Webseiten schießen wie Pilze aus dem Boden – alle schauen gleich aus. Umso wichtiger ist jetzt der Faktor Mensch. Echtes Handwerk, ungewöhnliche Layouts und kleine Macken im Design machen das Web charmant und unverwechselbar.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Live-Status Interactive Widgets (Spotify & GitHub Term) -->
+                <div class="lg:col-span-5 space-y-6">
+                    
+                    <!-- BRAND NEW SPOTIFY WIDGET -->
+                    <div class="bg-brand-light brutal-border p-6 shadow-brutal relative overflow-hidden">
+                        <div class="border-b-2 border-brand-dark pb-3 mb-4 flex justify-between items-center">
+                            <h4 class="font-display font-bold text-lg flex items-center gap-2">
+                                <i class="fa-brands fa-spotify text-emerald-500 text-2xl"></i> Spotify Vibe
+                            </h4>
+                            <span class="px-2 py-0.5 text-[10px] font-bold bg-emerald-500/20 text-emerald-700 brutal-border uppercase">LIVE_SIM</span>
+                        </div>
+
+                        <div class="flex gap-4 items-center">
+                            <!-- Animated Spotify Art -->
+                            <div class="relative w-16 h-16 bg-zinc-900 brutal-border flex-shrink-0 flex items-center justify-center cursor-pointer animate-spin-slow" id="spotifyAlbumArt">
+                                <div class="w-6 h-6 rounded-full bg-brand-accent flex items-center justify-center">
+                                    <div class="w-1.5 h-1.5 rounded-full bg-white"></div>
+                                </div>
+                            </div>
+
+                            <div class="flex-grow min-w-0">
+                                <span class="block text-[10px] font-bold tracking-widest text-emerald-600 uppercase">GERADE AKTIV</span>
+                                <span class="block font-display font-bold text-base tracking-tight text-brand-dark truncate" id="trackTitle">Synthwave Echoes</span>
+                                <span class="block text-xs font-semibold text-gray-500 truncate" id="trackArtist">Home & Arno Voyer</span>
+                            </div>
+
+                            <!-- Animated Audio Visualizer (Jumping bars) -->
+                            <div class="flex items-end gap-1 h-8 w-12 shrink-0 justify-center" id="visualizerContainer">
+                                <div class="w-1 bg-brand-dark visualizer-bar"></div>
+                                <div class="w-1 bg-brand-accent visualizer-bar"></div>
+                                <div class="w-1 bg-brand-blue visualizer-bar"></div>
+                                <div class="w-1 bg-brand-purple visualizer-bar"></div>
+                                <div class="w-1 bg-brand-yellow visualizer-bar"></div>
+                            </div>
+                        </div>
+
+                        <!-- Progress Bar -->
+                        <div class="mt-4">
+                            <div class="w-full bg-zinc-200 h-2 brutal-border overflow-hidden">
+                                <div class="bg-brand-accent h-full w-[38%] transition-all duration-1000" id="spotifyProgressBar"></div>
+                            </div>
+                            <div class="flex justify-between text-[10px] font-bold text-gray-500 mt-1">
+                                <span id="spotifyCurrentTime">01:14</span>
+                                <span id="spotifyDuration">03:15</span>
+                            </div>
+                        </div>
+
+                        <!-- Player Controls -->
+                        <div class="flex justify-between items-center mt-4 pt-4 border-t-2 border-brand-dark">
+                            <div class="flex gap-3">
+                                <button id="spotifyPrev" class="w-8 h-8 brutal-border bg-white flex items-center justify-center hover:bg-brand-yellow transition-all" title="Vorheriger Track">
+                                    <i class="fa-solid fa-backward text-xs"></i>
+                                </button>
+                                <button id="spotifyPlayPause" class="w-10 h-10 brutal-border bg-brand-accent text-white flex items-center justify-center hover:bg-brand-dark hover:text-brand-accent transition-all" title="Abspielen / Pause">
+                                    <i class="fa-solid fa-pause" id="playPauseIcon"></i>
+                                </button>
+                                <button id="spotifyNext" class="w-8 h-8 brutal-border bg-white flex items-center justify-center hover:bg-brand-yellow transition-all" title="Nächster Track">
+                                    <i class="fa-solid fa-forward text-xs"></i>
+                                </button>
+                            </div>
+                            <span class="text-xs font-bold text-gray-500 uppercase">Loop: Coder Dream</span>
+                        </div>
+                    </div>
+
+                    <!-- NEW LIVE GITHUB TERMINAL WIDGET -->
+                    <div class="bg-brand-dark text-brand-light brutal-border p-6 shadow-brutal font-mono text-xs relative overflow-hidden">
+                        <div class="flex justify-between items-center border-b border-zinc-700 pb-3 mb-4">
+                            <span class="font-bold flex items-center gap-2 text-zinc-400">
+                                <i class="fa-brands fa-github text-white text-base"></i> arno-voyer@terminal:~
+                            </span>
+                            <div class="flex gap-1.5">
+                                <span class="w-2.5 h-2.5 rounded-full bg-red-500"></span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-yellow-500"></span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-green-500"></span>
+                            </div>
+                        </div>
+
+                        <!-- Search/Input Form to fetch REAL GitHub profile commits -->
+                        <div class="mb-4 bg-zinc-900 p-2.5 brutal-border border-zinc-700 flex gap-2">
+                            <input type="text" id="githubInput" placeholder="GitHub Username eingeben..." class="bg-transparent border-none text-brand-yellow outline-none w-full placeholder-zinc-600 font-bold" value="">
+                            <button id="githubFetchBtn" class="bg-brand-blue text-white px-3 py-1 brutal-border border-zinc-700 hover:bg-brand-accent transition-colors font-bold uppercase text-[10px]">
+                                FETCH
+                            </button>
+                        </div>
+
+                        <div class="space-y-3" id="gitOutput">
+                            <div>
+                                <span class="text-brand-yellow font-bold">$</span> <span class="text-zinc-400">git log -n 1 --oneline --graph</span>
+                            </div>
+                            <!-- Live Commit content placeholder -->
+                            <div class="bg-zinc-900 p-4 brutal-border border-zinc-700 space-y-2">
+                                <div class="flex items-center gap-2 text-brand-accent font-bold">
+                                    <span class="animate-pulse w-2 h-2 rounded-full bg-brand-accent"></span>
+                                * commit <span id="gitHash">b68c92a</span>
+                                </div>
+                                <div><span class="text-zinc-500">Author:</span> <span class="font-semibold text-white">Arno Voyer</span></div>
+                                <div><span class="text-zinc-500">Date:</span> <span id="gitDate">Heute, 2026</span></div>
+                                <div><span class="text-zinc-500">Repo:</span> <span id="gitRepo" class="text-brand-blue hover:underline cursor-pointer">arno-voyer/brutal-vibe</span></div>
+                                <div><span class="text-zinc-500">Branch:</span> <span id="gitBranch" class="text-brand-purple">main</span></div>
+                                <div class="pt-2 border-t border-zinc-800">
+                                    <span class="text-zinc-500">Msg:</span> <span class="text-green-400" id="gitMessage">"feat: implement visualizer & remove coffee counter"</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
     </section>
@@ -266,7 +503,7 @@
                             <div class="space-y-2">
                                 <h4 class="font-display font-bold text-2xl">Arno Voyer</h4>
                                 <p class="text-sm font-medium text-gray-600 leading-relaxed">
-                                    "Code ist mein Handwerk, Ästhetik mein Maßstab. Für meisterhaften Code trinke ich gerne den ein oder anderen Espresso."
+                                    "Code ist mein Handwerk, Ästhetik mein Maßstab. Für meisterhaften Code verbringe ich gerne Stunden an interaktiver Physik."
                                 </p>
                             </div>
 
@@ -399,7 +636,7 @@
                     <div class="space-y-3 font-bold text-sm pt-4">
                         <div class="flex items-center gap-3">
                             <span class="w-8 h-8 brutal-border flex items-center justify-center bg-brand-yellow"><i class="fa-regular fa-envelope"></i></span>
-                            <a href="mailto:hello@daniel.studio" class="hover:underline">hello@daniel.studio</a>
+                            <a href="mailto:hello@arno-voyer.studio" class="hover:underline">hello@arno-voyer.studio</a>
                         </div>
                         <div class="flex items-center gap-3">
                             <span class="w-8 h-8 brutal-border flex items-center justify-center bg-brand-blue text-white"><i class="fa-solid fa-phone"></i></span>
@@ -416,7 +653,7 @@
                     </div>
                     <div>
                         <label class="block font-bold text-sm mb-1 uppercase">Deine E-Mail</label>
-                        <input type="email" required class="w-full p-3 brutal-border bg-brand-light focus:bg-white focus:outline-none focus:shadow-brutal transition-all" placeholder="deine@email.at">
+                        <input type="email" required class="w-full p-3 brutal-border bg-brand-light focus:bg-white focus:outline-none focus:shadow-brutal transition-all" placeholder="deine@mail.de">
                     </div>
                     <div>
                         <label class="block font-bold text-sm mb-1 uppercase">Was schwebt dir vor?</label>
@@ -450,11 +687,11 @@
         <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8 text-center md:text-left">
             <div>
                 <a href="#" class="font-display font-extrabold text-2xl tracking-tighter flex items-center justify-center md:justify-start gap-2">
-                    <span class="bg-brand-accent text-brand-light px-3 py-1 brutal-border">Arno Voyer</span>
+                    <span class="bg-brand-accent text-brand-light px-3 py-1 brutal-border">ARNO_VOYER</span>
                     <span class="text-stroke-white">.STUDIO</span>
                 </a>
                 <p class="text-xs opacity-60 mt-2 max-w-sm">
-                    © 2026 Arno Voyer. All rights reserved. Handgeschrieben mit viel Hingabe, flüssigem Canvas und modernem WebGL.
+                    © 2026 Arno Voyer. All rights reserved. Handgeschrieben mit viel Hingabe, flüssigem Canvas und modernen WebGL/API-Techniken.
                 </p>
             </div>
             
@@ -465,7 +702,7 @@
         </div>
     </footer>
 
-    <!-- AUDIO & PHYSICS LOGIC SCRIPT -->
+    <!-- AUDIO, GITHUB & SPOTIFY SIMULATION LOGIC -->
     <script>
         // Custom Cursor Interaction
         const cursor = document.getElementById('customCursor');
@@ -713,6 +950,8 @@
 
         window.onload = function () {
             animate();
+            // Fetch mock default or check custom
+            fetchGitHubCommit('arno-voyer');
         }
 
         // Interactive Profile Emoji cycling
@@ -727,6 +966,199 @@
             avatarEmoji.textContent = next;
             if (!isMuted) playSynthNote(329.63, 'triangle', 0.15); // pleasant note (E4) on click
         });
+
+        // Filter Logbook Entries
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const logItems = document.querySelectorAll('.log-item');
+
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Style Active Button
+                filterButtons.forEach(b => {
+                    b.classList.remove('bg-brand-dark', 'text-white');
+                    b.classList.add('bg-brand-light', 'text-brand-dark');
+                });
+                btn.classList.remove('bg-brand-light', 'text-brand-dark');
+                btn.classList.add('bg-brand-dark', 'text-white');
+
+                const filterValue = btn.getAttribute('data-filter');
+
+                logItems.forEach(item => {
+                    if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                        item.classList.remove('hidden');
+                    } else {
+                        item.classList.add('hidden');
+                    }
+                });
+
+                if (!isMuted) playSynthNote(392.00, 'sine', 0.08); // Feedback G4
+            });
+        });
+
+        // SPOTIFY COMPONENT PLAYLIST & INTERACTION SIMULATOR
+        const spotifyTracks = [
+            { title: "Synthwave Echoes", artist: "Home & Arno Voyer", duration: "03:15", durationSec: 195, startSec: 74, freq: 261.63 }, // C4
+            { title: "Retro Drift", artist: "Miami Nights 1984", duration: "04:02", durationSec: 242, startSec: 45, freq: 329.63 }, // E4
+            { title: "Cyberpunk Midnight", artist: "Arno Voyer Experimental", duration: "02:50", durationSec: 170, startSec: 12, freq: 392.00 }, // G4
+            { title: "Abstract Algorithm", artist: "Lofi Beats Studio", duration: "03:40", durationSec: 220, startSec: 92, freq: 523.25 } // C5
+        ];
+
+        let currentTrackIdx = 0;
+        let isPlaying = true;
+        let trackPlayInterval = null;
+
+        const trackTitle = document.getElementById('trackTitle');
+        const trackArtist = document.getElementById('trackArtist');
+        const spotifyProgressBar = document.getElementById('spotifyProgressBar');
+        const spotifyCurrentTime = document.getElementById('spotifyCurrentTime');
+        const spotifyDuration = document.getElementById('spotifyDuration');
+        const playPauseIcon = document.getElementById('playPauseIcon');
+        const spotifyPlayPause = document.getElementById('spotifyPlayPause');
+        const spotifyPrev = document.getElementById('spotifyPrev');
+        const spotifyNext = document.getElementById('spotifyNext');
+        const albumArt = document.getElementById('spotifyAlbumArt');
+        const visualizerBars = document.querySelectorAll('.visualizer-bar');
+
+        function updateTrackUI() {
+            const track = spotifyTracks[currentTrackIdx];
+            trackTitle.textContent = track.title;
+            trackArtist.textContent = track.artist;
+            spotifyDuration.textContent = track.duration;
+            
+            // Format current tick
+            const minutes = Math.floor(track.startSec / 60).toString().padStart(2, '0');
+            const seconds = (track.startSec % 60).toString().padStart(2, '0');
+            spotifyCurrentTime.textContent = `${minutes}:${seconds}`;
+
+            // Progress bar calc
+            const pct = (track.startSec / track.durationSec) * 100;
+            spotifyProgressBar.style.width = `${pct}%`;
+
+            if (isPlaying) {
+                albumArt.classList.add('animate-spin-slow');
+                playPauseIcon.className = "fa-solid fa-pause";
+                visualizerBars.forEach(bar => bar.style.animationPlayState = 'running');
+            } else {
+                albumArt.classList.remove('animate-spin-slow');
+                playPauseIcon.className = "fa-solid fa-play";
+                visualizerBars.forEach(bar => bar.style.animationPlayState = 'paused');
+            }
+        }
+
+        function startTrackProgress() {
+            clearInterval(trackPlayInterval);
+            trackPlayInterval = setInterval(() => {
+                if (isPlaying) {
+                    const track = spotifyTracks[currentTrackIdx];
+                    track.startSec++;
+                    if (track.startSec >= track.durationSec) {
+                        track.startSec = 0; // reset
+                    }
+                    updateTrackUI();
+                    
+                    // Fire extremely subtle procedural synth rhythm pulse occasionally
+                    if (track.startSec % 4 === 0) {
+                        playSynthNote(track.freq, 'sine', 0.15);
+                    }
+                }
+            }, 1000);
+        }
+
+        spotifyPlayPause.addEventListener('click', () => {
+            isPlaying = !isPlaying;
+            if (isPlaying) {
+                playSynthNote(349.23, 'triangle', 0.25); // F4 start vibe
+            } else {
+                playSynthNote(220.00, 'sine', 0.3); // A3 pause vibe
+            }
+            updateTrackUI();
+        });
+
+        spotifyNext.addEventListener('click', () => {
+            currentTrackIdx = (currentTrackIdx + 1) % spotifyTracks.length;
+            playSynthNote(spotifyTracks[currentTrackIdx].freq, 'sawtooth', 0.3);
+            updateTrackUI();
+        });
+
+        spotifyPrev.addEventListener('click', () => {
+            currentTrackIdx = (currentTrackIdx - 1 + spotifyTracks.length) % spotifyTracks.length;
+            playSynthNote(spotifyTracks[currentTrackIdx].freq, 'sawtooth', 0.3);
+            updateTrackUI();
+        });
+
+        // Initialize track progress
+        updateTrackUI();
+        startTrackProgress();
+
+
+        // LIVE GITHUB EVENT/COMMIT APIS FETCH ENGINE
+        const gitHash = document.getElementById('gitHash');
+        const gitDate = document.getElementById('gitDate');
+        const gitRepo = document.getElementById('gitRepo');
+        const gitBranch = document.getElementById('gitBranch');
+        const gitMessage = document.getElementById('gitMessage');
+        const githubInput = document.getElementById('githubInput');
+        const githubFetchBtn = document.getElementById('githubFetchBtn');
+
+        async function fetchGitHubCommit(username) {
+            try {
+                // Fetch public user events
+                const response = await fetch(`https://api.github.com/users/${username}/events/public`);
+                if (!response.ok) throw new Error("Keine Events gefunden");
+                
+                const data = await response.json();
+                // Find latest PushEvent
+                const pushEvent = data.find(event => event.type === 'PushEvent');
+                
+                if (pushEvent && pushEvent.payload.commits && pushEvent.payload.commits.length > 0) {
+                    const latestCommit = pushEvent.payload.commits[0];
+                    const rawDate = new Date(pushEvent.created_at);
+                    
+                    // Format Date
+                    const options = { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' };
+                    const formattedDate = rawDate.toLocaleDateString('de-DE', options);
+
+                    // Update UI elements dynamically
+                    gitHash.textContent = latestCommit.sha.substring(0, 7);
+                    gitDate.textContent = formattedDate;
+                    gitRepo.textContent = pushEvent.repo.name;
+                    gitRepo.href = `https://github.com/${pushEvent.repo.name}`;
+                    gitBranch.textContent = pushEvent.payload.ref.replace('refs/heads/', '');
+                    gitMessage.textContent = `"${latestCommit.message}"`;
+
+                    playSynthNote(659.25, 'sine', 0.15); // Success note chime
+                } else {
+                    showDefaultCommit(username + " (Keine Push-Events)");
+                }
+            } catch (error) {
+                console.warn("Fehler beim Laden von GitHub. Lade Fallback.", error);
+                showDefaultCommit(username);
+            }
+        }
+
+        function showDefaultCommit(info) {
+            gitHash.textContent = "a8f7c1d";
+            gitDate.textContent = "Live Simuliert";
+            gitRepo.textContent = `${info}/portfolio-brutal`;
+            gitBranch.textContent = "main";
+            gitMessage.textContent = '"feat: optimierte ladezeiten, interaktives soundboard & responsive grid"';
+        }
+
+        githubFetchBtn.addEventListener('click', () => {
+            const userVal = githubInput.value.trim();
+            if (userVal) {
+                fetchGitHubCommit(userVal);
+            }
+        });
+
+        // Trigger on enter key
+        githubInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const userVal = githubInput.value.trim();
+                if (userVal) fetchGitHubCommit(userVal);
+            }
+        });
+
 
         // Mobile Menu Logic
         const mobileMenu = document.getElementById('mobileMenu');
