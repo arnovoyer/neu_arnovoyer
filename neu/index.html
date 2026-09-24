@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="de" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arno Voyer | Creative Systems</title>
+    <meta name="description" content="Präzise Frontend-Arbeit, interaktive Systeme, verspielte 2D-Details. Aus Dornbirn.">
+    <meta name="theme-color" content="#FAF9F6">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Space Grotesk', 'sans-serif'],
+                        display: ['Syne', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        ink:    '#0F0F11',
+                        paper:  '#FAF9F6',
+                        coral:  '#FF5A36',
+                        amber:  '#F3C13F',
+                        cobalt: '#3F84F3',
+                        violet: '#A23FF3',
+                        mint:   '#4ADE80',
+                    },
+                    boxShadow: {
+                        'brutal':       '6px 6px 0px 0px #0F0F11',
+                        'brutal-lg':    '12px 12px 0px 0px #0F0F11',
+                        'brutal-coral': '6px 6px 0px 0px #FF5A36',
+                    },
+                    transitionTimingFunction: {
+                        'soft': 'cubic-bezier(0.22, 1, 0.36, 1)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        * { -webkit-tap-highlight-color: transparent; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: #FAF9F6;
+            color: #0F0F11;
+            overflow-x: hidden;
+        }
+        h1,h2,h3,h4,.font-display { font-family: 'Syne', sans-serif; letter-spacing: -0.02em; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        ::selection { background: #FF5A36; color: #FAF9F6; }
+
+        /* Brutalist Scrollbar */
+        ::-webkit-scrollbar        { width: 14px; }
+        ::-webkit-scrollbar-track  { background: #FAF9F6; border-left: 3px solid #0F0F11; }
+        ::-webkit-scrollbar-thumb  { background: #FF5A36; border: 3px solid #0F0F11; }
+
+        .brutal-border { border: 3px solid #0F0F11; }
+        .brutal-border-2 { border: 2px solid #0F0F11; }
+
+        .text-stroke { -webkit-text-stroke: 1.5px #0F0F11; color: transparent; }
+        .text-stroke-paper { -webkit-text-stroke: 1.5px #FAF9F6; color: transparent; }
+
+        a, button, input, textarea, .card, .tilt {
+            transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1),
+                        box-shadow 500ms cubic-bezier(0.22, 1, 0.36, 1),
+                        background-color 350ms cubic-bezier(0.22, 1, 0.36, 1),
+                        color 350ms cubic-bezier(0.22, 1, 0.36, 1),
+                        border-color 350ms cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        @keyframes float {
+            0%   { transform: translateY(0) rotate(0deg); }
+            50%  { transform: translateY(-10px) rotate(1deg); }
+            100% { transform: translateY(0) rotate(0deg); }
+        }
+        @keyframes float-rev {
+            0%   { transform: translateY(0) rotate(0deg); }
+            50%  { transform: translateY(8px) rotate(-1deg); }
+            100% { transform: translateY(0) rotate(0deg); }
+        }
+        .animate-float     { animation: float 6.5s ease-in-out infinite; }
+        .animate-float-rev { animation: float-rev 7.5s ease-in-out infinite; }
+
+        @keyframes marquee {
+            0%   { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee { animation: marquee 22s linear infinite; }
+        @media (max-width: 768px) {
+            .animate-marquee { animation-duration: 12s; }
+        }
+
+        /* Custom Cursor */
+        .custom-cursor {
+            width: 22px; height: 22px;
+            border: 2px solid #0F0F11;
+            border-radius: 50%;
+            position: fixed; z-index: 9999;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            mix-blend-mode: difference;
+            background: transparent;
+            transition: width 180ms cubic-bezier(0.22,1,0.36,1),
+                        height 180ms cubic-bezier(0.22,1,0.36,1),
+                        background-color 180ms cubic-bezier(0.22,1,0.36,1),
+                        border-color 180ms cubic-bezier(0.22,1,0.36,1);
+        }
+        @media (hover: none) { .custom-cursor { display: none; } }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(32px);
+            transition: opacity 900ms cubic-bezier(0.22,1,0.36,1),
+                        transform 900ms cubic-bezier(0.22,1,0.36,1);
+        }
+        .reveal.in { opacity: 1; transform: translateY(0); }
+
+        .tl-dot { width: 10px; height: 10px; border-radius: 9999px; border: 2px solid #0F0F11; display: inline-block; }
+
+        .tilt-neg    { transform: rotate(-1.2deg); }
+        .tilt-pos    { transform: rotate(1.2deg); }
+        .tilt-neg:hover, .tilt-pos:hover { transform: rotate(0deg) translateY(-3px); }
+
+        .mag:hover { transform: translate(1px, -1px); }
+
+        .dot-grid {
+            background-image: radial-gradient(#0F0F11 1px, transparent 1px);
+            background-size: 18px 18px;
+            opacity: 0.06;
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <div class="custom-cursor" id="customCursor"></div>
+
+    <!-- HEADER -->
+    <header class="sticky top-0 z-50 w-full bg-paper brutal-border border-t-0 border-l-0 border-r-0 backdrop-blur supports-[backdrop-filter]:bg-paper/90">
+        <div class="max-w-7xl mx-auto px-5 md:px-8 py-4 flex justify-between items-center gap-4">
+
+            <a href="#top" class="font-display font-extrabold text-xl md:text-2xl tracking-tighter flex items-center gap-2 group mag">
+                <span class="bg-coral text-paper px-2.5 py-1 brutal-border-2 group-hover:rotate-2 group-hover:-translate-y-0.5 inline-block">ARNO</span>
+                <span class="hidden sm:inline text-stroke group-hover:text-ink">_VOYER</span>
+            </a>
+
+            <nav class="hidden md:flex items-center gap-8 font-bold">
+                <a href="#about"    class="mag hover:text-coral">Über mich</a>
+                <a href="#work"     class="mag hover:text-coral">Projekte</a>
+                <a href="#contact"  class="mag hover:text-coral">Kontakt</a>
+            </nav>
+
+            <div class="flex items-center gap-3">
+                <a href="#contact" class="hidden sm:inline-block px-4 md:px-5 py-2 brutal-border-2 bg-coral text-paper font-bold hover:-translate-y-0.5 hover:translate-x-0.5 hover:shadow-brutal-coral">
+                    SAY HI 👋
+                </a>
+                <button id="mobileMenuBtn" class="md:hidden w-10 h-10 brutal-border-2 bg-paper flex items-center justify-center text-lg">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="fixed inset-0 bg-paper z-[60] flex-col justify-center items-center gap-10 text-3xl font-display font-bold brutal-border m-3 p-6" style="display:none">
+        <button id="closeMobileMenuBtn" class="absolute top-5 right-5 w-14 h-14 brutal-border-2 bg-coral text-paper flex items-center justify-center hover:shadow-brutal text-2xl">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <a href="#about"    class="mobile-link hover:text-coral py-2">Über mich</a>
+        <a href="#work"     class="mobile-link hover:text-coral py-2">Projekte</a>
+        <a href="#contact"  class="mobile-link hover:text-coral py-2">Kontakt</a>
+        <a href="#contact"  class="mobile-link px-8 py-3 brutal-border-2 bg-coral text-paper text-xl">SAY HI 👋</a>
+    </div>
+
+    <main id="top">
+
+        <!-- HERO -->
+        <section class="relative min-h-[85vh] flex flex-col justify-center items-center overflow-hidden brutal-border border-t-0 border-l-0 border-r-0 px-5 py-16">
+
+            <div class="absolute inset-0 dot-grid pointer-events-none"></div>
+            <canvas id="physicsCanvas" class="absolute inset-0 w-full h-full pointer-events-auto z-10 touch-none"></canvas>
+
+            <div class="relative z-20 max-w-5xl w-full text-center pointer-events-none select-none">
+                <div class="bg-paper/95 p-6 md:p-12 lg:p-14 brutal-border shadow-brutal-lg tilt-neg">
+
+                    <div class="flex flex-wrap justify-center gap-3 mb-6 md:mb-8 pointer-events-auto">
+                        <span class="px-3 py-1 bg-coral text-paper font-bold text-xs uppercase brutal-border-2 animate-float">
+                            ⚡ FRONTEND DEVELOPER
+                        </span>
+                        <span class="px-3 py-1 bg-cobalt text-paper font-bold text-xs uppercase brutal-border-2 animate-float-rev">
+                            🎨 UX ENGINEER
+                        </span>
+                        <span class="px-3 py-1 bg-amber font-bold text-xs uppercase brutal-border-2 animate-float">
+                            📍 DORNBIRN, AT
+                        </span>
+                    </div>
+
+                    <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-extrabold mb-6 md:mb-8 leading-[0.95]">
+                        Präzise Systeme,<br>
+                        <span class="text-coral inline-block hover:scale-[1.03] hover:-rotate-1 cursor-pointer pointer-events-auto">
+                            verspielt gebaut.
+                        </span>
+                    </h1>
+
+                    <p class="text-base md:text-xl font-medium max-w-2xl mx-auto mb-8 md:mb-10 pointer-events-auto leading-relaxed">
+                        Hallo, ich bin <strong class="underline decoration-coral decoration-[3px] underline-offset-4">Arno Voyer</strong>.
+                        Handgebaute Web-Erlebnisse mit Charakter, 2D-Charme und sauberem Code.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row justify-center items-center gap-4 pointer-events-auto">
+                        <a href="#work" class="w-full sm:w-auto px-7 md:px-9 py-3.5 md:py-4 bg-coral text-paper font-bold text-lg brutal-border-2 shadow-brutal hover:translate-x-1 hover:-translate-y-1 hover:shadow-brutal-coral inline-flex items-center justify-center gap-2">
+                            Projekte ansehen
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                        <a href="#about" class="w-full sm:w-auto px-7 md:px-9 py-3.5 md:py-4 bg-paper text-ink font-bold text-lg brutal-border-2 shadow-brutal hover:bg-ink hover:text-paper hover:translate-x-1 hover:-translate-y-1 inline-flex items-center justify-center gap-2">
+                            Wer steckt dahinter?
+                            <i class="fa-solid fa-user-astronaut"></i>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+
+            <a href="#ticker" class="absolute bottom-6 left-1/2 -translate-x-1/2 z-30 brutal-border-2 bg-paper px-4 py-2 text-xs font-bold uppercase flex items-center gap-2 hover:-translate-y-1 hover:bg-coral hover:text-paper hover:shadow-brutal">
+                scroll <i class="fa-solid fa-arrow-down"></i>
+            </a>
+        </section>
+
+        <!-- MARQUEE TICKER -->
+        <section id="ticker" class="w-full bg-ink text-paper py-4 brutal-border border-l-0 border-r-0 overflow-hidden select-none">
+            <div class="animate-marquee flex whitespace-nowrap gap-14 font-display font-bold text-base md:text-xl uppercase tracking-widest">
+                <span>🚀 OPEN FOR FREELANCE / 2026</span>
+                <span class="text-coral">⚡ HANDGEBAUTE INTERFACES</span>
+                <span>🎨 SAUBERER CODE, KEIN MIST</span>
+                <span class="text-amber">📡 VANILLA + VITE = 60 FPS</span>
+                <span>🌐 MOBILE FIRST, PIXEL PERFEKT</span>
+                <span>🚀 OPEN FOR FREELANCE / 2026</span>
+                <span class="text-coral">⚡ HANDGEBAUTE INTERFACES</span>
+                <span>🎨 SAUBERER CODE, KEIN MIST</span>
+                <span class="text-amber">📡 VANILLA + VITE = 60 FPS</span>
+                <span>🌐 MOBILE FIRST, PIXEL PERFEKT</span>
+            </div>
+        </section>
+
+        <!-- ABOUT -->
+        <section id="about" class="py-20 md:py-28 px-5 md:px-8 max-w-7xl mx-auto">
+            <div class="reveal grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+
+                <div class="lg:col-span-7 space-y-6 md:space-y-8">
+                    <span class="inline-block px-3 py-1 bg-coral text-paper font-bold text-sm uppercase brutal-border-2">
+                        Das bin ich
+                    </span>
+                    <h2 class="text-4xl md:text-6xl font-display font-extrabold leading-none">
+                        Keine Lust auf<br>
+                        <span class="text-stroke font-black">Einheitsbrei?</span>
+                        <br>Ich auch nicht.
+                    </h2>
+                    <p class="text-lg md:text-xl font-medium leading-relaxed">
+                        Ich baue digitale Oberflächen, die spürbar anders sind.
+                    </p>
+                    <p class="text-base md:text-lg text-gray-700 font-medium leading-relaxed">
+                        Moderne Frontend-Technik trifft prägnantes 2D-Design. Jede Interaktion,
+                        jede Transition, jeder Pixel wird so konzipiert, dass der Nutzer ein
+                        <em>greifbares</em> Feedback bekommt — soft-easing, keine abrupten Stopps.
+                    </p>
+
+                    <div class="flex flex-wrap gap-3 pt-2">
+                        <span class="px-3.5 py-2 brutal-border-2 bg-paper shadow-brutal font-bold text-xs uppercase tracking-wider hover:-translate-y-0.5 hover:bg-coral hover:text-paper">
+                            <i class="fa-solid fa-location-dot mr-1.5"></i> Dornbirn, AT
+                        </span>
+                        <span class="px-3.5 py-2 brutal-border-2 bg-paper shadow-brutal font-bold text-xs uppercase tracking-wider hover:-translate-y-0.5 hover:bg-cobalt hover:text-paper">
+                            <i class="fa-solid fa-calendar mr-1.5"></i> Freelance 2026
+                        </span>
+                        <span class="px-3.5 py-2 brutal-border-2 bg-paper shadow-brutal font-bold text-xs uppercase tracking-wider hover:-translate-y-0.5 hover:bg-violet hover:text-paper">
+                            <i class="fa-solid fa-code mr-1.5"></i> Frontend Fokus
+                        </span>
+                        <span class="px-3.5 py-2 brutal-border-2 bg-paper shadow-brutal font-bold text-xs uppercase tracking-wider hover:-translate-y-0.5 hover:bg-amber">
+                            <i class="fa-solid fa-mobile-screen mr-1.5"></i> Mobile First
+                        </span>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5 space-y-6 flex flex-col items-center">
+
+                    <!-- PROFILE CARD WINDOW -->
+                    <div class="w-full max-w-sm tilt-pos bg-paper brutal-border shadow-brutal-lg">
+                        <div class="bg-ink text-paper px-4 py-2 flex justify-between items-center brutal-border-2 border-t-0 border-l-0 border-r-0">
+                            <span class="font-mono font-bold text-xs tracking-widest">PROFILE.exe</span>
+                            <div class="flex gap-1.5">
+                                <span class="tl-dot bg-coral"></span>
+                                <span class="tl-dot bg-amber"></span>
+                                <span class="tl-dot bg-mint"></span>
+                            </div>
+                        </div>
+                        <div class="p-6 space-y-5">
+                            <div class="w-full h-56 md:h-60 bg-amber brutal-border-2 flex flex-col items-center justify-center relative overflow-hidden group cursor-pointer" id="avatarBox">
+                                <div id="avatarEmoji" class="text-7xl md:text-8xl select-none transition-transform duration-500 ease-soft group-hover:scale-110">🧑‍💻</div>
+                                <span class="absolute bottom-2 text-[10px] font-bold bg-paper px-2 py-0.5 brutal-border-2 uppercase tracking-wider">KLICK MICH!</span>
+                            </div>
+
+                            <div class="space-y-2">
+                                <h4 class="font-display font-bold text-2xl">Arno Voyer</h4>
+                                <p class="text-sm text-gray-600 leading-relaxed">
+                                    Arbeitet gerne an kleinen, präzisen Details — saubere Struktur,
+                                    ruhige Animationen, Code der nicht gleich wieder auseinanderfällt.
+                                </p>
+                            </div>
+
+                            <div class="flex gap-3 pt-1">
+                                <a href="https://github.com/arnovoyer" target="_blank" rel="noopener" class="w-10 h-10 brutal-border-2 flex items-center justify-center hover:bg-coral hover:text-paper hover:-translate-y-0.5">
+                                    <i class="fa-brands fa-github text-lg"></i>
+                                </a>
+                                <a href="https://instagram.com" target="_blank" rel="noopener" class="w-10 h-10 brutal-border-2 flex items-center justify-center hover:bg-cobalt hover:text-paper hover:-translate-y-0.5">
+                                    <i class="fa-brands fa-instagram text-lg"></i>
+                                </a>
+                                <a href="mailto:hello@arnovoyer.com" class="w-10 h-10 brutal-border-2 flex items-center justify-center hover:bg-violet hover:text-paper hover:-translate-y-0.5">
+                                    <i class="fa-solid fa-envelope text-lg"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TECH STACK BADGES (kompakt) -->
+                    <div class="w-full max-w-sm reveal bg-paper brutal-border-2 p-5 shadow-brutal">
+                        <div class="flex items-center gap-2 mb-3">
+                            <span class="font-mono text-xs font-bold uppercase tracking-widest text-coral">/ stack</span>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="tilt-neg px-3 py-1 bg-coral text-paper font-bold brutal-border-2 text-xs">HTML5</span>
+                            <span class="tilt-pos px-3 py-1 bg-cobalt text-paper font-bold brutal-border-2 text-xs">CSS3</span>
+                            <span class="tilt-neg px-3 py-1 bg-amber font-bold brutal-border-2 text-xs">JS</span>
+                            <span class="tilt-pos px-3 py-1 bg-violet text-paper font-bold brutal-border-2 text-xs">PHP</span>
+                            <span class="tilt-neg px-3 py-1 bg-ink text-paper font-bold brutal-border-2 text-xs">GIT</span>
+                            <span class="tilt-pos px-3 py-1 bg-paper font-bold brutal-border-2 text-xs">RESPONSIVE</span>
+                            <span class="tilt-neg px-3 py-1 bg-mint font-bold brutal-border-2 text-xs">SEO</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- WORK / PROJECTS -->
+        <section id="work" class="py-20 md:py-28 px-5 md:px-8 border-t-2 brutal-border border-l-0 border-r-0 bg-paper relative">
+            <div class="absolute inset-0 dot-grid pointer-events-none"></div>
+
+            <div class="max-w-7xl mx-auto relative">
+                <div class="reveal flex flex-col md:flex-row justify-between items-start md:items-end mb-12 md:mb-16 gap-5">
+                    <div>
+                        <span class="inline-block px-3 py-1 bg-cobalt text-paper font-bold text-sm uppercase brutal-border-2">
+                            Mein Werk
+                        </span>
+                        <h2 class="text-4xl md:text-6xl font-display font-extrabold mt-4 leading-none">
+                            Ausgewählte<br>Projekte.
+                        </h2>
+                    </div>
+                    <p class="max-w-md font-medium text-gray-600 leading-relaxed">
+                        Fahre über die Karten für haptisches Feedback. Jedes Projekt ist ein eigenes kleines System.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+
+                    <!-- PROJECT 1 -->
+                    <a href="https://github.com/arnovoyer/neu_arnovoyer" target="_blank" rel="noopener"
+                       class="reveal project-card group block bg-paper brutal-border-2 shadow-brutal hover:-translate-y-2 hover:shadow-brutal-lg overflow-hidden flex flex-col justify-between">
+                        <div>
+                            <div class="h-48 md:h-52 bg-coral brutal-border-2 border-t-0 border-l-0 border-r-0 flex items-center justify-center relative overflow-hidden">
+                                <div class="absolute inset-0 dot-grid opacity-20 pointer-events-none"></div>
+                                <span class="font-display font-black text-7xl md:text-8xl text-stroke-paper opacity-60 select-none group-hover:scale-110 transition-transform duration-500 ease-soft">01</span>
+                                <div class="absolute bottom-3 left-3 right-3 bg-paper p-2.5 brutal-border-2 flex justify-between items-center">
+                                    <span class="font-bold text-xs uppercase font-mono tracking-wider">PORTFOLIO_V2</span>
+                                    <span class="flex items-center gap-1.5 text-xs font-bold">
+                                        <span class="w-2.5 h-2.5 rounded-full bg-mint animate-pulse border-2 border-ink"></span>
+                                        LIVE
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="p-6 space-y-2">
+                                <h3 class="font-display font-bold text-2xl group-hover:text-coral">neu_arnovoyer</h3>
+                                <p class="text-sm text-gray-700 leading-relaxed">
+                                    Diese Website hier. Brutalistisches Redesign mit Physics-Canvas
+                                    und durchweg soft-easing Transitionen.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="p-6 pt-0 flex gap-2 flex-wrap">
+                            <span class="px-2 py-0.5 bg-amber text-xs font-bold brutal-border-2 uppercase">HTML5</span>
+                            <span class="px-2 py-0.5 bg-paper text-xs font-bold brutal-border-2 uppercase">Vanilla JS</span>
+                            <span class="px-2 py-0.5 bg-paper text-xs font-bold brutal-border-2 uppercase">Tailwind</span>
+                        </div>
+                    </a>
+
+                    <!-- PROJECT 2 -->
+                    <a href="https://github.com/arnovoyer/PackPilot" target="_blank" rel="noopener"
+                       class="reveal project-card group block bg-paper brutal-border-2 shadow-brutal hover:-translate-y-2 hover:shadow-brutal-lg overflow-hidden flex flex-col justify-between"
+                       style="transition-delay: 100ms;">
+                        <div>
+                            <div class="h-48 md:h-52 bg-cobalt brutal-border-2 border-t-0 border-l-0 border-r-0 flex items-center justify-center relative overflow-hidden">
+                                <div class="absolute inset-0 dot-grid opacity-20 pointer-events-none"></div>
+                                <span class="font-display font-black text-7xl md:text-8xl text-stroke-paper opacity-60 select-none group-hover:scale-110 transition-transform duration-500 ease-soft">02</span>
+                                <div class="absolute bottom-3 left-3 right-3 bg-paper p-2.5 brutal-border-2 flex justify-between items-center">
+                                    <span class="font-bold text-xs uppercase font-mono tracking-wider">PACKPILOT_APP</span>
+                                    <span class="flex items-center gap-1.5 text-xs font-bold">
+                                        <span class="w-2.5 h-2.5 rounded-full bg-mint animate-pulse border-2 border-ink"></span>
+                                        LIVE
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="p-6 space-y-2">
+                                <h3 class="font-display font-bold text-2xl group-hover:text-cobalt">PackPilot</h3>
+                                <p class="text-sm text-gray-700 leading-relaxed">
+                                    Intelligentes Pack- und Reise-Organisationstool. Modulare Checklisten,
+                                    Template-System und Gewichtsberechnung.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="p-6 pt-0 flex gap-2 flex-wrap">
+                            <span class="px-2 py-0.5 bg-coral text-paper text-xs font-bold brutal-border-2 uppercase">Next.js</span>
+                            <span class="px-2 py-0.5 bg-paper text-xs font-bold brutal-border-2 uppercase">TypeScript</span>
+                            <span class="px-2 py-0.5 bg-paper text-xs font-bold brutal-border-2 uppercase">Supabase</span>
+                        </div>
+                    </a>
+
+                    <!-- PROJECT 3 -->
+                    <a href="https://github.com/arnovoyer/RVHard" target="_blank" rel="noopener"
+                       class="reveal project-card group block bg-paper brutal-border-2 shadow-brutal hover:-translate-y-2 hover:shadow-brutal-lg overflow-hidden flex flex-col justify-between"
+                       style="transition-delay: 200ms;">
+                        <div>
+                            <div class="h-48 md:h-52 bg-violet brutal-border-2 border-t-0 border-l-0 border-r-0 flex items-center justify-center relative overflow-hidden">
+                                <div class="absolute inset-0 dot-grid opacity-20 pointer-events-none"></div>
+                                <span class="font-display font-black text-7xl md:text-8xl text-stroke-paper opacity-60 select-none group-hover:scale-110 transition-transform duration-500 ease-soft">03</span>
+                                <div class="absolute bottom-3 left-3 right-3 bg-paper p-2.5 brutal-border-2 flex justify-between items-center">
+                                    <span class="font-bold text-xs uppercase font-mono tracking-wider">RVHARD_CORE</span>
+                                    <span class="flex items-center gap-1.5 text-xs font-bold">
+                                        <span class="w-2.5 h-2.5 rounded-full bg-amber animate-pulse border-2 border-ink"></span>
+                                        DEV
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="p-6 space-y-2">
+                                <h3 class="font-display font-bold text-2xl group-hover:text-violet">RVHard</h3>
+                                <p class="text-sm text-gray-700 leading-relaxed">
+                                    Vereinswebsite mit eigenem Event-Kalender, Geschichte und Eventintegration.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="p-6 pt-0 flex gap-2 flex-wrap">
+                            <span class="px-2 py-0.5 bg-amber text-xs font-bold brutal-border-2 uppercase">Kotlin</span>
+                            <span class="px-2 py-0.5 bg-paper text-xs font-bold brutal-border-2 uppercase">HTML</span>
+                            <span class="px-2 py-0.5 bg-paper text-xs font-bold brutal-border-2 uppercase">Web Audio</span>
+                        </div>
+                    </a>
+
+                </div>
+
+                <div class="reveal mt-12 text-center">
+                    <a href="https://github.com/arnovoyer" target="_blank" rel="noopener"
+                       class="inline-flex items-center gap-2 px-7 py-3.5 bg-ink text-paper font-bold brutal-border-2 shadow-brutal hover:-translate-y-1 hover:translate-x-1 hover:bg-coral hover:shadow-brutal-coral">
+                        Alle Repos auf GitHub <i class="fa-brands fa-github"></i>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section id="contact" class="py-20 md:py-28 px-5 md:px-8 border-t-2 brutal-border border-l-0 border-r-0 bg-ink text-paper relative overflow-hidden">
+            <div class="absolute inset-0 dot-grid opacity-[0.08] pointer-events-none" style="background-image: radial-gradient(#FAF9F6 1px, transparent 1px);"></div>
+
+            <div class="max-w-5xl mx-auto relative">
+                <div class="reveal tilt-neg bg-paper text-ink brutal-border-2 p-6 md:p-10 lg:p-14 shadow-brutal-lg">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12">
+
+                        <div class="lg:col-span-5 space-y-6">
+                            <span class="inline-block px-3 py-1 bg-violet text-paper font-bold text-sm uppercase brutal-border-2">
+                                Lass uns quatschen
+                            </span>
+                            <h2 class="text-4xl md:text-5xl font-display font-extrabold leading-none">
+                                Bereit für<br>
+                                <span class="text-stroke font-black">Großes?</span>
+                            </h2>
+                            <p class="text-sm md:text-base font-medium text-gray-700 leading-relaxed">
+                                Hast du eine Idee, die du zum Leben erwecken willst? Schreib mir —
+                                Antwort geht raus, bevor du drei Kaffee trinken kannst.
+                            </p>
+
+                            <div class="pt-2 space-y-3 font-bold text-sm">
+                                <div class="flex items-center gap-3">
+                                    <span class="w-9 h-9 brutal-border-2 flex items-center justify-center bg-amber shrink-0"><i class="fa-regular fa-envelope"></i></span>
+                                    <a href="mailto:hello@arnovoyer.com" class="hover:underline break-all">hello@arnovoyer.com</a>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span class="w-9 h-9 brutal-border-2 flex items-center justify-center bg-cobalt text-paper shrink-0"><i class="fa-solid fa-location-dot"></i></span>
+                                    <span>Dornbirn, Österreich 🇦🇹</span>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span class="w-9 h-9 brutal-border-2 flex items-center justify-center bg-mint shrink-0"><i class="fa-solid fa-circle-check"></i></span>
+                                    <span>Open for Freelance 2026 ✅</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <form id="contactForm" action="https://formsubmit.co/hello@arnovoyer.com" method="POST" class="lg:col-span-7 space-y-4">
+                            <input type="text" name="_honey" style="display:none">
+                            <input type="hidden" name="_captcha" value="false">
+                            <input type="hidden" name="_subject" value="Neue Nachricht von arnovoyer.com">
+                            <input type="hidden" name="_template" value="table">
+
+                            <div>
+                                <label class="block font-bold text-xs uppercase mb-1.5 tracking-widest">Name *</label>
+                                <input type="text" name="name" required
+                                    class="w-full p-3.5 brutal-border-2 bg-paper focus:bg-white focus:outline-none focus:shadow-brutal font-medium"
+                                    placeholder="Max Mustermann">
+                            </div>
+                            <div>
+                                <label class="block font-bold text-xs uppercase mb-1.5 tracking-widest">E-Mail *</label>
+                                <input type="email" name="email" required
+                                    class="w-full p-3.5 brutal-border-2 bg-paper focus:bg-white focus:outline-none focus:shadow-brutal font-medium"
+                                    placeholder="max@beispiel.com">
+                            </div>
+                            <div>
+                                <label class="block font-bold text-xs uppercase mb-1.5 tracking-widest">Was schwebt dir vor? *</label>
+                                <textarea name="message" required rows="5"
+                                    class="w-full p-3.5 brutal-border-2 bg-paper focus:bg-white focus:outline-none focus:shadow-brutal font-medium resize-y"
+                                    placeholder="Erzähl mir ein bisschen von deinem Projekt, Budget, Zeitplan..."></textarea>
+                            </div>
+                            <button type="submit"
+                                class="w-full py-4 bg-coral text-paper font-bold text-lg brutal-border-2 shadow-brutal hover:bg-ink hover:text-coral hover:-translate-y-1 hover:shadow-brutal-coral inline-flex items-center justify-center gap-2">
+                                <span>Nachricht raus damit!</span>
+                                <i class="fa-solid fa-paper-plane"></i>
+                            </button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="bg-paper text-ink py-10 md:py-12 px-5 md:px-8 border-t-4 brutal-border border-l-0 border-r-0 border-b-0">
+            <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6 text-center md:text-left">
+                <div>
+                    <a href="#top" class="font-display font-extrabold text-xl md:text-2xl tracking-tighter flex items-center justify-center md:justify-start gap-2">
+                        <span class="bg-coral text-paper px-2.5 py-1 brutal-border-2">ARNO</span>
+                        <span class="text-stroke hidden sm:inline">_VOYER</span>
+                    </a>
+                    <p class="text-xs opacity-70 mt-2 max-w-sm leading-relaxed">
+                        © 2026 Arno Voyer. Handgebaut mit <span class="text-coral">♥</span>,
+                        weichem Easing und Vite.
+                    </p>
+                </div>
+
+                <div class="flex flex-wrap justify-center gap-4 md:gap-6 font-bold text-sm">
+                    <a href="https://github.com/arnovoyer" target="_blank" rel="noopener"
+                       class="inline-flex items-center gap-2 brutal-border-2 px-3 py-1.5 hover:bg-coral hover:text-paper hover:-translate-y-0.5">
+                        <i class="fa-brands fa-github"></i> GitHub
+                    </a>
+                    <a href="https://instagram.com" target="_blank" rel="noopener"
+                       class="inline-flex items-center gap-2 brutal-border-2 px-3 py-1.5 hover:bg-cobalt hover:text-paper hover:-translate-y-0.5">
+                        <i class="fa-brands fa-instagram"></i> Instagram
+                    </a>
+                    <a href="mailto:hello@arnovoyer.com"
+                       class="inline-flex items-center gap-2 brutal-border-2 px-3 py-1.5 hover:bg-violet hover:text-paper hover:-translate-y-0.5">
+                        <i class="fa-solid fa-envelope"></i> Mail
+                    </a>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <!-- SUCCESS MODAL -->
+    <div id="successModal" class="fixed inset-0 z-[100] items-center justify-center hidden bg-black/50 backdrop-blur-sm p-5">
+        <div class="bg-paper brutal-border-2 shadow-brutal-lg p-8 max-w-md w-full text-center transform -rotate-1">
+            <div class="text-6xl mb-3 inline-block animate-bounce">🎉</div>
+            <h3 class="font-display font-black text-2xl md:text-3xl mb-2">Raus damit!</h3>
+            <p class="text-sm font-medium text-gray-700 mb-6 leading-relaxed">
+                Nachricht ist unterwegs. Ich melde mich schneller bei dir, als du "Soft-Easing" sagen kannst. 🚀
+            </p>
+            <button onclick="closeModal()"
+                class="px-6 py-2.5 bg-coral text-paper font-bold brutal-border-2 shadow-brutal hover:bg-ink hover:text-coral hover:translate-y-0.5 hover:shadow-brutal-coral">
+                Alles klar!
+            </button>
+        </div>
+    </div>
+
+    <script>
+    /* CUSTOM CURSOR */
+    const cursor = document.getElementById('customCursor');
+    let cx = 0, cy = 0, tx = 0, ty = 0;
+
+    document.addEventListener('mousemove', e => {
+        tx = e.clientX; ty = e.clientY;
+    });
+    function cursorLoop() {
+        cx += (tx - cx) * 0.18;
+        cy += (ty - cy) * 0.18;
+        cursor.style.left = cx + 'px';
+        cursor.style.top  = cy + 'px';
+        requestAnimationFrame(cursorLoop);
+    }
+    cursorLoop();
+
+    document.querySelectorAll('a, button, input, textarea, .project-card, #avatarBox').forEach(el => {
+        el.addEventListener('mouseenter', () => {
+            cursor.style.width = '38px';
+            cursor.style.height = '38px';
+            cursor.style.borderColor = '#FF5A36';
+            cursor.style.backgroundColor = 'rgba(255,90,54,0.15)';
+        });
+        el.addEventListener('mouseleave', () => {
+            cursor.style.width = '22px';
+            cursor.style.height = '22px';
+            cursor.style.borderColor = '#0F0F11';
+            cursor.style.backgroundColor = 'transparent';
+        });
+    });
+
+    /* MOBILE MENU */
+    const mobileMenu    = document.getElementById('mobileMenu');
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const closeMenuBtn  = document.getElementById('closeMobileMenuBtn');
+    const openMenu = () => { mobileMenu.style.display = 'flex'; document.body.style.overflow = 'hidden'; };
+    const closeMenu = () => { mobileMenu.style.display = 'none'; document.body.style.overflow = ''; };
+    mobileMenuBtn.addEventListener('click', openMenu);
+    closeMenuBtn.addEventListener('click', closeMenu);
+    mobileMenu.querySelectorAll('.mobile-link').forEach(a => a.addEventListener('click', closeMenu));
+
+    /* SCROLL REVEAL */
+    const revealEls = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver(entries => {
+        entries.forEach((entry, i) => {
+            if (entry.isIntersecting) {
+                setTimeout(() => entry.target.classList.add('in'), 60);
+                io.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => io.observe(el));
+
+    /* PHYSICS CANVAS (Hero — Bouncing Balls) */
+    const canvas = document.getElementById('physicsCanvas');
+    const ctx    = canvas.getContext('2d');
+    const isMobile = ('ontouchstart' in window) || window.innerWidth < 768;
+    let cw = 0, ch = 0;
+
+    function resizeCanvas() {
+        const rect = canvas.getBoundingClientRect();
+        cw = canvas.width  = rect.width  * devicePixelRatio;
+        ch = canvas.height = rect.height * devicePixelRatio;
+        canvas.style.width  = rect.width  + 'px';
+        canvas.style.height = rect.height + 'px';
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    const GRAVITY  = 0.06 * devicePixelRatio;
+    const BOUNCE   = 0.82;
+    const FRICTION = 0.996;
+    const COLORS   = ['#FF5A36','#F3C13F','#3F84F3','#A23FF3','#4ADE80'];
+
+    class Ball {
+        constructor() {
+            this.r = (Math.random()*14 + 12) * devicePixelRatio;
+            this.x = Math.random() * (cw - this.r*2) + this.r;
+            this.y = Math.random() * (ch/2);
+            this.vx = (Math.random() - 0.5) * 6 * devicePixelRatio;
+            this.vy = (Math.random() - 0.5) * 4 * devicePixelRatio;
+            this.color = COLORS[Math.floor(Math.random()*COLORS.length)];
+            this.mass = this.r;
+        }
+        update() {
+            this.vy += GRAVITY;
+            this.vx *= FRICTION;
+            this.vy *= FRICTION;
+            this.x += this.vx;
+            this.y += this.vy;
+            if (this.x + this.r > cw) { this.x = cw - this.r; this.vx *= -BOUNCE; }
+            else if (this.x - this.r < 0) { this.x = this.r; this.vx *= -BOUNCE; }
+            if (this.y + this.r > ch) { this.y = ch - this.r; this.vy *= -BOUNCE; this.vx *= 0.992; }
+            else if (this.y - this.r < 0) { this.y = this.r; this.vy *= -BOUNCE; }
+        }
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.r, 0, Math.PI*2);
+            ctx.fillStyle = this.color;
+            ctx.lineWidth = 2.5 * devicePixelRatio;
+            ctx.strokeStyle = '#0F0F11';
+            ctx.fill();
+            ctx.stroke();
+        }
+    }
+
+    const balls = [];
+    const ballCount = isMobile
+        ? Math.max(5, Math.min(8, Math.round(window.innerWidth / 100)))
+        : Math.max(8, Math.min(16, Math.round(window.innerWidth / 120)));
+    for (let i=0;i<ballCount;i++) balls.push(new Ball());
+
+    let mpx = null, mpy = null;
+    if (!isMobile) {
+        canvas.addEventListener('pointermove', e => {
+            const r = canvas.getBoundingClientRect();
+            mpx = (e.clientX - r.left) * devicePixelRatio;
+            mpy = (e.clientY - r.top)  * devicePixelRatio;
+        });
+        canvas.addEventListener('pointerleave', () => { mpx = null; mpy = null; });
+    }
+    canvas.addEventListener('pointerdown', e => {
+        const r = canvas.getBoundingClientRect();
+        const px = (e.clientX - r.left) * devicePixelRatio;
+        const py = (e.clientY - r.top)  * devicePixelRatio;
+        balls.forEach(b => {
+            const dx = b.x - px, dy = b.y - py;
+            const d  = Math.sqrt(dx*dx + dy*dy);
+            const R  = 230 * devicePixelRatio;
+            if (d < R && d > 0.01) {
+                const force = (R - d) / (10 * devicePixelRatio);
+                b.vx += (dx / d) * force;
+                b.vy += (dy / d) * force;
+            }
+        });
+    });
+
+    function canvasLoop() {
+        ctx.clearRect(0, 0, cw, ch);
+
+        if (!isMobile && mpx !== null) {
+            ctx.lineWidth = 1 * devicePixelRatio;
+            balls.forEach(b => {
+                const dx = b.x - mpx, dy = b.y - mpy;
+                const d = Math.sqrt(dx*dx + dy*dy);
+                const maxD = 150 * devicePixelRatio;
+                if (d < maxD) {
+                    ctx.strokeStyle = `rgba(15,15,17, ${ (1 - d/maxD) * 0.12 })`;
+                    ctx.beginPath();
+                    ctx.moveTo(mpx, mpy);
+                    ctx.lineTo(b.x, b.y);
+                    ctx.stroke();
+                }
+            });
+        }
+
+        for (let i = 0; i < balls.length; i++) {
+            balls[i].update();
+
+            if (!isMobile) {
+                for (let j = i+1; j < balls.length; j++) {
+                    const b1 = balls[i], b2 = balls[j];
+                    const dx = b2.x - b1.x, dy = b2.y - b1.y;
+                    const d  = Math.sqrt(dx*dx + dy*dy);
+                    const minD = b1.r + b2.r;
+                    if (d < minD && d > 0.001) {
+                        const angle = Math.atan2(dy, dx);
+                        const sin = Math.sin(angle), cos = Math.cos(angle);
+                        let vx1 = b1.vx * cos + b1.vy * sin;
+                        let vx2 = b2.vx * cos + b2.vy * sin;
+                        const vx1f = ((b1.mass - b2.mass)*vx1 + 2*b2.mass*vx2) / (b1.mass + b2.mass);
+                        const vx2f = ((b2.mass - b1.mass)*vx2 + 2*b1.mass*vx1) / (b1.mass + b2.mass);
+                        const overlap = minD - d;
+                        b1.x -= (overlap/2) * cos; b1.y -= (overlap/2) * sin;
+                        b2.x += (overlap/2) * cos; b2.y += (overlap/2) * sin;
+                        b1.vx = vx1f * cos - (b1.vy * sin);
+                        b1.vy = (b1.vy * cos) + vx1f * sin;
+                        b2.vx = vx2f * cos - (b2.vy * sin);
+                        b2.vy = (b2.vy * cos) + vx2f * sin;
+                    }
+                }
+            }
+
+            balls[i].draw();
+        }
+        requestAnimationFrame(canvasLoop);
+    }
+    canvasLoop();
+
+    /* AVATAR EMOJI CYCLE */
+    const avatarEmoji = document.getElementById('avatarEmoji');
+    const EMOJIS = ['🧑‍💻','🚀','👾','🔥','☕','🧠','🎧','⚡','🎨','🧙‍♂️','🪩','🤖','🎯','🛠️'];
+    avatarEmoji && document.getElementById('avatarBox').addEventListener('click', () => {
+        const current = avatarEmoji.textContent;
+        let next = current;
+        while (next === current) next = EMOJIS[Math.floor(Math.random() * EMOJIS.length)];
+        avatarEmoji.textContent = next;
+    });
+
+    /* CONTACT FORM (formsubmit.co per fetch, bleibt auf Seite) */
+    const contactForm = document.getElementById('contactForm');
+    contactForm && contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const btn = contactForm.querySelector('button[type="submit"]');
+        const oldHtml = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i>Wird gesendet…';
+
+        try {
+            const fd = new FormData(contactForm);
+            const res = await fetch(contactForm.action, {
+                method: 'POST',
+                body: fd,
+                headers: { 'Accept': 'application/json' }
+            });
+            if (!res.ok) throw new Error('Formular-Fehler');
+            const modal = document.getElementById('successModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            contactForm.reset();
+        } catch (err) {
+            contactForm.submit();
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = oldHtml;
+        }
+    });
+    function closeModal() {
+        const modal = document.getElementById('successModal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+    document.getElementById('successModal').addEventListener('click', e => {
+        if (e.target.id === 'successModal') closeModal();
+    });
+    </script>
+</body>
+</html>
