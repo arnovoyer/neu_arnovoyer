@@ -90,12 +90,18 @@
         .animate-float-rev { animation: float-rev 7.5s ease-in-out infinite; }
 
         @keyframes marquee {
-            0%   { transform: translateX(0%); }
+            0%   { transform: translateX(0); }
             100% { transform: translateX(-50%); }
         }
-        .animate-marquee { animation: marquee 22s linear infinite; }
+        .animate-marquee {
+            width: max-content;
+            animation: marquee 40s linear infinite;
+            backface-visibility: hidden;
+            will-change: transform;
+            transform: translateZ(0);
+        }
         @media (max-width: 768px) {
-            .animate-marquee { animation-duration: 12s; }
+            .animate-marquee { animation-duration: 18s; }
         }
 
         /* Custom Cursor */
@@ -155,6 +161,7 @@
             <nav class="hidden md:flex items-center gap-8 font-bold">
                 <a href="#about"    class="mag hover:text-coral">Über mich</a>
                 <a href="#work"     class="mag hover:text-coral">Projekte</a>
+                <a href="blog.html" class="mag hover:text-coral">Galerie</a>
                 <a href="#contact"  class="mag hover:text-coral">Kontakt</a>
             </nav>
 
@@ -176,6 +183,7 @@
         </button>
         <a href="#about"    class="mobile-link hover:text-coral py-2">Über mich</a>
         <a href="#work"     class="mobile-link hover:text-coral py-2">Projekte</a>
+        <a href="blog.html" class="mobile-link hover:text-coral py-2">Galerie</a>
         <a href="#contact"  class="mobile-link hover:text-coral py-2">Kontakt</a>
         <a href="#contact"  class="mobile-link px-8 py-3 brutal-border-2 bg-coral text-paper text-xl">SAY HI 👋</a>
     </div>
@@ -240,12 +248,12 @@
                 <span>🚀 OPEN FOR FREELANCE / 2026</span>
                 <span class="text-coral">⚡ HANDGEBAUTE INTERFACES</span>
                 <span>🎨 SAUBERER CODE, KEIN MIST</span>
-                <span class="text-amber">📡 VANILLA + VITE = 60 FPS</span>
+                <span class="text-amber">📡 KLEINE DETAILS, GROSSE WIRKUNG</span>
                 <span>🌐 MOBILE FIRST, PIXEL PERFEKT</span>
                 <span>🚀 OPEN FOR FREELANCE / 2026</span>
                 <span class="text-coral">⚡ HANDGEBAUTE INTERFACES</span>
                 <span>🎨 SAUBERER CODE, KEIN MIST</span>
-                <span class="text-amber">📡 VANILLA + VITE = 60 FPS</span>
+                <span class="text-amber">📡 KLEINE DETAILS, GROSSE WIRKUNG</span>
                 <span>🌐 MOBILE FIRST, PIXEL PERFEKT</span>
             </div>
         </section>
@@ -269,7 +277,7 @@
                     <p class="text-base md:text-lg text-gray-700 font-medium leading-relaxed">
                         Moderne Frontend-Technik trifft prägnantes 2D-Design. Jede Interaktion,
                         jede Transition, jeder Pixel wird so konzipiert, dass der Nutzer ein
-                        <em>greifbares</em> Feedback bekommt — soft-easing, keine abrupten Stopps.
+                        <em>greifbares</em> Feedback bekommt — keine abrupten Stopps.
                     </p>
 
                     <div class="flex flex-wrap gap-3 pt-2">
@@ -387,7 +395,7 @@
                                 <h3 class="font-display font-bold text-2xl group-hover:text-coral">neu_arnovoyer</h3>
                                 <p class="text-sm text-gray-700 leading-relaxed">
                                     Diese Website hier. Brutalistisches Redesign mit Physics-Canvas
-                                    und durchweg soft-easing Transitionen.
+                                    und durchweg ruhigen Transitionen.
                                 </p>
                             </div>
                         </div>
@@ -553,23 +561,27 @@
                         <span class="text-stroke hidden sm:inline">_VOYER</span>
                     </a>
                     <p class="text-xs opacity-70 mt-2 max-w-sm leading-relaxed">
-                        © 2026 Arno Voyer. Handgebaut mit <span class="text-coral">♥</span>,
-                        weichem Easing und Vite.
+                        © 2026 Arno Voyer. Handgebaut mit <span class="text-coral">♥</span>
+                        in Dornbirn.
                     </p>
                 </div>
 
                 <div class="flex flex-wrap justify-center gap-4 md:gap-6 font-bold text-sm">
-                    <a href="https://github.com/arnovoyer" target="_blank" rel="noopener"
+                    <a href="#work"
                        class="inline-flex items-center gap-2 brutal-border-2 px-3 py-1.5 hover:bg-coral hover:text-paper hover:-translate-y-0.5">
+                        <i class="fa-solid fa-diagram-project"></i> Projekte
+                    </a>
+                    <a href="blog.html"
+                       class="inline-flex items-center gap-2 brutal-border-2 px-3 py-1.5 hover:bg-violet hover:text-paper hover:-translate-y-0.5">
+                        <i class="fa-solid fa-images"></i> Galerie
+                    </a>
+                    <a href="https://github.com/arnovoyer" target="_blank" rel="noopener"
+                       class="inline-flex items-center gap-2 brutal-border-2 px-3 py-1.5 hover:bg-cobalt hover:text-paper hover:-translate-y-0.5">
                         <i class="fa-brands fa-github"></i> GitHub
                     </a>
-                    <a href="https://instagram.com" target="_blank" rel="noopener"
-                       class="inline-flex items-center gap-2 brutal-border-2 px-3 py-1.5 hover:bg-cobalt hover:text-paper hover:-translate-y-0.5">
-                        <i class="fa-brands fa-instagram"></i> Instagram
-                    </a>
-                    <a href="mailto:hello@arnovoyer.com"
-                       class="inline-flex items-center gap-2 brutal-border-2 px-3 py-1.5 hover:bg-violet hover:text-paper hover:-translate-y-0.5">
-                        <i class="fa-solid fa-envelope"></i> Mail
+                    <a href="#contact"
+                       class="inline-flex items-center gap-2 brutal-border-2 px-3 py-1.5 hover:bg-amber hover:-translate-y-0.5">
+                        <i class="fa-solid fa-envelope"></i> Kontakt
                     </a>
                 </div>
             </div>
@@ -582,7 +594,7 @@
             <div class="text-6xl mb-3 inline-block animate-bounce">🎉</div>
             <h3 class="font-display font-black text-2xl md:text-3xl mb-2">Raus damit!</h3>
             <p class="text-sm font-medium text-gray-700 mb-6 leading-relaxed">
-                Nachricht ist unterwegs. Ich melde mich schneller bei dir, als du "Soft-Easing" sagen kannst. 🚀
+                Nachricht ist unterwegs. Ich melde mich bald bei dir — normalerweise innerhalb eines Tages. 🚀
             </p>
             <button onclick="closeModal()"
                 class="px-6 py-2.5 bg-coral text-paper font-bold brutal-border-2 shadow-brutal hover:bg-ink hover:text-coral hover:translate-y-0.5 hover:shadow-brutal-coral">
