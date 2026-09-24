@@ -205,31 +205,25 @@
 
     <main id="top">
 
-        <!-- HERO / PAGE TITLE -->
-        <section class="relative overflow-hidden brutal-border border-t-0 border-l-0 border-r-0 px-5 py-16 md:py-20">
+        <!-- HERO / PAGE TITLE (MINIMAL) -->
+        <section class="relative overflow-hidden brutal-border border-t-0 border-l-0 border-r-0 px-5 py-12 md:py-16">
             <div class="absolute inset-0 dot-grid pointer-events-none"></div>
 
-            <div class="relative z-10 max-w-5xl mx-auto text-center">
-                <div class="inline-block bg-paper/95 p-5 md:p-10 brutal-border shadow-brutal-lg tilt-neg">
+            <div class="relative z-10 max-w-4xl mx-auto text-center">
+                <div class="inline-block bg-paper/95 p-4 md:p-8 brutal-border shadow-brutal-lg tilt-neg">
 
-                    <div class="flex flex-wrap justify-center gap-3 mb-5 md:mb-7">
-                        <span class="px-3 py-1 bg-violet text-paper font-bold text-xs uppercase brutal-border-2 animate-float">
+                    <div class="flex flex-wrap justify-center gap-3 mb-4 md:mb-6">
+                        <span class="px-3 py-1 bg-coral text-paper font-bold text-xs uppercase brutal-border-2 animate-float">
                             📸 GALERIE
                         </span>
-                        <span class="px-3 py-1 bg-amber font-bold text-xs uppercase brutal-border-2 animate-float-rev">
-                            ✍️ KURZE NOTIZEN
+                        <span class="px-3 py-1 bg-cobalt text-paper font-bold text-xs uppercase brutal-border-2 animate-float-rev">
+                            🏒 ROLLHOCKEY TURNIER
                         </span>
                     </div>
 
-                    <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-display font-extrabold mb-5 leading-[0.95]">
-                        Momente,<br>
-                        <span class="text-coral inline-block">festgehalten.</span>
+                    <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-display font-extrabold leading-[0.95]">
+                        Impressionen.
                     </h1>
-
-                    <p class="text-base md:text-lg font-medium max-w-xl mx-auto leading-relaxed">
-                        Fotos von Events, Probebauten und Dingen, die mir gerade aufgefallen sind.
-                        Klicke auf ein Bild für die große Ansicht.
-                    </p>
                 </div>
             </div>
         </section>
@@ -250,182 +244,37 @@
             </div>
         </section>
 
-        <!-- EVENT BLOCK: RV HARD / TITEL -->
-        <section class="py-14 md:py-16 px-5 md:px-8 max-w-7xl mx-auto">
-            <div class="reveal flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-12 gap-4">
-                <div>
-                    <span class="inline-block px-3 py-1 bg-coral text-paper font-bold text-sm uppercase brutal-border-2">
-                        Event · 23.09.2026
-                    </span>
-                    <h2 class="text-3xl md:text-5xl font-display font-extrabold mt-4 leading-none">
-                        RV Hard<br>Clubabend.
-                    </h2>
-                </div>
-                <p class="max-w-sm text-sm md:text-base text-gray-700 font-medium leading-relaxed">
-                    Ein paar Eindrücke vom Abend. Die Platzhalter unten kannst du einfach
-                    durch echte Bilder ersetzen, wenn du sie hochlädst.
-                </p>
+        <!-- GALERIE (DYNAMISCH GELADEN) -->
+        <section class="py-12 md:py-16 px-5 md:px-8 max-w-7xl mx-auto">
+            <div id="galleryGrid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-5">
+                <!-- Wird von JS mit Bildern befüllt -->
             </div>
 
-            <!-- GRID: 4 Spalten Desktop, 2 Mobile -->
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-
-                <!-- FOTO 1 -->
-                <button type="button" data-photo class="reveal group relative block brutal-border-2 shadow-brutal overflow-hidden bg-cobalt aspect-[4/5] tilt-neg" data-label="IMG_001">
-                    <div class="photo-slot absolute inset-0 bg-gradient-to-br from-cobalt/90 via-cobalt to-violet" data-label="IMG_001"></div>
-                    <div class="absolute top-3 right-3 w-9 h-9 brutal-border-2 bg-paper flex items-center justify-center text-sm group-hover:bg-coral group-hover:text-paper group-hover:-translate-y-0.5">
-                        <i class="fa-solid fa-expand"></i>
-                    </div>
-                </button>
-
-                <!-- FOTO 2 -->
-                <button type="button" data-photo class="reveal group relative block brutal-border-2 shadow-brutal overflow-hidden bg-coral aspect-[4/5] tilt-pos" style="transition-delay: 60ms;" data-label="IMG_002">
-                    <div class="photo-slot absolute inset-0 bg-gradient-to-br from-coral/90 via-coral to-amber" data-label="IMG_002"></div>
-                    <div class="absolute top-3 right-3 w-9 h-9 brutal-border-2 bg-paper flex items-center justify-center text-sm group-hover:bg-coral group-hover:text-paper group-hover:-translate-y-0.5">
-                        <i class="fa-solid fa-expand"></i>
-                    </div>
-                </button>
-
-                <!-- FOTO 3 -->
-                <button type="button" data-photo class="reveal group relative block brutal-border-2 shadow-brutal overflow-hidden bg-amber aspect-[4/5] tilt-neg" style="transition-delay: 120ms;" data-label="IMG_003">
-                    <div class="photo-slot absolute inset-0 bg-gradient-to-br from-amber via-amber to-coral/80" data-label="IMG_003"></div>
-                    <div class="absolute top-3 right-3 w-9 h-9 brutal-border-2 bg-ink text-paper flex items-center justify-center text-sm group-hover:bg-coral group-hover:text-paper group-hover:-translate-y-0.5">
-                        <i class="fa-solid fa-expand"></i>
-                    </div>
-                </button>
-
-                <!-- FOTO 4 -->
-                <button type="button" data-photo class="reveal group relative block brutal-border-2 shadow-brutal overflow-hidden bg-violet aspect-[4/5] tilt-pos" style="transition-delay: 180ms;" data-label="IMG_004">
-                    <div class="photo-slot absolute inset-0 bg-gradient-to-br from-violet via-violet to-cobalt/80" data-label="IMG_004"></div>
-                    <div class="absolute top-3 right-3 w-9 h-9 brutal-border-2 bg-paper flex items-center justify-center text-sm group-hover:bg-coral group-hover:text-paper group-hover:-translate-y-0.5">
-                        <i class="fa-solid fa-expand"></i>
-                    </div>
-                </button>
-
-                <!-- FOTO 5 -->
-                <button type="button" data-photo class="reveal group relative block brutal-border-2 shadow-brutal overflow-hidden bg-mint aspect-[4/5] tilt-pos" style="transition-delay: 240ms;" data-label="IMG_005">
-                    <div class="photo-slot absolute inset-0 bg-gradient-to-br from-mint via-mint to-amber/70" data-label="IMG_005"></div>
-                    <div class="absolute top-3 right-3 w-9 h-9 brutal-border-2 bg-ink text-paper flex items-center justify-center text-sm group-hover:bg-coral group-hover:text-paper group-hover:-translate-y-0.5">
-                        <i class="fa-solid fa-expand"></i>
-                    </div>
-                </button>
-
-                <!-- FOTO 6 -->
-                <button type="button" data-photo class="reveal group relative block brutal-border-2 shadow-brutal overflow-hidden bg-ink aspect-[4/5] tilt-neg" style="transition-delay: 300ms;" data-label="IMG_006">
-                    <div class="photo-slot absolute inset-0 bg-[repeating-linear-gradient(45deg,#0F0F11,#0F0F11_10px,#FF5A36_10px,#FF5A36_20px)]" data-label="IMG_006"></div>
-                    <div class="absolute top-3 right-3 w-9 h-9 brutal-border-2 bg-paper flex items-center justify-center text-sm group-hover:bg-coral group-hover:text-paper group-hover:-translate-y-0.5">
-                        <i class="fa-solid fa-expand"></i>
-                    </div>
-                </button>
-
-                <!-- FOTO 7 -->
-                <button type="button" data-photo class="reveal group relative block brutal-border-2 shadow-brutal overflow-hidden bg-cobalt aspect-[4/5] tilt-pos" style="transition-delay: 360ms;" data-label="IMG_007">
-                    <div class="photo-slot absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,#3F84F3,#A23FF3_80%)]" data-label="IMG_007"></div>
-                    <div class="absolute top-3 right-3 w-9 h-9 brutal-border-2 bg-paper flex items-center justify-center text-sm group-hover:bg-coral group-hover:text-paper group-hover:-translate-y-0.5">
-                        <i class="fa-solid fa-expand"></i>
-                    </div>
-                </button>
-
-                <!-- FOTO 8 -->
-                <button type="button" data-photo class="reveal group relative block brutal-border-2 shadow-brutal overflow-hidden bg-amber aspect-[4/5] tilt-neg" style="transition-delay: 420ms;" data-label="IMG_008">
-                    <div class="photo-slot absolute inset-0 bg-[conic-gradient(at_center,#F3C13F,#FF5A36,#A23FF3,#3F84F3,#4ADE80,#F3C13F)]" data-label="IMG_008"></div>
-                    <div class="absolute top-3 right-3 w-9 h-9 brutal-border-2 bg-ink text-paper flex items-center justify-center text-sm group-hover:bg-coral group-hover:text-paper group-hover:-translate-y-0.5">
-                        <i class="fa-solid fa-expand"></i>
-                    </div>
-                </button>
-
-            </div>
-
-            <!-- HINWEIS ZUM BILDER EINFÜGEN -->
-            <div class="reveal mt-10 brutal-border-2 bg-paper p-5 shadow-brutal">
+            <!-- FALLBACK: falls keine Bilder gefunden wurden -->
+            <div id="galleryEmpty" class="hidden mt-10 brutal-border-2 bg-paper p-6 shadow-brutal">
                 <div class="flex items-start gap-4">
                     <span class="w-10 h-10 brutal-border-2 bg-amber flex items-center justify-center shrink-0 font-bold">
-                        <i class="fa-solid fa-info"></i>
+                        <i class="fa-solid fa-folder-open"></i>
                     </span>
                     <div class="text-sm leading-relaxed">
-                        <p class="font-bold mb-1">So fügst du echte Fotos ein:</p>
+                        <p class="font-bold mb-1">Noch keine Bilder im Galerie-Ordner.</p>
                         <ol class="text-gray-700 space-y-1 list-decimal list-inside">
-                            <li>Lade deine Bilder (z.B. <code class="bg-gray-100 px-1.5 py-0.5 brutal-border-2">IMG_001.jpg</code>) in den Ordner <code class="bg-gray-100 px-1.5 py-0.5 brutal-border-2">neu/</code> oder einen Unterordner hoch.</li>
-                            <li>Im HTML jeder Kachel: ersetze das innere <code class="bg-gray-100 px-1.5 py-0.5 brutal-border-2">&lt;div class="photo-slot…"&gt;</code> durch <br><code class="bg-gray-100 px-1.5 py-0.5 brutal-border-2 block mt-1">&lt;img src="./IMG_001.jpg" alt="Beschreibung" class="w-full h-full object-cover"&gt;</code></li>
-                            <li>Optional: füge noch <code class="bg-gray-100 px-1.5 py-0.5 brutal-border-2">data-caption="Titel"</code> zum Button hinzu, dann wird der Text in der Großansicht angezeigt.</li>
+                            <li>Erstelle im Ordner <code class="bg-gray-100 px-1.5 py-0.5 brutal-border-2">neu/</code> einen Unterordner <code class="bg-gray-100 px-1.5 py-0.5 brutal-border-2">galerie</code>.</li>
+                            <li>Speichere deine Bilder dort als <code class="bg-gray-100 px-1.5 py-0.5 brutal-border-2">01.jpg, 02.jpg, 03.jpg …</code> ab (max. 99).</li>
+                            <li>Oder: trage im Script oben die echten Dateinamen in <code class="bg-gray-100 px-1.5 py-0.5 brutal-border-2">GALLERY_CONFIG.fileList</code> ein.</li>
+                            <li>Lade Seite neu — Bilder werden automatisch erkannt und ins Raster gepackt.</li>
                         </ol>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- KURZE EINTRÄGE / NOTIZEN -->
-        <section class="py-14 md:py-16 px-5 md:px-8 brutal-border border-l-0 border-r-0 border-t-2 bg-paper relative">
-            <div class="absolute inset-0 dot-grid pointer-events-none"></div>
-
-            <div class="max-w-6xl mx-auto relative">
-                <div class="reveal flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-12 gap-4">
-                    <div>
-                        <span class="inline-block px-3 py-1 bg-cobalt text-paper font-bold text-sm uppercase brutal-border-2">
-                            Kurze Notizen
-                        </span>
-                        <h2 class="text-3xl md:text-5xl font-display font-extrabold mt-4 leading-none">
-                            Gedanken,<br>kurz notiert.
-                        </h2>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
-
-                    <!-- POST 1 -->
-                    <article class="reveal bg-paper brutal-border-2 shadow-brutal p-6 md:p-7 hover:-translate-y-1 hover:shadow-brutal-lg tilt-neg">
-                        <div class="flex items-center gap-3 mb-4">
-                            <span class="font-mono text-[11px] font-bold uppercase tracking-widest bg-coral text-paper px-2.5 py-1 brutal-border-2">
-                                23.09.2026
-                            </span>
-                            <span class="font-mono text-[11px] font-bold uppercase tracking-widest bg-paper px-2.5 py-1 brutal-border-2">
-                                EVENT
-                            </span>
-                        </div>
-                        <h3 class="font-display font-bold text-2xl mb-2 leading-tight">
-                            RV Hard – ein Abend, der bleibt.
-                        </h3>
-                        <p class="text-sm md:text-base text-gray-700 leading-relaxed">
-                            Stimmung war gut, die Location hat ihren Job getan. Hier oben in der
-                            Galerie die besten Eindrücke, alles fotografisch dokumentiert.
-                        </p>
-                    </article>
-
-                    <!-- POST 2 -->
-                    <article class="reveal bg-paper brutal-border-2 shadow-brutal p-6 md:p-7 hover:-translate-y-1 hover:shadow-brutal-lg tilt-pos" style="transition-delay: 80ms;">
-                        <div class="flex items-center gap-3 mb-4">
-                            <span class="font-mono text-[11px] font-bold uppercase tracking-widest bg-violet text-paper px-2.5 py-1 brutal-border-2">
-                                18.09.2026
-                            </span>
-                            <span class="font-mono text-[11px] font-bold uppercase tracking-widest bg-paper px-2.5 py-1 brutal-border-2">
-                                CODE
-                            </span>
-                        </div>
-                        <h3 class="font-display font-bold text-2xl mb-2 leading-tight">
-                            Neues Portfolio online.
-                        </h3>
-                        <p class="text-sm md:text-base text-gray-700 leading-relaxed">
-                            Ein komplett neuer Auftritt, mit dem ich jetzt unterwegs bin. Gleiches
-                            Auge fürs Detail, neue Farben, keine KI-Templates.
-                        </p>
-                    </article>
-
-                </div>
-            </div>
-        </section>
-
-        <!-- CTA / BACK -->
-        <section class="py-14 md:py-16 px-5 md:px-8 border-t-2 brutal-border border-l-0 border-r-0 bg-ink text-paper relative overflow-hidden">
+        <!-- CTA / BACK (MINIMAL) -->
+        <section class="py-10 md:py-14 px-5 md:px-8 border-t-2 brutal-border border-l-0 border-r-0 bg-ink text-paper relative overflow-hidden">
             <div class="absolute inset-0 dot-grid opacity-[0.08] pointer-events-none" style="background-image: radial-gradient(#FAF9F6 1px, transparent 1px);"></div>
 
-            <div class="max-w-4xl mx-auto text-center relative">
-                <div class="reveal bg-paper text-ink brutal-border-2 p-8 md:p-12 shadow-brutal-lg tilt-neg">
-                    <h2 class="text-3xl md:text-5xl font-display font-extrabold leading-none mb-5">
-                        Noch mehr von mir?
-                    </h2>
-                    <p class="text-sm md:text-base text-gray-700 font-medium max-w-md mx-auto mb-7 leading-relaxed">
-                        Zurück zur Startseite mit Projekten, Kontakt und Über-Mich-Bereich.
-                    </p>
+            <div class="max-w-3xl mx-auto text-center relative">
+                <div class="reveal bg-paper text-ink brutal-border-2 p-6 md:p-10 shadow-brutal-lg tilt-neg">
                     <a href="index.html" class="inline-flex items-center gap-2 px-7 py-3.5 bg-coral text-paper font-bold text-lg brutal-border-2 shadow-brutal hover:bg-ink hover:text-coral hover:-translate-y-1 hover:translate-x-1 hover:shadow-brutal-coral">
                         <i class="fa-solid fa-arrow-left"></i>
                         Zur Startseite
@@ -512,7 +361,25 @@
         });
     });
 
-    /* MOBILE MENU */
+    /* GALLERY CONFIG – HIER KANNST DU ANPASSEN
+       MODE: 'auto'   => sucht Bilder als 01.jpg, 02.jpg ... 99.jpg im Ordner ./galerie/
+       MODE: 'list'   => verwendet die Dateinamen aus fileList (z.B. wenn Bilder aus Kamera IMG_1234.jpg heißen)
+       Ordnerpfad: der Ordner relativ zu blog.html, wo die Bilder liegen
+    */
+    const GALLERY_CONFIG = {
+        mode: 'auto',
+        folder: './galerie/',
+        extensions: ['jpg', 'jpeg', 'png', 'webp'],
+        autoMax: 99,
+        fileList: [
+            // 'IMG_1234.jpg',
+            // 'IMG_1235.jpg',
+            // 'tag1_siegerehrung.png',
+            // … füge hier beliebig viele Dateinamen ein
+        ]
+    };
+
+    /* MOBILE MENU (cursor bleibt gleich, siehe oben) */
     const mobileMenu    = document.getElementById('mobileMenu');
     const mobileMenuBtn = document.getElementById('mobileMenuBtn');
     const closeMenuBtn  = document.getElementById('closeMobileMenuBtn');
@@ -522,57 +389,146 @@
     closeMenuBtn.addEventListener('click', closeMenu);
     mobileMenu.querySelectorAll('.mobile-link').forEach(a => a.addEventListener('click', closeMenu));
 
-    /* REVEAL ON SCROLL */
+    /* REVEAL ON SCROLL (wird später erneut auf neue Galerie-Elemente angewendet) */
     const io = new IntersectionObserver(entries => {
-        entries.forEach((entry, i) => {
+        entries.forEach(entry => {
             if (entry.isIntersecting) {
-                setTimeout(() => entry.target.classList.add('in'), 60);
+                setTimeout(() => entry.target.classList.add('in'), 50);
                 io.unobserve(entry.target);
             }
         });
     }, { threshold: 0.12 });
     document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-    /* LIGHTBOX */
-    const photos  = Array.from(document.querySelectorAll('[data-photo]'));
-    const lightbox = document.getElementById('lightbox');
-    const lbContent = document.getElementById('lbContent');
-    const lbCaption = document.getElementById('lbCaption');
-    const lbClose = document.getElementById('lbClose');
-    const lbPrev  = document.getElementById('lbPrev');
-    const lbNext  = document.getElementById('lbNext');
+    /* GALERIE LADEN + LIGHTBOX */
+    const galleryGrid  = document.getElementById('galleryGrid');
+    const galleryEmpty = document.getElementById('galleryEmpty');
+    const lightbox     = document.getElementById('lightbox');
+    const lbContent    = document.getElementById('lbContent');
+    const lbCaption    = document.getElementById('lbCaption');
+    const lbClose      = document.getElementById('lbClose');
+    const lbPrev       = document.getElementById('lbPrev');
+    const lbNext       = document.getElementById('lbNext');
+    let photos = [];
     let idx = 0;
 
+    const TILT_CLASSES = ['tilt-neg', 'tilt-pos'];
+
+    function cursorHoverTarget(el) {
+        el.addEventListener('mouseenter', () => {
+            cursor.style.width = '38px'; cursor.style.height = '38px';
+            cursor.style.borderColor = '#FF5A36';
+            cursor.style.backgroundColor = 'rgba(255,90,54,0.15)';
+        });
+        el.addEventListener('mouseleave', () => {
+            cursor.style.width = '22px'; cursor.style.height = '22px';
+            cursor.style.borderColor = '#0F0F11';
+            cursor.style.backgroundColor = 'transparent';
+        });
+    }
+    document.querySelectorAll('a, button').forEach(cursorHoverTarget);
+
+    function buildPhotoTile(src, label, posIndex) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.setAttribute('data-photo', '');
+        btn.setAttribute('data-label', label);
+        btn.className = `reveal group relative block brutal-border-2 shadow-brutal overflow-hidden aspect-[4/5] ${TILT_CLASSES[posIndex % 2]} bg-ink`;
+        btn.style.transitionDelay = `${(posIndex % 8) * 40}ms`;
+
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = label;
+        img.loading = 'lazy';
+        img.decoding = 'async';
+        img.className = 'w-full h-full object-cover block';
+
+        const expand = document.createElement('div');
+        expand.className = 'absolute top-3 right-3 w-8 h-8 md:w-9 md:h-9 brutal-border-2 bg-paper flex items-center justify-center text-xs md:text-sm group-hover:bg-coral group-hover:text-paper group-hover:-translate-y-0.5';
+        expand.innerHTML = '<i class="fa-solid fa-expand"></i>';
+
+        btn.appendChild(img);
+        btn.appendChild(expand);
+        return btn;
+    }
+
+    function renderGallery(paths) {
+        if (!paths.length) {
+            galleryEmpty.classList.remove('hidden');
+            return;
+        }
+        galleryEmpty.classList.add('hidden');
+        galleryGrid.innerHTML = '';
+        photos = paths.map((src, i) => {
+            const label = src.split('/').pop().split('.')[0];
+            const tile = buildPhotoTile(src, label, i);
+            galleryGrid.appendChild(tile);
+            io.observe(tile);
+            cursorHoverTarget(tile);
+            tile.addEventListener('click', () => openLB(i));
+            return tile;
+        });
+    }
+
+    /* Bild-Datei auf Existenz prüfen (Bild laden + onload/onerror) */
+    function imgExists(src) {
+        return new Promise(resolve => {
+            const probe = new Image();
+            probe.onload  = () => resolve(true);
+            probe.onerror = () => resolve(false);
+            probe.src = src;
+        });
+    }
+
+    async function loadGallery() {
+        let paths = [];
+
+        if (GALLERY_CONFIG.mode === 'list' && GALLERY_CONFIG.fileList && GALLERY_CONFIG.fileList.length) {
+            for (const name of GALLERY_CONFIG.fileList) {
+                const src = GALLERY_CONFIG.folder + name;
+                if (await imgExists(src)) paths.push(src);
+            }
+        } else {
+            // Auto-Modus: 01.jpg, 02.jpg ... nacheinander prüfen, stop nach 2 Fehlern in Folge
+            let misses = 0;
+            for (let i = 1; i <= GALLERY_CONFIG.autoMax; i++) {
+                let found = null;
+                const num = String(i).padStart(2, '0');
+                for (const ext of GALLERY_CONFIG.extensions) {
+                    const src = `${GALLERY_CONFIG.folder}${num}.${ext}`;
+                    if (await imgExists(src)) { found = src; break; }
+                }
+                if (found) {
+                    paths.push(found);
+                    misses = 0;
+                } else {
+                    misses++;
+                    if (misses >= 3 && paths.length > 0) break;
+                }
+            }
+        }
+
+        renderGallery(paths);
+    }
+    loadGallery();
+
+    /* LIGHTBOX (minimal) */
     function openLB(i) {
+        if (!photos.length) return;
         idx = (i + photos.length) % photos.length;
         const source = photos[idx];
         const label  = source.getAttribute('data-label') || '';
-        const caption = source.getAttribute('data-caption') || label;
+        const imgEl  = source.querySelector('img');
 
-        const img = source.querySelector('img');
-        const slot = source.querySelector('.photo-slot');
-        let clone;
-        if (img) {
-            clone = img.cloneNode();
-            clone.className = 'max-w-full max-h-[84vh] object-contain w-auto h-auto';
-            clone.style.cssText = 'max-width:100%;max-height:84vh;object-fit:contain;width:auto;height:auto;display:block;';
-        } else {
-            const wrapper = document.createElement('div');
-            wrapper.className = 'w-full h-full min-h-[60vh] flex items-center justify-center';
-            const slotClone = slot.cloneNode(true);
-            slotClone.style.position = 'absolute';
-            slotClone.style.inset = '0';
-            slotClone.setAttribute('data-label', label);
-            wrapper.appendChild(slotClone);
-            const labelOverlay = document.createElement('div');
-            labelOverlay.className = 'font-display font-black text-paper text-3xl md:text-5xl opacity-90 text-center px-6 relative z-10';
-            labelOverlay.textContent = label;
-            wrapper.appendChild(labelOverlay);
-            clone = wrapper;
-        }
+        const clone = new Image();
+        clone.src = imgEl.src;
+        clone.alt = imgEl.alt;
+        clone.style.cssText = 'max-width:100%;max-height:84vh;object-fit:contain;width:auto;height:auto;display:block;';
         lbContent.innerHTML = '';
         lbContent.appendChild(clone);
-        lbCaption.textContent = `${String(idx+1).padStart(2,'0')} / ${String(photos.length).padStart(2,'0')}${caption ? '  ·  ' + caption : ''}`;
+
+        const total = String(photos.length).padStart(2, '0');
+        lbCaption.textContent = `${String(idx+1).padStart(2,'0')} / ${total}${label ? '  ·  ' + label : ''}`;
         lightbox.classList.add('open');
         document.body.style.overflow = 'hidden';
     }
@@ -580,7 +536,6 @@
         lightbox.classList.remove('open');
         document.body.style.overflow = '';
     }
-    photos.forEach((p, i) => p.addEventListener('click', () => openLB(i)));
     lbClose.addEventListener('click', closeLB);
     lbPrev.addEventListener('click', () => openLB(idx - 1));
     lbNext.addEventListener('click', () => openLB(idx + 1));
