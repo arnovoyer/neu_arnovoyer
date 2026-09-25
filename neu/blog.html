@@ -253,16 +253,26 @@
             <!-- FALLBACK: falls keine Bilder gefunden wurden -->
             <div id="galleryEmpty" class="hidden mt-10 brutal-border-2 bg-paper p-6 shadow-brutal">
                 <div class="flex items-start gap-4">
-                    <span class="w-10 h-10 brutal-border-2 bg-amber flex items-center justify-center shrink-0 font-bold">
-                        <i class="fa-solid fa-folder-open"></i>
+                    <span class="w-10 h-10 brutal-border-2 bg-coral text-paper flex items-center justify-center shrink-0 font-bold">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
                     </span>
-                    <div class="text-sm leading-relaxed">
-                        <p class="font-bold mb-1">Noch keine Bilder im Galerie-Ordner.</p>
-                        <ol class="text-gray-700 space-y-1 list-decimal list-inside">
-                            <li>Erstelle im Ordner <code class="bg-gray-100 px-1.5 py-0.5 brutal-border-2">neu/</code> einen Unterordner <code class="bg-gray-100 px-1.5 py-0.5 brutal-border-2">galerie</code>.</li>
-                            <li>Speichere deine Bilder dort als <code class="bg-gray-100 px-1.5 py-0.5 brutal-border-2">01.jpg, 02.jpg, 03.jpg …</code> ab (max. 99).</li>
-                            <li>Oder: trage im Script oben die echten Dateinamen in <code class="bg-gray-100 px-1.5 py-0.5 brutal-border-2">GALLERY_CONFIG.fileList</code> ein.</li>
-                            <li>Lade Seite neu — Bilder werden automatisch erkannt und ins Raster gepackt.</li>
+                    <div class="text-sm leading-relaxed flex-1">
+                        <p class="font-bold mb-2">Noch keine Bilder in der Galerie.</p>
+                        <div class="flex flex-wrap gap-3 mb-3">
+                            <a href="galerie-admin.html"
+                               class="inline-flex items-center gap-2 px-4 py-2 brutal-border-2 bg-ink text-paper font-bold hover:bg-coral hover:-translate-y-0.5 hover:translate-x-0.5 hover:shadow-brutal">
+                                <i class="fa-solid fa-arrow-right-to-bracket"></i> Zum Admin-Upload
+                            </a>
+                            <a href="index.html"
+                               class="inline-flex items-center gap-2 px-4 py-2 brutal-border-2 bg-paper font-bold hover:-translate-y-0.5 hover:shadow-brutal">
+                                <i class="fa-solid fa-house"></i> Startseite
+                            </a>
+                        </div>
+                        <ol class="text-gray-700 space-y-1 list-decimal list-inside text-[13px]">
+                            <li>Öffne <code class="bg-gray-100 px-1.5 py-0.5 brutal-border-2">galerie-admin.html</code>, gib das Passwort ein.</li>
+                            <li>Ziehe Bilder per Drag &amp; Drop auf das Feld (oder klicke zur Auswahl).</li>
+                            <li>Klick auf <strong>Jetzt hochladen</strong> — danach einfach Galerie neu laden.</li>
+                            <li>Achtung: Funktioniert erst, wenn die Seite auf einem <strong>Server mit PHP</strong> liegt (nicht lokal per file://).</li>
                         </ol>
                     </div>
                 </div>
@@ -361,21 +371,18 @@
         });
     });
 
-    /* GALLERY CONFIG – HIER KANNST DU ANPASSEN
-       MODE: 'auto'   => sucht Bilder als 01.jpg, 02.jpg ... 99.jpg im Ordner ./galerie/
-       MODE: 'list'   => verwendet die Dateinamen aus fileList (z.B. wenn Bilder aus Kamera IMG_1234.jpg heißen)
-       Ordnerpfad: der Ordner relativ zu blog.html, wo die Bilder liegen
+    /* GALLERY CONFIG
+       MODE: 'server' (empfohlen) => ruft galerie-upload.php?list=1 auf, liefert alle Bilder newest-first
+       MODE: 'list'               => feste Dateinamen-Liste unten in fileList (z.B. offline testen)
+       MODE: 'auto'               => sucht 01.jpg,02.jpg,…99.jpg wie früher (Fallback)
     */
     const GALLERY_CONFIG = {
-        mode: 'auto',
+        mode: 'server',
         folder: './galerie/',
         extensions: ['jpg', 'jpeg', 'png', 'webp'],
         autoMax: 99,
         fileList: [
             // 'IMG_1234.jpg',
-            // 'IMG_1235.jpg',
-            // 'tag1_siegerehrung.png',
-            // … füge hier beliebig viele Dateinamen ein
         ]
     };
 
@@ -483,13 +490,29 @@
     async function loadGallery() {
         let paths = [];
 
-        if (GALLERY_CONFIG.mode === 'list' && GALLERY_CONFIG.fileList && GALLERY_CONFIG.fileList.length) {
+        if (GALLERY_CONFIG.mode === 'server') {
+            try {
+                const res = await fetch('./galerie-upload.php?list=1', { method: 'GET' });
+                const data = await res.json();
+                if (res.ok && data && Array.isArray(data.images)) {
+                    paths = data.images.map(img => img.url);
+                } else {
+                    // Fallback, falls PHP auf lokalem file:// nicht läuft
+                    GALLERY_CONFIG.mode = 'auto';
+                    return loadGallery();
+                }
+            } catch (e) {
+                GALLERY_CONFIG.mode = 'auto';
+                return loadGallery();
+            }
+        }
+        else if (GALLERY_CONFIG.mode === 'list' && GALLERY_CONFIG.fileList && GALLERY_CONFIG.fileList.length) {
             for (const name of GALLERY_CONFIG.fileList) {
                 const src = GALLERY_CONFIG.folder + name;
                 if (await imgExists(src)) paths.push(src);
             }
         } else {
-            // Auto-Modus: 01.jpg, 02.jpg ... nacheinander prüfen, stop nach 2 Fehlern in Folge
+            // Auto-Modus: 01.jpg, 02.jpg ... nacheinander prüfen
             let misses = 0;
             for (let i = 1; i <= GALLERY_CONFIG.autoMax; i++) {
                 let found = null;
@@ -498,13 +521,8 @@
                     const src = `${GALLERY_CONFIG.folder}${num}.${ext}`;
                     if (await imgExists(src)) { found = src; break; }
                 }
-                if (found) {
-                    paths.push(found);
-                    misses = 0;
-                } else {
-                    misses++;
-                    if (misses >= 3 && paths.length > 0) break;
-                }
+                if (found) { paths.push(found); misses = 0; }
+                else { misses++; if (misses >= 3 && paths.length > 0) break; }
             }
         }
 

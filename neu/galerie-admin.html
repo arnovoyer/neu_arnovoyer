@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="de" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galerie Upload | Arno Voyer</title>
+    <meta name="robots" content="noindex,nofollow">
+    <meta name="theme-color" content="#FAF9F6">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Space Grotesk', 'sans-serif'],
+                        display: ['Syne', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        ink:    '#0F0F11',
+                        paper:  '#FAF9F6',
+                        coral:  '#FF5A36',
+                        amber:  '#F3C13F',
+                        cobalt: '#3F84F3',
+                        violet: '#A23FF3',
+                        mint:   '#4ADE80',
+                    },
+                    boxShadow: {
+                        'brutal':       '6px 6px 0px 0px #0F0F11',
+                        'brutal-lg':    '12px 12px 0px 0px #0F0F11',
+                        'brutal-coral': '6px 6px 0px 0px #FF5A36',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        * { -webkit-tap-highlight-color: transparent; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: #FAF9F6;
+            color: #0F0F11;
+            overflow-x: hidden;
+        }
+        h1,h2,h3,h4,.font-display { font-family: 'Syne', sans-serif; letter-spacing: -0.02em; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        ::selection { background: #FF5A36; color: #FAF9F6; }
+
+        ::-webkit-scrollbar        { width: 14px; }
+        ::-webkit-scrollbar-track  { background: #FAF9F6; border-left: 3px solid #0F0F11; }
+        ::-webkit-scrollbar-thumb  { background: #FF5A36; border: 3px solid #0F0F11; }
+
+        .brutal-border { border: 3px solid #0F0F11; }
+        .brutal-border-2 { border: 2px solid #0F0F11; }
+        .text-stroke { -webkit-text-stroke: 1.5px #0F0F11; color: transparent; }
+
+        a, button, input, textarea, label, .card, .tilt {
+            transition: transform 500ms cubic-bezier(0.22, 1, 0.36, 1),
+                        box-shadow 500ms cubic-bezier(0.22, 1, 0.36, 1),
+                        background-color 350ms cubic-bezier(0.22, 1, 0.36, 1),
+                        color 350ms cubic-bezier(0.22, 1, 0.36, 1),
+                        border-color 350ms cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        @keyframes float {
+            0%   { transform: translateY(0) rotate(0deg); }
+            50%  { transform: translateY(-10px) rotate(1deg); }
+            100% { transform: translateY(0) rotate(0deg); }
+        }
+        .animate-float { animation: float 6.5s ease-in-out infinite; }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(32px);
+            transition: opacity 900ms cubic-bezier(0.22,1,0.36,1),
+                        transform 900ms cubic-bezier(0.22,1,0.36,1);
+        }
+        .reveal.in { opacity: 1; transform: translateY(0); }
+
+        .tilt-neg { transform: rotate(-1.2deg); }
+        .tilt-pos { transform: rotate(1.2deg); }
+        .tilt-neg:hover, .tilt-pos:hover { transform: rotate(0deg) translateY(-3px); }
+
+        .dropzone {
+            background-image: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 18px,
+                rgba(15,15,17,0.06) 18px,
+                rgba(15,15,17,0.06) 20px
+            );
+        }
+        .dropzone.dragover {
+            background-color: rgba(255, 90, 54, 0.1);
+            border-color: #FF5A36;
+            transform: translateY(-2px) rotate(-0.3deg);
+        }
+
+        .file-row {
+            transition: opacity 400ms, transform 400ms;
+        }
+        .file-row.done { opacity: 0.5; }
+        .file-row.done .bar { background-color: #4ADE80 !important; }
+
+        .bar { transition: width 240ms cubic-bezier(0.22,1,0.36,1); }
+
+        input, button { outline: none; }
+        input:focus-visible { box-shadow: 0 0 0 4px rgba(255,90,54,0.2); }
+        button:focus-visible { box-shadow: 0 0 0 4px rgba(63,132,243,0.25); }
+
+        .dot-grid {
+            background-image: radial-gradient(#0F0F11 1px, transparent 1px);
+            background-size: 18px 18px;
+            opacity: 0.06;
+        }
+    </style>
+</head>
+
+<body class="antialiased min-h-screen flex flex-col">
+
+    <!-- HEADER -->
+    <header class="sticky top-0 z-50 w-full bg-paper brutal-border border-t-0 border-l-0 border-r-0">
+        <div class="max-w-5xl mx-auto px-5 md:px-8 py-4 flex justify-between items-center gap-4">
+            <a href="blog.html" class="font-display font-extrabold text-xl md:text-2xl tracking-tighter flex items-center gap-2 group">
+                <span class="bg-coral text-paper px-2.5 py-1 brutal-border-2 group-hover:rotate-2 group-hover:-translate-y-0.5 inline-block">ARNO</span>
+                <span class="hidden sm:inline text-stroke">_UPLOAD</span>
+            </a>
+            <nav class="flex items-center gap-3">
+                <a href="blog.html" class="hidden sm:inline-block px-4 py-2 brutal-border-2 bg-paper font-bold hover:-translate-y-0.5 hover:translate-x-0.5 hover:shadow-brutal">
+                    ← Galerie
+                </a>
+                <a href="index.html" class="hidden md:inline-block px-4 py-2 brutal-border-2 bg-cobalt text-paper font-bold hover:-translate-y-0.5 hover:translate-x-0.5 hover:shadow-brutal">
+                    Portfolio
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="flex-1 relative">
+        <div class="absolute inset-0 dot-grid pointer-events-none"></div>
+
+        <section class="relative px-5 py-12 md:py-16 max-w-3xl mx-auto z-10">
+
+            <div class="reveal text-center mb-8 md:mb-12">
+                <div class="inline-block bg-paper/95 p-4 md:p-8 brutal-border shadow-brutal-lg tilt-neg">
+                    <span class="px-3 py-1 bg-coral text-paper font-bold text-xs uppercase brutal-border-2 inline-block animate-float mb-4">
+                        🔒 ADMIN · GALERIE UPLOAD
+                    </span>
+                    <h1 class="text-3xl sm:text-4xl md:text-5xl font-display font-extrabold leading-none">
+                        Bilder reinziehen,<br>
+                        <span class="text-coral">fertig.</span>
+                    </h1>
+                </div>
+            </div>
+
+            <!-- PASSWORT BOX (erster Schritt) -->
+            <div id="authBlock" class="reveal brutal-border-2 bg-paper p-6 md:p-8 shadow-brutal mb-8">
+                <label for="pw" class="block font-bold mb-2 text-sm uppercase tracking-widest">
+                    Passwort
+                </label>
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <input id="pw" type="password" placeholder="••••••••"
+                        class="flex-1 brutal-border-2 bg-paper px-4 py-3 font-mono text-sm placeholder:text-gray-400" autocomplete="current-password">
+                    <button id="btnUnlock" type="button"
+                        class="px-5 py-3 brutal-border-2 bg-ink text-paper font-bold hover:bg-coral hover:shadow-brutal hover:-translate-y-0.5 hover:translate-x-0.5 whitespace-nowrap">
+                        Freischalten 🔓
+                    </button>
+                </div>
+                <p id="pwError" class="hidden mt-3 text-sm font-bold text-coral">
+                    <i class="fa-solid fa-triangle-exclamation"></i> Falsches Passwort.
+                </p>
+                <p class="mt-3 text-[11px] uppercase tracking-widest font-mono opacity-60">
+                    Hinweis: Passwort steht oben in galerie-upload.php — bitte ändere es nach dem ersten Hochladen.
+                </p>
+            </div>
+
+            <!-- UPLOAD BEREICH (nur sichtbar nach Passwort) -->
+            <div id="uploadBlock" class="hidden">
+
+                <!-- DROP ZONE -->
+                <div id="dropzone" class="reveal brutal-border bg-paper dropzone p-6 md:p-14 shadow-brutal tilt-neg text-center cursor-pointer select-none mb-8">
+                    <div class="pointer-events-none flex flex-col items-center gap-4">
+                        <div class="w-16 h-16 md:w-20 md:h-20 brutal-border-2 bg-amber flex items-center justify-center text-3xl md:text-4xl shadow-brutal animate-float">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                        </div>
+                        <div>
+                            <p class="font-display font-black text-xl md:text-3xl mb-1">
+                                Drag & Drop <span class="text-coral">hierher</span>
+                            </p>
+                            <p class="text-sm md:text-base font-medium text-gray-700">
+                                oder <span class="underline decoration-[3px] decoration-coral underline-offset-4">Dateien auswählen</span>
+                            </p>
+                            <p class="mt-3 text-[11px] font-mono uppercase tracking-widest opacity-60">
+                                JPG · PNG · WEBP · max 12 MB pro Bild · beliebig viele auf einmal
+                            </p>
+                        </div>
+                    </div>
+                    <input id="fileInput" type="file" accept="image/jpeg,image/png,image/webp" multiple class="hidden">
+                </div>
+
+                <!-- WARTESCHLANGE -->
+                <div id="queueWrap" class="reveal brutal-border-2 bg-paper shadow-brutal overflow-hidden hidden">
+                    <div class="flex items-center justify-between px-5 py-3 bg-ink text-paper font-bold uppercase text-xs tracking-widest brutal-border border-t-0 border-l-0 border-r-0">
+                        <span>📥 Warteschlange</span>
+                        <span id="queueCount" class="font-mono">0 / 0</span>
+                    </div>
+                    <ul id="queue" class="divide-y divide-ink/10 max-h-96 overflow-y-auto"></ul>
+                </div>
+
+                <!-- ZEILE: Gesamtfortschritt + Start + Zur Galerie -->
+                <div class="mt-7 flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
+                    <div id="globalBar" class="hidden md:flex-1 h-4 brutal-border-2 bg-paper overflow-hidden">
+                        <div id="globalBarFill" class="bar h-full w-0 bg-coral"></div>
+                    </div>
+                    <div class="flex flex-wrap gap-3 justify-start md:justify-end">
+                        <button id="btnClear" type="button"
+                            class="px-4 py-2.5 brutal-border-2 bg-paper font-bold hover:-translate-y-0.5 hover:shadow-brutal">
+                            <i class="fa-solid fa-trash-can"></i> Liste leeren
+                        </button>
+                        <button id="btnStart" type="button" disabled
+                            class="px-5 py-2.5 brutal-border-2 bg-coral text-paper font-bold shadow-brutal disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none disabled:hover:translate-y-0 hover:bg-ink hover:text-coral hover:-translate-y-0.5 hover:translate-x-0.5">
+                            <i class="fa-solid fa-bolt"></i> Jetzt hochladen
+                        </button>
+                        <a href="blog.html" target="_blank" rel="noopener"
+                           class="px-5 py-2.5 brutal-border-2 bg-cobalt text-paper font-bold hover:-translate-y-0.5 hover:translate-x-0.5 hover:shadow-brutal inline-flex items-center gap-2">
+                            Galerie öffnen <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- HINWEISE -->
+                <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="reveal brutal-border-2 bg-paper p-4 tilt-neg text-xs md:text-sm">
+                        <div class="w-9 h-9 brutal-border-2 bg-amber flex items-center justify-center mb-3">
+                            <i class="fa-solid fa-compress"></i>
+                        </div>
+                        <p class="font-bold mb-1">Größe optimieren</p>
+                        <p class="text-gray-700 leading-relaxed">
+                            Bilder unter 2500px Kantenlänge reichen für die Web-Galerie völlig.
+                        </p>
+                    </div>
+                    <div class="reveal brutal-border-2 bg-paper p-4 tilt-pos" style="transition-delay: 80ms;">
+                        <div class="w-9 h-9 brutal-border-2 bg-cobalt text-paper flex items-center justify-center mb-3">
+                            <i class="fa-solid fa-list-ol"></i>
+                        </div>
+                        <p class="font-bold mb-1">Reihenfolge</p>
+                        <p class="text-gray-700 leading-relaxed">
+                            Bilder werden in der Galerie nach Upload-Datum sortiert, neueste zuerst.
+                        </p>
+                    </div>
+                    <div class="reveal brutal-border-2 bg-paper p-4 tilt-neg" style="transition-delay: 160ms;">
+                        <div class="w-9 h-9 brutal-border-2 bg-violet text-paper flex items-center justify-center mb-3">
+                            <i class="fa-solid fa-lock"></i>
+                        </div>
+                        <p class="font-bold mb-1">Passwort ändern</p>
+                        <p class="text-gray-700 leading-relaxed">
+                            Editiere Zeile 4 <code class="bg-gray-100 px-1.5 py-0.5 brutal-border-2">$UPLOAD_PASSWORD</code> in <code class="bg-gray-100 px-1.5 py-0.5 brutal-border-2">galerie-upload.php</code>.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <footer class="bg-paper text-ink py-8 px-5 md:px-8 border-t-4 brutal-border border-l-0 border-r-0 border-b-0">
+        <div class="max-w-3xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
+            <p class="text-xs font-mono uppercase tracking-widest opacity-70">
+                © 2026 Arno Voyer · Galerie-Admin (nicht öffentlich zugänglich machen!)
+            </p>
+            <div class="flex gap-3 font-bold text-sm">
+                <a href="blog.html"  class="inline-flex items-center gap-2 brutal-border-2 px-3 py-1.5 hover:bg-coral hover:text-paper hover:-translate-y-0.5">
+                    Galerie
+                </a>
+                <a href="index.html" class="inline-flex items-center gap-2 brutal-border-2 px-3 py-1.5 hover:bg-ink hover:text-paper hover:-translate-y-0.5">
+                    Startseite
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+    /* REVEAL ON SCROLL */
+    const io = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                setTimeout(() => entry.target.classList.add('in'), 60);
+                io.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    /* CONFIG */
+    const UPLOAD_ENDPOINT = './galerie-upload.php';
+    let AUTH_TOKEN = '';
+    let queuedFiles = [];
+    let uploadSeq = 0;
+
+    /* ELEMENTE */
+    const pw        = document.getElementById('pw');
+    const btnUnlock = document.getElementById('btnUnlock');
+    const pwError   = document.getElementById('pwError');
+    const authBlock = document.getElementById('authBlock');
+    const uploadBlock = document.getElementById('uploadBlock');
+    const dropzone  = document.getElementById('dropzone');
+    const fileInput = document.getElementById('fileInput');
+    const queueWrap = document.getElementById('queueWrap');
+    const queue     = document.getElementById('queue');
+    const queueCount = document.getElementById('queueCount');
+    const btnClear  = document.getElementById('btnClear');
+    const btnStart  = document.getElementById('btnStart');
+    const globalBar = document.getElementById('globalBar');
+    const globalFill = document.getElementById('globalBarFill');
+
+    /* PASSWORT PRÜFEN (erfragt ein kleines Session-Token vom Server,
+       damit das Passwort nie im Klartext im Frontend steht) */
+    async function tryUnlock() {
+        pwError.classList.add('hidden');
+        btnUnlock.disabled = true;
+        try {
+            const fd = new FormData();
+            fd.append('password', pw.value);
+            fd.append('action', 'auth');
+            const res = await fetch(UPLOAD_ENDPOINT, { method: 'POST', body: fd });
+            const data = await res.json().catch(() => ({}));
+            if (res.ok && data.ok && data.token) {
+                AUTH_TOKEN = data.token;
+                authBlock.classList.add('hidden');
+                uploadBlock.classList.remove('hidden');
+                uploadBlock.querySelectorAll('.reveal').forEach(el => io.observe(el));
+            } else {
+                pwError.classList.remove('hidden');
+                pw.focus();
+                pw.select();
+            }
+        } catch (e) {
+            pwError.classList.remove('hidden');
+        } finally {
+            btnUnlock.disabled = false;
+        }
+    }
+    btnUnlock.addEventListener('click', tryUnlock);
+    pw.addEventListener('keydown', e => { if (e.key === 'Enter') tryUnlock(); });
+
+    /* DRAG & DROP */
+    ['dragenter','dragover'].forEach(ev => dropzone.addEventListener(ev, e => {
+        e.preventDefault(); dropzone.classList.add('dragover');
+    }));
+    ['dragleave','drop'].forEach(ev => dropzone.addEventListener(ev, e => {
+        e.preventDefault(); dropzone.classList.remove('dragover');
+    }));
+    dropzone.addEventListener('drop', e => {
+        if (e.dataTransfer?.files) addFiles(e.dataTransfer.files);
+    });
+    dropzone.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', () => {
+        if (fileInput.files) addFiles(fileInput.files);
+        fileInput.value = '';
+    });
+
+    function allowedFile(f) {
+        const okType = /^image\/(jpe?g|png|webp)$/i.test(f.type);
+        const okSize = f.size <= 12 * 1024 * 1024;
+        return okType && okSize;
+    }
+
+    function formatBytes(b) {
+        if (b < 1024) return b + ' B';
+        if (b < 1024*1024) return (b/1024).toFixed(1) + ' KB';
+        return (b/1024/1024).toFixed(2) + ' MB';
+    }
+
+    function renderQueue() {
+        queue.innerHTML = '';
+        const pending = queuedFiles.filter(f => f.status === 'pending').length;
+        queueCount.textContent = `${queuedFiles.length - pending} / ${queuedFiles.length}`;
+        const totalBytes = queuedFiles.reduce((s,f) => s + f.file.size, 0);
+        const doneBytes  = queuedFiles.reduce((s,f) => f.status === 'done' ? s + f.file.size : s + f.uploadedBytes, 0);
+        const pct = totalBytes ? Math.min(100, Math.round((doneBytes/totalBytes)*100)) : 0;
+        if (queuedFiles.length) { globalBar.classList.remove('hidden'); globalFill.style.width = pct + '%'; }
+        else                    { globalBar.classList.add('hidden');    globalFill.style.width = '0%';  }
+        btnStart.disabled = queuedFiles.filter(f => f.status === 'pending').length === 0;
+
+        queuedFiles.forEach(item => {
+            const li = document.createElement('li');
+            li.className = 'file-row flex items-center gap-3 px-4 py-3' + (item.status === 'done' ? ' done' : '');
+            li.dataset.id = item.id;
+
+            const icon = document.createElement('div');
+            icon.className = 'w-10 h-10 brutal-border-2 flex items-center justify-center shrink-0 text-lg ' +
+                (item.status === 'done' ? 'bg-mint text-ink' : item.status === 'error' ? 'bg-coral text-paper' : 'bg-paper');
+            icon.innerHTML = item.status === 'done' ? '<i class="fa-solid fa-check"></i>' :
+                             item.status === 'error' ? '<i class="fa-solid fa-xmark"></i>' :
+                             `<i class="fa-solid ${/jpe?g/.test(item.file.type)?'fa-file-image':'fa-image'}"></i>`;
+
+            const mid = document.createElement('div');
+            mid.className = 'flex-1 min-w-0';
+            const nameRow = document.createElement('div');
+            nameRow.className = 'flex items-center justify-between gap-3';
+            const name = document.createElement('div');
+            name.className = 'font-bold text-sm truncate';
+            name.textContent = item.file.name;
+            const meta = document.createElement('div');
+            meta.className = 'font-mono text-[11px] uppercase tracking-widest opacity-70 shrink-0';
+            meta.textContent = `${formatBytes(item.file.size)}  ·  ${item.status.toUpperCase()}`;
+            nameRow.appendChild(name);
+            nameRow.appendChild(meta);
+
+            const barWrap = document.createElement('div');
+            barWrap.className = 'mt-2 h-2 brutal-border-2 bg-paper overflow-hidden';
+            const bar = document.createElement('div');
+            bar.className = 'bar h-full w-0 bg-coral';
+            bar.style.width = (item.uploadedBytes / Math.max(1,item.file.size) * 100) + '%';
+            if (item.status === 'error') bar.style.background = '#FF5A36';
+            if (item.status === 'done')  bar.style.background = '#4ADE80';
+            barWrap.appendChild(bar);
+
+            const msg = document.createElement('div');
+            msg.className = 'mt-1 text-xs font-medium';
+            msg.style.color = item.status === 'error' ? '#FF5A36' : 'var(--muted)';
+            if (item.status === 'error')     msg.textContent = item.error || 'Upload fehlgeschlagen.';
+            else if (item.status === 'done') msg.textContent = item.serverName ? '→ ' + item.serverName : 'Hochgeladen.';
+            else                             msg.textContent = item.status === 'uploading' ? 'Bild wird übertragen…' : 'Bereit zum Hochladen.';
+
+            mid.appendChild(nameRow);
+            mid.appendChild(barWrap);
+            mid.appendChild(msg);
+
+            const del = document.createElement('button');
+            del.type = 'button';
+            del.className = 'w-9 h-9 brutal-border-2 shrink-0 hover:bg-coral hover:text-paper ' + (item.status !== 'pending' ? 'opacity-50 cursor-not-allowed' : '');
+            del.innerHTML = '<i class="fa-solid fa-trash"></i>';
+            if (item.status === 'pending') {
+                del.addEventListener('click', () => {
+                    queuedFiles = queuedFiles.filter(f => f.id !== item.id);
+                    renderQueue();
+                });
+            } else {
+                del.disabled = true;
+            }
+
+            li.appendChild(icon);
+            li.appendChild(mid);
+            li.appendChild(del);
+            queue.appendChild(li);
+        });
+
+        queueWrap.classList.toggle('hidden', queuedFiles.length === 0);
+    }
+
+    function addFiles(list) {
+        for (const f of list) {
+            if (!allowedFile(f)) continue;
+            uploadSeq++;
+            queuedFiles.push({
+                id: 'u' + uploadSeq,
+                file: f,
+                status: 'pending',
+                uploadedBytes: 0,
+                error: '',
+                serverName: ''
+            });
+        }
+        renderQueue();
+    }
+
+    btnClear.addEventListener('click', () => {
+        queuedFiles = queuedFiles.filter(f => f.status === 'uploading');
+        renderQueue();
+    });
+
+    btnStart.addEventListener('click', async () => {
+        btnStart.disabled = true;
+        for (const item of queuedFiles) {
+            if (item.status !== 'pending') continue;
+            await uploadOne(item);
+        }
+        btnStart.disabled = false;
+    });
+
+    function uploadOne(item) {
+        return new Promise(resolve => {
+            item.status = 'uploading';
+            item.uploadedBytes = 0;
+            renderQueue();
+
+            const xhr = new XMLHttpRequest();
+            const fd  = new FormData();
+            fd.append('token', AUTH_TOKEN);
+            fd.append('action', 'upload');
+            fd.append('file', item.file);
+
+            xhr.upload.onprogress = ev => {
+                if (ev.lengthComputable) {
+                    item.uploadedBytes = ev.loaded;
+                    renderQueue();
+                }
+            };
+            xhr.onload = () => {
+                try {
+                    const data = JSON.parse(xhr.responseText || '{}');
+                    if (xhr.status >= 200 && xhr.status < 300 && data.ok) {
+                        item.status = 'done';
+                        item.serverName = data.name || '';
+                        item.uploadedBytes = item.file.size;
+                    } else {
+                        item.status = 'error';
+                        item.error  = (data && data.error) || `HTTP ${xhr.status}`;
+                    }
+                } catch (e) {
+                    item.status = 'error';
+                    item.error  = 'Ungültige Antwort vom Server.';
+                }
+                renderQueue();
+                resolve();
+            };
+            xhr.onerror = () => {
+                item.status = 'error';
+                item.error  = 'Netzwerkfehler (Server offline / CORS / kein PHP?).';
+                renderQueue();
+                resolve();
+            };
+            xhr.onabort = () => {
+                item.status = 'pending';
+                item.uploadedBytes = 0;
+                renderQueue();
+                resolve();
+            };
+            xhr.open('POST', UPLOAD_ENDPOINT);
+            xhr.send(fd);
+        });
+    }
+    </script>
+</body>
+</html>
