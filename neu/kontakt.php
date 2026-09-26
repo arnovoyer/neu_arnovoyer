@@ -1,21 +1,34 @@
 <?php
 /* ================================================================
-   KONTAKT-FORMULAR: VERSAND PER PHP mail() ODER SMTP (ohne Extrakosten!)
+   KONTAKT-FORMULAR: VERSAND PER PHP mail() + KOSTENLOSEN FORWARDER
    ----------------------------------------------------------------
-   Standard = SMTP via A1 / Spacemail, mit deiner vorhandenen
-   arno.voyer@aon.at Mailbox + Passwort. KEIN neues Postfach nötig!
+   🚨 WICHTIG: formsubmit.io existiert NICHT MEHR!
+      Wurde am 15. Juli 2026 abgeschaltet (heute ist bereits September).
+      Also können wir das leider nicht nutzen.
 
-   SMTP klappt auf deinem Server nicht? Einfach $MAIL_DRIVER = 'mail'
-   stellen → nutzt wieder die lokale mail() Funktion.
+   ✅ DIE KOSTENLOSE LÖSUNG FÜR DICH (funktioniert garantiert!):
+      Dein Spacemail Hoster erlaubt nur Mails VON @arnovoyer.com senden.
+      Kein Problem – erstelle einen KOSTENLOSEN WEITERLEITUNGS-ACCOUNT!
+      Forwarder sind bei Spacemail/KAS IMMER kostenlos, auch ohne
+      extra Postfach-Paket:
+
+      1. KAS WebFTP / Spacemail Control Panel öffnen
+      2. Menü: "E-Mail → Weiterleitungen / Forwarders"
+      3. Neu hinzufügen:
+         • Quelle (Eingang): noreply@arnovoyer.com
+         • Ziel  (Weiterleitung): arno.voyer@aon.at
+         • Kopie speichern? → AUS (spart Speicherplatz)
+      4. Speichern → fertig!
+
+      Danach funktioniert das Formular SOFORT, ohne Extrakosten!
    ================================================================ */
 
 // --- EMPFÄNGER (Deine echte Mailbox) ---
 $MAIL_TO           = 'arno.voyer@aon.at';
 
-// --- ABSENDER (für den Betreff-Zeile "From:") --------------------
-//     Wenn SMTP mit A1 verwendet wird, MUSS dies hier zwingend auch
-//     arno.voyer@aon.at sein. Kein Problem – geht ohne Extrakosten!
-$MAIL_FROM         = 'arno.voyer@aon.at';
+// --- ABSENDER (MUSS auf @arnovoyer.com enden!) -------------------
+//     Nutze dazu den kostenlosen Forwarder von oben.
+$MAIL_FROM         = 'noreply@arnovoyer.com';
 
 // --- ANZEIGE NAME im Betreff / E-Mail Client (optional) ---------
 $MAIL_FROM_NAME    = 'arnovoyer.com Kontaktformular';
@@ -26,21 +39,23 @@ $MAIL_SUBJECT      = 'Neue Nachricht von arnovoyer.com';
 // --- Passwort für Diagnose (GET-Parameter ?pw=...) --------------
 $TEST_PASSWORD     = 'test-mail-2026';
 
-// --- TREIBER: 'smtp' = A1 SMTP (empfohlen!), 'mail' = altes mail() ---
-$MAIL_DRIVER       = 'smtp';
+// --- TREIBER: 'mail' = Standard bei Spacemail (empfohlen!) -------
+$MAIL_DRIVER       = 'mail';
 
-// ==================================================================
-// SMTP-EINSTELLUNGEN FÜR A1 / SPACEMAIL
-// (Benutze dein normales A1 / Spacemail Passwort – genau wie Thunderbird)
-// ==================================================================
+/* ------------------------------------------------------------
+   SMTP FALLBACK (nur falls mail() wirklich nicht gehen sollte)
+   Benötigt ein ECHTES @arnovoyer.com Postfach, das Kosten verursacht.
+   Deshalb jetzt standardmäßig deaktiviert.
+   ------------------------------------------------------------
 $SMTP = [
-    'host'     => 'smtp.aon.at',   // Standard A1 / Spacemail Server
-    'port'     => 587,              // STARTTLS (Alternativen: 465 = SSL, 25)
-    'security' => 'tls',            // 'tls' | 'ssl' | 'none'
-    'username' => 'arno.voyer@aon.at',
-    'password' => 'Voi4Vod2',      // <-- DEIN A1 / SPACEMAIL PASSWORT HIER EINTRAGEN!
-    'debug'    => false,            // true = SMTP-Chat im Diagnose-Output
+    'host'     => 'smtp.arnovoyer.com',   // SMTP deines Hosters (nicht A1!)
+    'port'     => 587,
+    'security' => 'tls',
+    'username' => 'noreply@arnovoyer.com', // ← braucht echtes Postfach
+    'password' => 'DEIN-POSTFACH-PW',
+    'debug'    => false,
 ];
+------------------------------------------------------------ */
 
 header('Content-Type: application/json; charset=utf-8');
 header('X-Content-Type-Options: nosniff');

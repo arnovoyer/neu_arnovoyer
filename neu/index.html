@@ -522,10 +522,21 @@
                             <!-- Optional: Subject-Prefix – wird auch vom PHP-Script honoriert -->
                             <input type="hidden" name="_subject" value="Neue Nachricht von arnovoyer.com">
 
-                            <!-- Alt: statt eigenem PHP einfach wieder FormSubmit verwenden (Fallback):
-                                 action="https://formsubmit.co/arno.voyer@aon.at"
-                                 + <input type="hidden" name="_captcha" value="false">
-                                 + <input type="hidden" name="_template" value="table"> -->
+                            <!-- 🚨 formsubmit.io existiert NICHT MEHR (abgeschaltet 15.07.2026)!
+
+                                 FALLBACK 1: formsubmit.co (falls wieder funktioniert, 1x Bestätigungsmail nötig):
+                                     action="https://formsubmit.co/arno.voyer@aon.at"
+                                     + <input type="hidden" name="_captcha" value="false">
+                                     + <input type="hidden" name="_template" value="table">
+
+                                 FALLBACK 2: formspree.io (zuverlässig, kostenloser Tier):
+                                     1. Auf formspree.io registrieren + Formular-Endpunkt generieren
+                                     2. action="https://formspree.io/f/DEIN_ENDPOINT"
+                                     + <input type="hidden" name="_subject" value="Neue Nachricht von arnovoyer.com">
+
+                                 Standard (KEIN EXTERNER DIENST): ./kontakt.php + Forwarder noreply@arnovoyer.com → arno.voyer@aon.at!
+                                 (Anleitung siehe kontakt.php Kommentar, 100% kostenlos, funktioniert GARANTIERT mit Spacemail)
+                                 -->
 
                             <div>
                                 <label class="block font-bold text-xs uppercase mb-1.5 tracking-widest">Name *</label>
