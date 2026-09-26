@@ -329,7 +329,7 @@
                                 <a href="https://instagram.com" target="_blank" rel="noopener" class="w-10 h-10 brutal-border-2 flex items-center justify-center hover:bg-cobalt hover:text-paper hover:-translate-y-0.5">
                                     <i class="fa-brands fa-instagram text-lg"></i>
                                 </a>
-                                <a href="mailto:hello@arnovoyer.com" class="w-10 h-10 brutal-border-2 flex items-center justify-center hover:bg-violet hover:text-paper hover:-translate-y-0.5">
+                                <a href="mailto:arno.voyer@aon.at" class="w-10 h-10 brutal-border-2 flex items-center justify-center hover:bg-violet hover:text-paper hover:-translate-y-0.5">
                                     <i class="fa-solid fa-envelope text-lg"></i>
                                 </a>
                             </div>
@@ -502,7 +502,7 @@
                             <div class="pt-2 space-y-3 font-bold text-sm">
                                 <div class="flex items-center gap-3">
                                     <span class="w-9 h-9 brutal-border-2 flex items-center justify-center bg-amber shrink-0"><i class="fa-regular fa-envelope"></i></span>
-                                    <a href="mailto:hello@arnovoyer.com" class="hover:underline break-all">hello@arnovoyer.com</a>
+                                    <a href="mailto:arno.voyer@aon.at" class="hover:underline break-all">arno.voyer@aon.at</a>
                                 </div>
                                 <div class="flex items-center gap-3">
                                     <span class="w-9 h-9 brutal-border-2 flex items-center justify-center bg-cobalt text-paper shrink-0"><i class="fa-solid fa-location-dot"></i></span>
@@ -515,11 +515,17 @@
                             </div>
                         </div>
 
-                        <form id="contactForm" action="https://formsubmit.co/hello@arnovoyer.com" method="POST" class="lg:col-span-7 space-y-4">
-                            <input type="text" name="_honey" style="display:none">
-                            <input type="hidden" name="_captcha" value="false">
+                        <form id="contactForm" action="./kontakt.php" method="POST" class="lg:col-span-7 space-y-4">
+                            <!-- HONEYPOT (gleiches Prinzip wie FormSubmit) -->
+                            <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+
+                            <!-- Optional: Subject-Prefix – wird auch vom PHP-Script honoriert -->
                             <input type="hidden" name="_subject" value="Neue Nachricht von arnovoyer.com">
-                            <input type="hidden" name="_template" value="table">
+
+                            <!-- Alt: statt eigenem PHP einfach wieder FormSubmit verwenden (Fallback):
+                                 action="https://formsubmit.co/arno.voyer@aon.at"
+                                 + <input type="hidden" name="_captcha" value="false">
+                                 + <input type="hidden" name="_template" value="table"> -->
 
                             <div>
                                 <label class="block font-bold text-xs uppercase mb-1.5 tracking-widest">Name *</label>
@@ -565,7 +571,7 @@
                     </p>
                 </div>
 
-                <div class="flex flex-wrap justify-center gap-4 md:gap-6 font-bold text-sm">
+            <div class="flex flex-wrap justify-center gap-4 md:gap-6 font-bold text-sm">
                     <a href="#work"
                        class="inline-flex items-center gap-2 brutal-border-2 px-3 py-1.5 hover:bg-coral hover:text-paper hover:-translate-y-0.5">
                         <i class="fa-solid fa-diagram-project"></i> Projekte
@@ -581,6 +587,14 @@
                     <a href="#contact"
                        class="inline-flex items-center gap-2 brutal-border-2 px-3 py-1.5 hover:bg-amber hover:-translate-y-0.5">
                         <i class="fa-solid fa-envelope"></i> Kontakt
+                    </a>
+                    <a href="impressum.html"
+                       class="inline-flex items-center gap-2 brutal-border-2 px-3 py-1.5 opacity-80 hover:opacity-100 hover:bg-ink hover:text-paper hover:-translate-y-0.5">
+                        Impressum
+                    </a>
+                    <a href="datenschutz.html"
+                       class="inline-flex items-center gap-2 brutal-border-2 px-3 py-1.5 opacity-80 hover:opacity-100 hover:bg-ink hover:text-paper hover:-translate-y-0.5">
+                        Datenschutz
                     </a>
                 </div>
             </div>
@@ -802,7 +816,7 @@
         avatarEmoji.textContent = next;
     });
 
-    /* CONTACT FORM (formsubmit.co per fetch, bleibt auf Seite) */
+    /* CONTACT FORM (kontakt.php per fetch, bleibt auf Seite; Fallback mailto:) */
     const contactForm = document.getElementById('contactForm');
     contactForm && contactForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -811,6 +825,14 @@
         btn.disabled = true;
         btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i>Wird gesendet…';
 
+        function fields() {
+            return {
+                name:    contactForm.querySelector('[name=name]').value || '',
+                email:   contactForm.querySelector('[name=email]').value || '',
+                message: contactForm.querySelector('[name=message]').value || '',
+            };
+        }
+
         try {
             const fd = new FormData(contactForm);
             const res = await fetch(contactForm.action, {
@@ -818,13 +840,24 @@
                 body: fd,
                 headers: { 'Accept': 'application/json' }
             });
-            if (!res.ok) throw new Error('Formular-Fehler');
+            let data = {};
+            try { data = await res.json(); } catch (_) {}
+            if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
+
             const modal = document.getElementById('successModal');
             modal.classList.remove('hidden');
             modal.classList.add('flex');
             contactForm.reset();
         } catch (err) {
-            contactForm.submit();
+            // Letztes Fallback: mailto: öffnen – User kann manuell senden
+            const f = fields();
+            const subj = encodeURIComponent('Kontaktformular arnovoyer.com – von ' + f.name);
+            const body = encodeURIComponent('Name: ' + f.name + '\nE-Mail: ' + f.email + '\n\n' + f.message + '\n');
+            try {
+                window.location.href = 'mailto:arno.voyer@aon.at?subject=' + subj + '&body=' + body;
+            } catch (_) {
+                contactForm.submit();
+            }
         } finally {
             btn.disabled = false;
             btn.innerHTML = oldHtml;
