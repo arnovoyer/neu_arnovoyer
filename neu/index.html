@@ -515,28 +515,27 @@
                             </div>
                         </div>
 
-                        <form id="contactForm" action="./kontakt.php" method="POST" class="lg:col-span-7 space-y-4">
-                            <!-- HONEYPOT (gleiches Prinzip wie FormSubmit) -->
+                        <form id="contactForm" action="https://formsubmit.co/arno.voyer@aon.at" method="POST" class="lg:col-span-7 space-y-4">
+                            <!-- HONEYPOT (Gegen Spam-Bots) -->
                             <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
 
-                            <!-- Optional: Subject-Prefix – wird auch vom PHP-Script honoriert -->
+                            <!-- FormSubmit Konfiguration -->
+                            <input type="hidden" name="_captcha" value="false">
+                            <input type="hidden" name="_template" value="table">
                             <input type="hidden" name="_subject" value="Neue Nachricht von arnovoyer.com">
+                            <input type="hidden" name="_next" value="#contact">
 
-                            <!-- 🚨 formsubmit.io existiert NICHT MEHR (abgeschaltet 15.07.2026)!
+                            <!--
+                                 👉 AKTIVIERUNG (1x nötig!):
+                                 1. Lade index.html auf Server hoch
+                                 2. Schicke EINMAL das Formular ab
+                                 3. FormSubmit schickt eine Bestätigungs-Mail an arno.voyer@aon.at
+                                 4. Klicke dort auf "Activate form"
+                                 5. Fertig! Danach funktioniert das Formular dauerhaft.
+                            -->
 
-                                 FALLBACK 1: formsubmit.co (falls wieder funktioniert, 1x Bestätigungsmail nötig):
-                                     action="https://formsubmit.co/arno.voyer@aon.at"
-                                     + <input type="hidden" name="_captcha" value="false">
-                                     + <input type="hidden" name="_template" value="table">
-
-                                 FALLBACK 2: formspree.io (zuverlässig, kostenloser Tier):
-                                     1. Auf formspree.io registrieren + Formular-Endpunkt generieren
-                                     2. action="https://formspree.io/f/DEIN_ENDPOINT"
-                                     + <input type="hidden" name="_subject" value="Neue Nachricht von arnovoyer.com">
-
-                                 Standard (KEIN EXTERNER DIENST): ./kontakt.php + Forwarder noreply@arnovoyer.com → arno.voyer@aon.at!
-                                 (Anleitung siehe kontakt.php Kommentar, 100% kostenlos, funktioniert GARANTIERT mit Spacemail)
-                                 -->
+                            <!-- Alternativ (PHP, wenn du später Forwarder noreply@arnovoyer.com anlegst):
+                                 action="./kontakt.php" und obige <input hidden>-Felder auskommentieren -->
 
                             <div>
                                 <label class="block font-bold text-xs uppercase mb-1.5 tracking-widest">Name *</label>
@@ -827,7 +826,7 @@
         avatarEmoji.textContent = next;
     });
 
-    /* CONTACT FORM (kontakt.php per fetch, bleibt auf Seite; Fallback mailto:) */
+    /* CONTACT FORM – formsubmit.co per fetch, bleibt auf Seite; Fallback mailto: */
     const contactForm = document.getElementById('contactForm');
     contactForm && contactForm.addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -851,9 +850,27 @@
                 body: fd,
                 headers: { 'Accept': 'application/json' }
             });
-            let data = {};
-            try { data = await res.json(); } catch (_) {}
-            if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
+
+            // formsubmit.co liefert HTTP 200 oder 302 bei Erfolg (302 = redirect zu _next)
+            // Bei HTTP 422 / 403 → Formular ist noch nicht aktiviert (Bestätigungsmail nicht geklickt)
+            let msg = '';
+            try {
+                const ct = res.headers.get('Content-Type') || '';
+                if (ct.includes('application/json')) {
+                    const d = await res.json();
+                    msg = d.message || d.error || JSON.stringify(d);
+                } else {
+                    await res.text();
+                }
+            } catch (_) { }
+
+            if (!res.ok && res.status !== 0) {
+                // 403 o.ä. = wahrscheinlich Erstaktivierung noch ausstehend
+                throw new Error(
+                    (res.status === 403 || res.status === 422 ? 'Formular ist noch nicht aktiviert. ' : '') +
+                    'HTTP ' + res.status + ' – ' + (msg || 'Server-Fehler')
+                );
+            }
 
             const modal = document.getElementById('successModal');
             modal.classList.remove('hidden');

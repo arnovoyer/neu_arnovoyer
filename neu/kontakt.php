@@ -1,62 +1,29 @@
 <?php
-/* ================================================================
-   KONTAKT-FORMULAR: VERSAND PER PHP mail() + KOSTENLOSEN FORWARDER
-   ----------------------------------------------------------------
-   🚨 WICHTIG: formsubmit.io existiert NICHT MEHR!
-      Wurde am 15. Juli 2026 abgeschaltet (heute ist bereits September).
-      Also können wir das leider nicht nutzen.
+/* --------------------------------------------------------------
+   AKTUELL wird formsubmit.co verwendet (siehe index.html Formular).
+   Diese Datei ist daher inaktiv → Redirect zurück zur Kontakt-Sektion.
+   
+   Soll PHP-Mail später wieder aktiviert werden (benötigt Forwarder
+   noreply@arnovoyer.com → arno.voyer@aon.at im Spacemail Panel):
+   - Kommentar unten entfernen
+   - In index.html action="./kontakt.php" setzen
+   - Hidden <input _captcha/_template/_next> aus index.html raus
+   -------------------------------------------------------------- */
 
-   ✅ DIE KOSTENLOSE LÖSUNG FÜR DICH (funktioniert garantiert!):
-      Dein Spacemail Hoster erlaubt nur Mails VON @arnovoyer.com senden.
-      Kein Problem – erstelle einen KOSTENLOSEN WEITERLEITUNGS-ACCOUNT!
-      Forwarder sind bei Spacemail/KAS IMMER kostenlos, auch ohne
-      extra Postfach-Paket:
+$host  = $_SERVER['HTTP_HOST'] ?? '';
+$uri   = rtrim(dirname($_SERVER['PHP_SELF'] ?? ''), '/\\');
+$extra = 'index.html#contact';
+header('Location: ' . (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? 'https' : 'http') . '://' . $host . $uri . '/' . $extra, true, 302);
+exit;
 
-      1. KAS WebFTP / Spacemail Control Panel öffnen
-      2. Menü: "E-Mail → Weiterleitungen / Forwarders"
-      3. Neu hinzufügen:
-         • Quelle (Eingang): noreply@arnovoyer.com
-         • Ziel  (Weiterleitung): arno.voyer@aon.at
-         • Kopie speichern? → AUS (spart Speicherplatz)
-      4. Speichern → fertig!
+/* ================= ALTE VERSION (PHPMail / SMTP) – zum Reaktivieren einfach den header/exit oben löschen:
 
-      Danach funktioniert das Formular SOFORT, ohne Extrakosten!
-   ================================================================ */
-
-// --- EMPFÄNGER (Deine echte Mailbox) ---
 $MAIL_TO           = 'arno.voyer@aon.at';
-
-// --- ABSENDER (MUSS auf @arnovoyer.com enden!) -------------------
-//     Nutze dazu den kostenlosen Forwarder von oben.
 $MAIL_FROM         = 'noreply@arnovoyer.com';
-
-// --- ANZEIGE NAME im Betreff / E-Mail Client (optional) ---------
 $MAIL_FROM_NAME    = 'arnovoyer.com Kontaktformular';
-
-// --- Betreff-Zeile -----------------------------------------------
 $MAIL_SUBJECT      = 'Neue Nachricht von arnovoyer.com';
-
-// --- Passwort für Diagnose (GET-Parameter ?pw=...) --------------
 $TEST_PASSWORD     = 'test-mail-2026';
-
-// --- TREIBER: 'mail' = Standard bei Spacemail (empfohlen!) -------
 $MAIL_DRIVER       = 'mail';
-
-/* ------------------------------------------------------------
-   SMTP FALLBACK (nur falls mail() wirklich nicht gehen sollte)
-   Benötigt ein ECHTES @arnovoyer.com Postfach, das Kosten verursacht.
-   Deshalb jetzt standardmäßig deaktiviert.
-   ------------------------------------------------------------
-$SMTP = [
-    'host'     => 'smtp.arnovoyer.com',   // SMTP deines Hosters (nicht A1!)
-    'port'     => 587,
-    'security' => 'tls',
-    'username' => 'noreply@arnovoyer.com', // ← braucht echtes Postfach
-    'password' => 'DEIN-POSTFACH-PW',
-    'debug'    => false,
-];
------------------------------------------------------------- */
-
 header('Content-Type: application/json; charset=utf-8');
 header('X-Content-Type-Options: nosniff');
 
@@ -74,197 +41,12 @@ function out($ok, $extra = []) {
     exit;
 }
 
-/* ----------------------------------------------------------------
-   HILFSFUNKTION: roher SMTP-Versand via fsockopen + STARTTLS
-   Braucht KEINE Bibliotheken (kein PHPMailer, keine Composer).
-   ---------------------------------------------------------------- */
-function smtp_send($cfg, $from, $fromName, $to, $subject, $body, $boundary, $headersClean, &$debugLog = null) {
-    $host = $cfg['host'];
-    $port = (int)$cfg['port'];
-    $secure = $cfg['security'];
-    $user = $cfg['username'];
-    $pass = $cfg['password'];
-
-    $errno = 0; $errstr = '';
-    $context = stream_context_create([
-        'ssl' => [
-            'verify_peer'      => false,
-            'verify_peer_name' => false,
-            'allow_self_signed' => true,
-        ]
-    ]);
-
-    $transport = 'tcp://';
-    if ($secure === 'ssl') { $transport = 'ssl://'; }
-
-    $fp = @stream_socket_client($transport . $host . ':' . $port, $errno, $errstr, 20, STREAM_CLIENT_CONNECT, $context);
-    if (!$fp) {
-        $debugLog[] = "stream_socket_client fehlgeschlagen ($transport$host:$port) err=$errno: $errstr";
-        return false;
-    }
-    stream_set_timeout($fp, 25);
-
-    function smtp_cmd($fp, $cmd, $expectedCode = null, &$debugLog) {
-        if ($cmd !== null) {
-            fputs($fp, $cmd . "\r\n");
-            $debugLog[] = "S: $cmd";
-        }
-        $resp = '';
-        $startTime = microtime(true);
-        while (!feof($fp)) {
-            $line = fgets($fp, 512);
-            if ($line === false) break;
-            $resp .= $line;
-            $debugLog[] = "R: " . trim($line);
-            if (isset($line[3]) && $line[3] === ' ') break;
-            if (microtime(true) - $startTime > 20) break;
-        }
-        if ($expectedCode !== null) {
-            return (int)substr(ltrim($resp), 0, 3) === (int)$expectedCode;
-        }
-        return $resp;
-    }
-
-    $dbg = [];
-    $debugLog = &$dbg;
-
-    // 220 Welcome
-    $r = smtp_cmd($fp, null, 220, $dbg);
-    if (!$r) { fclose($fp); return false; }
-
-    // EHLO
-    $domain = explode('@', $from)[1] ?? 'localhost';
-    smtp_cmd($fp, "EHLO " . $domain, 250, $dbg);
-
-    // STARTTLS wenn nötig (Port 587)
-    if ($secure === 'tls') {
-        smtp_cmd($fp, "STARTTLS", 220, $dbg);
-        $crypto = STREAM_CRYPTO_METHOD_TLS_CLIENT;
-        if (defined('STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT')) {
-            $crypto |= STREAM_CRYPTO_METHOD_TLSv1_2_CLIENT;
-        }
-        if (!stream_socket_enable_crypto($fp, true, $crypto)) {
-            $dbg[] = "STARTTLS stream_socket_enable_crypto FEHLGESCHLAGEN.";
-            fclose($fp);
-            return false;
-        }
-        smtp_cmd($fp, "EHLO " . $domain, 250, $dbg);
-    }
-
-    // AUTH LOGIN
-    smtp_cmd($fp, "AUTH LOGIN", 334, $dbg);
-    smtp_cmd($fp, base64_encode($user), 334, $dbg);
-    smtp_cmd($fp, base64_encode($pass), 235, $dbg);
-
-    // MAIL FROM / RCPT TO / DATA
-    smtp_cmd($fp, "MAIL FROM:<" . $from . ">", 250, $dbg);
-    smtp_cmd($fp, "RCPT TO:<" . $to . ">", 250, $dbg);
-    smtp_cmd($fp, "DATA", 354, $dbg);
-
-    // Header + Body aufbauen (gemäß RFC: auf max 998 Zeichen Breite aufteilen)
-    $date = date('r');
-    $fromEncoded = ($fromName ? ('=?UTF-8?B?' . base64_encode($fromName) . "?= <$from>") : "<$from>");
-    $subjEncoded = '=?UTF-8?B?' . base64_encode($subject) . '?=';
-
-    $head  = "Date: $date\r\n";
-    $head .= "From: $fromEncoded\r\n";
-    $head .= "To: <$to>\r\n";
-    $head .= "Subject: $subjEncoded\r\n";
-    $head .= "MIME-Version: 1.0\r\n";
-    $head .= "Content-Type: multipart/alternative; boundary=\"$boundary\"\r\n";
-    $head .= "X-Mailer: arnovoyer.com custom-SMTP\r\n";
-    foreach ($headersClean as $k => $v) { $head .= "$k: $v\r\n"; }
-    $head .= "\r\n";
-
-    $mailData = $head . $body . "\r\n.\r\n";
-
-    // Dot-stuffing
-    $fixed = '';
-    foreach (explode("\n", str_replace("\r\n", "\n", $mailData)) as $line) {
-        $line = rtrim($line, "\r") . "\r\n";
-        if (strncmp($line, '.', 1) === 0) $line = '.' . $line;
-        $fixed .= $line;
-    }
-    fputs($fp, $fixed);
-
-    $ok = smtp_cmd($fp, null, 250, $dbg);
-    smtp_cmd($fp, "QUIT", 221, $dbg);
-    fclose($fp);
-    return $ok;
-}
-
-/* ----------------------------------------------------------------
-   EIGENTLICHER VERSAND-HELFER: je nach Treiber
-   ---------------------------------------------------------------- */
-function versende($cfg, $driver, $from, $fromName, $to, $subj, $plain, $html, &$diagnose = null) {
-    $boundary = '=_Boundary_' . md5(uniqid((string)mt_rand(), true));
-    $mailBody  = "--" . $boundary . "\r\n";
-    $mailBody .= "Content-Type: text/plain; charset=UTF-8\r\n";
-    $mailBody .= "Content-Transfer-Encoding: 8bit\r\n\r\n";
-    $mailBody .= $plain . "\r\n\r\n";
-    $mailBody .= "--" . $boundary . "\r\n";
-    $mailBody .= "Content-Type: text/html; charset=UTF-8\r\n";
-    $mailBody .= "Content-Transfer-Encoding: 8bit\r\n\r\n";
-    $mailBody .= $html . "\r\n\r\n";
-    $mailBody .= "--" . $boundary . "--";
-
-    if ($driver === 'smtp') {
-        // SMTP (keine zusätzlichen header in $head übergeben, weil smtp_send die eh selber baut)
-        $debug = null;
-        $ok = smtp_send($cfg, $from, $fromName, $to, $subj, $mailBody, $boundary, $headExtra = [], $debug);
-        $diagnose = [
-            'driver' => 'smtp',
-            'host'   => $cfg['host'] . ':' . $cfg['port'],
-            'secure' => $cfg['security'],
-            'debug'  => $cfg['debug'] ? $debug : null,
-        ];
-        return $ok;
-    }
-
-    // Fallback: mail()
-    $subjClean = str_replace(["\r","\n"], [' ',' '], $subj);
-    $subjEnc = '=?UTF-8?B?' . base64_encode($subjClean) . '?=';
-
-    $fromEnc = ($fromName ? ('=?UTF-8?B?' . base64_encode($fromName) . "?= <$from>") : "<$from>");
-
-    $headers  = [];
-    $headers['MIME-Version']  = '1.0';
-    $headers['Content-Type']  = 'multipart/alternative; boundary="' . $boundary . '"';
-    $headers['From']          = $fromEnc;
-    $headers['Reply-To']      = $from;
-    $headers['X-Mailer']      = 'PHP/' . phpversion();
-
-    $params = '';
-    // Envelope-Sender forcieren (-f) – verhindert bei manchen Hostern "From rejected"
-    if (filter_var($from, FILTER_VALIDATE_EMAIL)) {
-        $params = "-f$from";
-    }
-    $headerStr = '';
-    foreach ($headers as $k => $v) $headerStr .= "$k: $v\r\n";
-
-    $ok = @mail($to, $subjEnc, $mailBody, rtrim($headerStr, "\r\n"), $params);
-    $diagnose = [
-        'driver' => 'mail()',
-        'params' => $params,
-        'from'   => $from,
-        'to'     => $to,
-    ];
-    return $ok;
-}
-
-/* ----------------------------------------------------------------
-   DIAGNOSE (GET)
----------------------------------------------------------------- */
 if (($_SERVER['REQUEST_METHOD'] ?? '') === 'GET') {
     $pw = (string)($_GET['pw'] ?? $_POST['pw'] ?? '');
     if (!hash_equals($TEST_PASSWORD, $pw)) {
         http_response_code(403);
-        out(false, [
-            'error' => 'Diagnose passwortgeschützt. ?pw=' . $TEST_PASSWORD . ' anhängen.',
-            'tip'   => 'Beispiel: kontakt.php?pw=' . urlencode($TEST_PASSWORD)
-        ]);
+        out(false, ['error' => 'Diagnose passwortgeschützt. ?pw=' . $TEST_PASSWORD . ' anhängen.']);
     }
-
     $info = [
         'driver'       => $MAIL_DRIVER,
         'mail_to'      => $MAIL_TO,
@@ -277,57 +59,17 @@ if (($_SERVER['REQUEST_METHOD'] ?? '') === 'GET') {
         'server_name'  => $_SERVER['SERVER_NAME'] ?? null,
         'document_root'=> $_SERVER['DOCUMENT_ROOT'] ?? null,
     ];
-
-    // Prüfe Obiger SMTP-Server erreichbar?
-    $smtpReachable = false;
-    $smtpErr = '';
-    if ($MAIL_DRIVER === 'smtp') {
-        $host = $SMTP['host'];
-        $port = $SMTP['port'];
-        $context = stream_context_create([
-            'ssl' => ['verify_peer' => false, 'verify_peer_name' => false]
-        ]);
-        $transport = $SMTP['security'] === 'ssl' ? 'ssl://' : 'tcp://';
-        $fp = @stream_socket_client($transport . $host . ':' . $port, $e1, $e2, 10, STREAM_CLIENT_CONNECT, $context);
-        if ($fp) {
-            $smtpReachable = true;
-            $greet = @fgets($fp, 512);
-            fclose($fp);
-            $info['smtp_greeting'] = trim($greet);
-        } else {
-            $smtpErr = "$e1 / $e2";
-        }
-        $info['smtp_reachable'] = $smtpReachable;
-        $info['smtp_hostport']  = "$host:$port";
-        if (!$smtpReachable) $info['smtp_error'] = $smtpErr;
-        $info['smtp_username_is_set'] = !empty($SMTP['username']) && $SMTP['password'] !== 'CHANGE-ME';
-    }
-
-    // Test-Mail verschicken? NUR wenn SMTP erreichbar / mail() driver
-    $testOk = null; $diag = null;
-    $testSubj = '[TEST] arnovoyer.com ' . strtoupper($MAIL_DRIVER) . ' Diagnose ' . date('H:i');
-    $testBody = "Das ist eine Test-Mail.\n\nPHP: " . PHP_VERSION . "\nServer: " . ($_SERVER['SERVER_SOFTWARE'] ?? '?') . "\n";
-    $testHtml = "<i>Test-Mail vom Kontaktformular-Skript.</i><br><br>"
-              . "<b>PHP:</b> " . PHP_VERSION . "<br>"
-              . "<b>Treiber:</b> " . htmlspecialchars($MAIL_DRIVER);
-
-    $testOk = versende($SMTP, $MAIL_DRIVER, $MAIL_FROM, $MAIL_FROM_NAME, $MAIL_TO, $testSubj, $testBody, $testHtml, $diag);
-    $info['test_send'] = $testOk;
-    $info['test_diag'] = $diag;
-
-    out($testOk, [
-        'info' => $info,
-        'tip_password'  => $info['smtp_username_is_set'] ?? false ? '' : '⚠️ SMTP-PASSWORT ist noch auf CHANGE-ME gesetzt! Bitte in kontakt.php SMTP["password"] eintragen!',
-        'tip_smtp_reachable' => $MAIL_DRIVER === 'smtp' ? ($smtpReachable ? '✅ SMTP Host erreichbar.' : '❌ SMTP Host NICHT erreichbar → prüfe Firewall / anderes SMTP / Port (465 / 25)') : '',
-        'tip_result' => $testOk
-            ? '✅ Test-Mail wurde versandt! Kontrolliere in 1-2 Minuten deinen Posteingang + SPAM-Ordner bei ' . $MAIL_TO . '.'
-            : '❌ Versand fehlgeschlagen. Oben unter info→test_diag debug-Output einsehen.'
-    ]);
+    $ok = @mail($MAIL_TO,
+        '=?UTF-8?B?' . base64_encode('[TEST] arnovoyer.com kontakt.php ' . date('H:i')) . '?=',
+        "Test-Mail von kontakt.php.\n\nZeit: " . date('c') . "\nDriver: $MAIL_DRIVER\nFrom: $MAIL_FROM\n",
+        "From: =?UTF-8?B?" . base64_encode($MAIL_FROM_NAME) . "?= <$MAIL_FROM>\r\n" .
+        "MIME-Version: 1.0\r\nContent-Type: text/plain; charset=UTF-8\r\n",
+        "-f$MAIL_FROM"
+    );
+    $info['test_send'] = $ok;
+    out($ok, ['info' => $info]);
 }
 
-/* ----------------------------------------------------------------
-   POST: Eigentlicher Versand aus dem Formular
----------------------------------------------------------------- */
 if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
     http_response_code(405);
     out(false, ['error' => 'Methode nicht erlaubt.']);
@@ -357,48 +99,37 @@ if (!empty($_POST['_subject']) && is_string($_POST['_subject'])) {
 }
 
 $ip   = $_SERVER['REMOTE_ADDR'] ?? '';
-$ua   = $_SERVER['HTTP_USER_AGENT'] ?? '';
 $date = date('d.m.Y H:i:s');
 
 $plain = "Neue Nachricht über das Kontaktformular\n"
-       . "=======================================\n\n"
-       . "Name:    $name\n"
-       . "E-Mail:  $email\n"
-       . "Datum:   $date\n"
-       . "IP:      $ip\n"
-       . "UA:      $ua\n"
-       . "---------------------------------------\n"
-       . $message . "\n"
-       . "---------------------------------------\n"
-       . "Gesendet via kontakt.php ($MAIL_DRIVER)\n";
+       . "Name:   $name\nE-Mail: $email\nDatum:  $date\nIP:     $ip\n\n$message\n";
 
 $html = "<div style=\"font-family:Arial,sans-serif;font-size:14px;line-height:1.55\">"
-      . "<h2 style=\"margin:0 0 12px;color:#0F0F11\">Neue Nachricht von arnovoyer.com</h2>"
-      . "<table border=\"0\" cellpadding=\"6\" cellspacing=\"0\" style=\"border-collapse:collapse\">"
-      . "<tr><td style=\"width:120px;font-weight:bold;vertical-align:top\">Name:</td><td>" . htmlspecialchars($name)  . "</td></tr>"
-      . "<tr><td style=\"font-weight:bold;vertical-align:top\">E-Mail:</td><td>" . htmlspecialchars($email) . "</td></tr>"
-      . "<tr><td style=\"font-weight:bold;vertical-align:top\">Datum:</td><td>" . htmlspecialchars($date)  . "</td></tr>"
-      . "</table>"
-      . "<div style=\"margin-top:14px;padding:12px;background:#F8F8F5;border-left:4px solid #FF5A36\">"
-      . nl2br(htmlspecialchars($message)) . "</div>"
-      . "<div style=\"margin-top:12px;color:#888;font-size:11px\">"
-      . "IP: " . htmlspecialchars($ip) . "</div></div>";
+      . "<h2 style=\"margin:0 0 12px\">Neue Nachricht von arnovoyer.com</h2>"
+      . "<table cellpadding=\"6\" cellspacing=\"0\"><tr><td style=\"width:120px;font-weight:bold\">Name:</td><td>" . htmlspecialchars($name)  . "</td></tr>"
+      . "<tr><td style=\"font-weight:bold\">E-Mail:</td><td>" . htmlspecialchars($email) . "</td></tr>"
+      . "<tr><td style=\"font-weight:bold\">Datum:</td><td>" . htmlspecialchars($date)  . "</td></tr></table>"
+      . "<div style=\"margin-top:14px;padding:12px;background:#F8F8F5;border-left:4px solid #FF5A36\">" . nl2br(htmlspecialchars($message)) . "</div></div>";
 
-$diag = null;
-$sent = versende($SMTP, $MAIL_DRIVER, $MAIL_FROM, $MAIL_FROM_NAME, $MAIL_TO, $MAIL_SUBJECT, $plain, $html, $diag);
+$boundary = '=_Boundary_' . md5(uniqid((string)mt_rand(), true));
+$body  = "--" . $boundary . "\r\n";
+$body .= "Content-Type: text/plain; charset=UTF-8\r\nContent-Transfer-Encoding: 8bit\r\n\r\n" . $plain . "\r\n\r\n";
+$body .= "--" . $boundary . "\r\n";
+$body .= "Content-Type: text/html; charset=UTF-8\r\nContent-Transfer-Encoding: 8bit\r\n\r\n" . $html . "\r\n\r\n";
+$body .= "--" . $boundary . "--";
 
+$fromEnc = '=?UTF-8?B?' . base64_encode($MAIL_FROM_NAME) . "?= <$MAIL_FROM>";
+$subjEnc = '=?UTF-8?B?' . base64_encode($MAIL_SUBJECT) . '?=';
+$headers = "From: $fromEnc\r\nReply-To: $email\r\nMIME-Version: 1.0\r\nContent-Type: multipart/alternative; boundary=\"$boundary\"\r\n";
+
+$sent = @mail($MAIL_TO, $subjEnc, $body, rtrim($headers, "\r\n"), "-f$MAIL_FROM");
 if (!$sent) {
     http_response_code(500);
     out(false, [
-        'error'   => 'Mail konnte auf dem Server nicht verschickt werden (' . $MAIL_DRIVER . ' liefert false).',
-        'tip'     => 'Öffne kontakt.php?pw=' . urlencode($TEST_PASSWORD) . ' für eine Diagnose. Falls SMTP → korrektes A1-Passwort setzen!',
+        'error' => 'Mail-Versand fehlgeschlagen.',
         'fallback' => 'mailto:' . $MAIL_TO . '?subject=' . rawurlencode($MAIL_SUBJECT) . '&body=' . rawurlencode("Name: $name\nE-Mail: $email\n\n$message\n"),
-        'debug_hint' => ini_get('display_errors') ? (error_get_last() ?? null) : null,
     ]);
 }
+out(true, ['to' => $MAIL_TO, 'via' => $MAIL_DRIVER]);
 
-out(true, [
-    'message' => 'Nachricht wurde übermittelt.',
-    'to'      => $MAIL_TO,
-    'via'     => $MAIL_DRIVER,
-]);
+// ================= ENDE ALTE VERSION */
